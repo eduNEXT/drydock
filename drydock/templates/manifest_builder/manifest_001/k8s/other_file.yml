@@ -2,7 +2,7 @@
 # A file that will containt the kustomization
 
 # can I have access to tutor patches?
-{{ patch("kustomization-resources") }}
+{{ patch("k8s-deployments") }}
 
 # can I have access to tutor vars?
 namespace: {{ K8S_NAMESPACE }}

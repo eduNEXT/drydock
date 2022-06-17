@@ -1,4 +1,5 @@
 import os
+import pkg_resources
 
 from abc import abstractmethod
 from drydock.manifest_builder.domain.config import DrydockConfig
@@ -12,12 +13,10 @@ class FlexibleTutorManifest(ManifestRepository):
 
     def save(config: DrydockConfig) -> None:
 
-        # import pudb; pu.db
         env = config.get_data()
 
         # Render the manifest by reusing the code that tutor uses for the env
         fixed_root = "test-manifest"
-        # tutor_env.save(context.obj.root, config)
 
         def my_base_dir(root):
             """Return the environment base directory."""
@@ -28,14 +27,18 @@ class FlexibleTutorManifest(ManifestRepository):
 
 
         hooks.filters.clear("env:templates:targets")
-        name = "drydock"
         hooks.filters.add_items(
             "env:templates:targets",
             [
                 (
-                    os.path.join(name, "manifest_001"),
+                    os.path.join("manifest_builder", "manifest_001"),
                     "",
                 ),
             ],
         )
+
+        hooks.Filters.ENV_TEMPLATE_ROOTS.add_item(
+            pkg_resources.resource_filename("drydock", "templates")
+        )
+
         tutor_env.save(None, env)
