@@ -1,6 +1,9 @@
 from glob import glob
 import os
 import pkg_resources
+import yaml
+
+from importlib import import_module
 
 from tutor import hooks
 
@@ -28,6 +31,24 @@ config = {
 }
 
 
+def import_string(dotted_path):
+    """
+    Import a dotted module path and return the attribute/class designated by the
+    last name in the path. Raise ImportError if the import failed.
+    """
+    try:
+        module_path, class_name = dotted_path.rsplit(".", 1)
+        module = import_module(module_path)
+        return getattr(module, class_name)
+    except ValueError as err:
+        raise ImportError("%s doesn't look like a module path" % dotted_path) from err
+    except AttributeError as err:
+        raise ImportError(
+            'Module "%s" does not define a "%s" attribute/class'
+            % (module_path, class_name)
+        ) from err
+
+
 @click.group(name="drydock", short_help="Manage drydock")
 @click.pass_context
 def drydock_command(context):
@@ -35,16 +56,27 @@ def drydock_command(context):
 
 
 @click.command(name="save")
+@click.option(
+    "-r",
+    "--ref",
+    envvar="DRYDOCK_REF",
+    type=click.Path(resolve_path=True),
+    help="Path to the yml file that holds the builder class configuration.",
+)
 @click.pass_context
-def save(context):
+def save(context, ref: str):
 
-    from drydock.manifest_builder.application.manifest_builder import ManifestBuilder
-    from drydock.manifest_builder.infrastructure import flex_tutor_manifest, tutor_config
+    with open(ref, encoding="utf-8") as f:
+        reference = yaml.load(f, Loader=yaml.SafeLoader)
+    app = reference.get('drydock', {})
 
+    Config = import_string(app.get('config_class'))
+    Manifest = import_string(app.get('manifest_class'))
+    Builder = import_string(app.get('builder_class'))
 
-    builder = ManifestBuilder(flex_tutor_manifest.FlexibleTutorManifest)
-    config = tutor_config.TutorConfig(context=context)
-    builder(config)
+    build = Builder(repository=Manifest())
+    config=Config(context=context)
+    build(config=config)
 
 
 drydock_command.add_command(save)

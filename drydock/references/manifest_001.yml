@@ -1,0 +1,5 @@
+---
+drydock:
+  builder_class:  drydock.manifest_builder.application.manifest_builder.ManifestBuilder
+  config_class: drydock.manifest_builder.infrastructure.tutor_config.TutorConfig
+  manifest_class: drydock.manifest_builder.infrastructure.flex_tutor_manifest.FlexibleTutorManifest

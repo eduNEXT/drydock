@@ -11,7 +11,7 @@ from tutor import hooks
 
 class FlexibleTutorManifest(ManifestRepository):
 
-    def save(config: DrydockConfig) -> None:
+    def save(self, config: DrydockConfig) -> None:
 
         env = config.get_data()
 
