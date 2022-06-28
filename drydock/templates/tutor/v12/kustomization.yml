@@ -1,0 +1,45 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+- k8s/namespace.yml
+- k8s/deployments.yml
+- k8s/jobs.yml
+- k8s/services.yml
+- k8s/volumes.yml
+{{ patch("kustomization-resources") }}
+
+# namespace to deploy all Resources to
+namespace: {{ K8S_NAMESPACE }}
+
+# labels added to all Resources
+# https://kubernetes.io/docs/concepts/overview/working-with-objects/common-labels/
+commonLabels:
+  app.kubernetes.io/instance: openedx-{{ ID }}
+  app.kubernetes.io/version: {{ TUTOR_VERSION }}
+  app.kubernetes.io/part-of: openedx
+  app.kubernetes.io/managed-by: tutor
+  {{ patch("kustomization-commonlabels")|indent(2) }}
+
+configMapGenerator:
+- name: caddy-config
+  files:
+  - apps/caddy/Caddyfile
+- name: openedx-settings-lms
+  files:{% for file in "apps/openedx/settings/lms"|walk_templates %}
+  - {{ file }}{% endfor %}
+- name: openedx-settings-cms
+  files:{% for file in "apps/openedx/settings/cms"|walk_templates %}
+  - {{ file }}{% endfor %}
+- name: openedx-config
+  files:{% for file in "apps/openedx/config"|walk_templates %}
+  - {{ file }}{% endfor %}
+- name: nginx-config
+  files:{% for file in "apps/nginx"|walk_templates %}
+  - {{ file }}{% endfor %}
+- name: redis-config
+  files:
+  - apps/redis/redis.conf
+{{ patch("kustomization-configmapgenerator") }}
+
+{{ patch("kustomization") }}

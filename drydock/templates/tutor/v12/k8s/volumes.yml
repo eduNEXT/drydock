@@ -1,0 +1,81 @@
+{% if RUN_CADDY %}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: caddy
+  labels:
+    app.kubernetes.io/component: volume
+    app.kubernetes.io/name: caddy
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+{% endif %}
+{% if RUN_ELASTICSEARCH %}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: elasticsearch
+  labels:
+    app.kubernetes.io/component: volume
+    app.kubernetes.io/name: elasticsearch
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi
+{% endif %}
+{% if RUN_MONGODB %}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mongodb
+  labels:
+    app.kubernetes.io/component: volume
+    app.kubernetes.io/name: mongodb
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+{% endif %}
+{% if RUN_MYSQL %}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mysql
+  labels:
+    app.kubernetes.io/component: volume
+    app.kubernetes.io/name: mysql
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+{% endif %}
+{% if RUN_REDIS %}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: redis
+  labels:
+    app.kubernetes.io/component: volume
+    app.kubernetes.io/name: redis
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+{% endif %}
+{{ patch("k8s-volumes") }}

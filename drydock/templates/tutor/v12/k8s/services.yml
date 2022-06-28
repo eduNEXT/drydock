@@ -1,0 +1,141 @@
+{% if RUN_CADDY %}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: caddy
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 80
+      name: http
+    - port: 443
+      name: https
+  selector:
+    app.kubernetes.io/name: caddy
+{% endif %}
+{% if RUN_CMS %}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cms
+spec:
+  type: NodePort
+  ports:
+    - port: 8000
+      protocol: TCP
+  selector:
+    app.kubernetes.io/name: cms
+{% endif %}
+{% if RUN_FORUM %}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: forum
+spec:
+  type: NodePort
+  ports:
+    - port: 4567
+      protocol: TCP
+  selector:
+    app.kubernetes.io/name: forum
+{% endif %}
+{% if RUN_LMS %}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: lms
+spec:
+  type: NodePort
+  ports:
+    - port: 8000
+      protocol: TCP
+  selector:
+    app.kubernetes.io/name: lms
+{% endif %}
+{% if RUN_ELASTICSEARCH %}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: elasticsearch
+spec:
+  type: NodePort
+  ports:
+    - port: 9200
+      protocol: TCP
+  selector:
+    app.kubernetes.io/name: elasticsearch
+{% endif %}
+{% if RUN_MONGODB %}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongodb
+spec:
+  type: NodePort
+  ports:
+    - port: 27017
+      protocol: TCP
+  selector:
+    app.kubernetes.io/name: mongodb
+{% endif %}
+{% if RUN_MYSQL %}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql
+spec:
+  type: NodePort
+  ports:
+    - port: 3306
+      protocol: TCP
+  selector:
+    app.kubernetes.io/name: mysql
+{% endif %}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx
+spec:
+  type: NodePort
+  ports:
+    - port: 80
+      name: http
+  selector:
+    app.kubernetes.io/name: nginx
+{% if RUN_REDIS %}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis
+spec:
+  type: NodePort
+  ports:
+    - port: {{ REDIS_PORT }}
+      protocol: TCP
+  selector:
+    app.kubernetes.io/name: redis
+{% endif %}
+{% if RUN_SMTP %}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: smtp
+spec:
+  type: NodePort
+  ports:
+    - port: 25
+      protocol: TCP
+  selector:
+    app.kubernetes.io/name: smtp
+{% endif %}
+{{ patch("k8s-services") }}

@@ -74,8 +74,11 @@ def save(context, ref: str):
     Manifest = import_string(app.get('manifest_class'))
     Builder = import_string(app.get('builder_class'))
 
-    build = Builder(repository=Manifest())
-    config=Config(context=context)
+    build = Builder(
+        repository=Manifest(options=app.get('manifest_options', {})),
+        options=app.get('builder_options', {}),
+    )
+    config=Config(context=context, options=app.get('config_options', {}))
     build(config=config)
 
 
