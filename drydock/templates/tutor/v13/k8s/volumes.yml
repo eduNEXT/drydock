@@ -12,7 +12,7 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 1Gi
+      storage: {{ WEB_PROXY_STORAGE_SIZE | default("1Gi")}}
 {% endif %}
 {% if RUN_ELASTICSEARCH %}
 ---
@@ -28,7 +28,7 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 2Gi
+      storage: {{ ELASTICSEARCH_STORAGE_SIZE | default("2Gi")}}
 {% endif %}
 {% if RUN_MONGODB %}
 ---
@@ -44,7 +44,7 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 5Gi
+      storage: {{ MONGODB_STORAGE_SIZE | default("5Gi")}}
 {% endif %}
 {% if RUN_MYSQL %}
 ---
@@ -60,7 +60,7 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 5Gi
+      storage: {{ MYSQL_STORAGE_SIZE | default("5Gi")}}
 {% endif %}
 {% if RUN_REDIS %}
 ---
@@ -76,6 +76,6 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 1Gi
+      storage: {{ REDIS_STORAGE_SIZE | default("1Gi")}}
 {% endif %}
 {{ patch("k8s-volumes") }}

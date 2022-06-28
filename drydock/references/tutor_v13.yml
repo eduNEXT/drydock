@@ -1,3 +1,10 @@
+#
+# The tutor_V13 reference is an installation that mimics the exact configuration of k8s made
+# by tutor v13.3.1 with the added capacity of modifying the values that are fixed in place
+# at the templates.
+#
+# E.g: add MYSQL_STORAGE_SIZE: 25Gi in your tutor config.yml file before running this reference.
+#
 ---
 drydock:
   builder_class:  drydock.manifest_builder.application.manifest_builder.ManifestBuilder
