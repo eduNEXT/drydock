@@ -1,5 +1,6 @@
 import os
 import pkg_resources
+import shutil
 
 from abc import abstractmethod
 from drydock.manifest_builder.domain.config import DrydockConfig
@@ -31,6 +32,10 @@ class FlexibleTutorManifest(ManifestRepository):
         tutor_env.base_dir = my_base_dir
         tutor_env.save(None, env)
 
+        # Delete tutor env files that are not related to the k8s manifest
+        for path in ["dev", "build", "local"]:
+            shutil.rmtree(os.path.join(fixed_root, path))
+
         hooks.filters.clear("env:templates:targets")
         hooks.filters.add_items(
             "env:templates:targets",
@@ -47,3 +52,9 @@ class FlexibleTutorManifest(ManifestRepository):
         )
 
         tutor_env.save(None, env)
+
+        src_path = os.path.join(fixed_root, self.options.get("tutor_templates_version"))
+        dst_path = os.path.join(fixed_root)
+        shutil.copytree(src_path, dst_path, dirs_exist_ok=True)
+        shutil.rmtree(src_path)
+
