@@ -1,20 +1,51 @@
 drydock: a flexible manifest builder for Open edX
 =================================================
 
+**⚠️ Warning**: drydock is currently in an alpha stage and may suffer substantial changes
+while it transitions in to a stable stage.
+
+
 Installation
 ------------
 
 ::
 
     tvm plugins install -e git+https://github.com/edunext/drydock#egg=drydock
-
-Usage
------
-
-::
-
     tutor plugins enable drydock
-    tutor drydock save -r drydock/references/tutor_v13.yml
+
+Getting started
+---------------
+
+Drydock aims to offer flexibility on the kind of environment you want to generate, for that reason
+you can chose different kind of implementations (of renderers?) depending on your needs. At the
+moment Drydock ships with a basic manifest builder that wraps the Kubernetes generated files by tutor
+in a Kustomize application with some useful extra resources.
+
+To use drydock just use the reference that defines the implementation you want drydock to use and run:
+
+..  code:: bash
+
+    tutor drydock save -r reference.yml
+
+An example reference would look something like this:
+
+..  code:: yaml
+
+    drydock:
+      builder_class:  drydock.manifest_builder.application.manifest_builder.ManifestBuilder
+      config_class: drydock.manifest_builder.infrastructure.tutor_config.TutorConfig
+      manifest_class: drydock.manifest_builder.infrastructure.tutor_based_manifests.BaseManifests
+      manifest_options:
+        output: "drydock-environment"
+
+This will render the default drydock environment on the `drydock-environment` directory, allowing
+you to check the files onto version control and use tools for continuous deployment such as
+Flux or ArgoCD. The default environment is generated using Tutor and its templates, as a result
+it should be compatible with all the plugins, variables and patches.
+
+**Note:** If you are using module or yaml plugins in tutor and set ``manifest_options.output=env``
+you will have to define your ``TUTOR_PLUGINS_ROOT`` outside of your ``TUTOR_ROOT`` because 
+drydock will override your tutor env and erase your plugins.
 
 
 Rationale
