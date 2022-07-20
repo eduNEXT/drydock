@@ -48,6 +48,43 @@ you will have to define your ``TUTOR_PLUGINS_ROOT`` outside of your ``TUTOR_ROOT
 drydock will override your tutor env and erase your plugins.
 
 
+Extended builder
+~~~~~~~~~~~~~~~~
+Drydock also ships with an extended builder that adds the ability to use arbitrary
+templates as an extra overlay for the Kustomize app used by the base builder.
+To use it one must run drydock with the following reference:
+
+..  code:: yaml
+
+    ---
+    drydock:
+      builder_class:  drydock.manifest_builder.application.manifest_builder.ManifestBuilder
+      config_class: drydock.manifest_builder.infrastructure.tutor_config.TutorExtendedConfig
+      manifest_class: drydock.manifest_builder.infrastructure.tutor_based_manifests.ExtendedManifest
+      manifest_options:
+        output: "env"
+        extra_templates: extra_templates_root
+
+Where ``extra_templates_root`` points to the directory that holds your extra templates.
+In ``extra_templates_root`` you must include an directory named ``extra-extensions``.
+Inside ``extra-extensions`` you can write any template that you want but is meant to
+be used as a Kustomize overlay, therefore you will need at least a Kustomization.yml file.
+
+One use case is to use the extended builder to add helm chart definitions:
+
+..  code:: yaml
+
+    # extra_templates_root/extra-extensions/kustomization.yml
+    apiVersion: kustomize.config.k8s.io/v1beta1
+    kind: Kustomization
+
+    helmCharts:
+      - name: ingress-nginx
+        repo: https://kubernetes.github.io/ingress-nginx
+        namespace: ingress-nginx
+        version: 4.0.18
+        releaseName: ingress-nginxx
+
 Rationale
 ---------
 
