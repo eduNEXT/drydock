@@ -12,5 +12,5 @@ resources:
 - hpa.yml
 {% endif -%}
 {% if DRYDOCK_PROMETHEUS_STACK|default(false) -%}
-- prometheus-stack/kustomization.yml
+- prometheus-stack
 {% endif -%}
