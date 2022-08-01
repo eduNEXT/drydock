@@ -9,11 +9,10 @@ helmCharts:
   version: 38.0.2
   releaseName: prometheus
   includeCRDs: true
-{% if DRYDOCK_PROMETHEUS_VALUES|default(false) -%}
+{%- if DRYDOCK_PROMETHEUS_VALUES|default(false) %}
   valuesInline: {{ DRYDOCK_PROMETHEUS_VALUES }}
-{% endif -%}
+{%- endif %}
 
-{% if DRYDOCK_PROMETHEUS_OVERLAYS|default(false) -%}
-patches:
-{{ DRYDOCK_PROMETHEUS_OVERLAYS }}
-{% endif -%}
+{%- if DRYDOCK_PROMETHEUS_OVERLAYS|default(false) %}
+patches: {{ DRYDOCK_PROMETHEUS_OVERLAYS }}
+{%- endif %}
