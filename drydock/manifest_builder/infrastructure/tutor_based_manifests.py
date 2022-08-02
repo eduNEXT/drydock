@@ -188,3 +188,43 @@ class ExtendedManifests(ManifestRepository):
         if not os.path.exists(base_dir):
             raise TutorError("[DRYDOCK] Missing extra-extensions folder")
         shutil.move(base_dir, dst)
+
+
+class GlobalManifests(BaseManifests):
+    """Include additional extension points"""
+
+    TEMPLATE_ROOT = "kustomized/global-stack"
+    TEMPLATE_TARGETS = [
+        f"{TEMPLATE_ROOT}/kustomization.yml",
+    ]
+
+    def __init__(self, options: dict) -> None:
+        """Initialize the class based on the `manifest_options` from the reference.
+
+        Parameters
+        ----------
+        options: dict
+            Defines additional configuration options for the generations of the
+            configuration repository.
+
+            - ["output"]: Name of the directory to store the manifests.
+        """
+        self.output_dir = options.get("output", "drydock-global-env")
+
+    def relocate_env(self, src: str, dst: str) -> None:
+        """Moves the drydock rendered templates and tutor plugins to src.
+
+        At the moment we render a full tutor env with our templates under
+        'env/drydock/default'. The final drydock env is the one in 'env/drydock'
+        **plus** the plugin directory that has to be manually relocated to
+        'env/drydock/base/plugins'.
+
+        Parameters
+        ----------
+        src: str
+            The inital path where the full tutor env was rendered.
+        dst: str
+            The path to save the final drydock env.
+        """
+        base_dir = path_join(src, "env/drydock", f"{self.TEMPLATE_ROOT}")
+        shutil.move(base_dir, dst)
