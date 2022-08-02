@@ -10,7 +10,8 @@ helmCharts:
   releaseName: prometheus
   includeCRDs: true
 {%- if DRYDOCK_PROMETHEUS_VALUES|default(false) %}
-  valuesInline: {{ DRYDOCK_PROMETHEUS_VALUES }}
+  valuesInline:
+    {{ DRYDOCK_PROMETHEUS_VALUES | indent(4) }}
 {%- endif %}
 
 {%- if DRYDOCK_PROMETHEUS_OVERLAYS|default(false) %}
