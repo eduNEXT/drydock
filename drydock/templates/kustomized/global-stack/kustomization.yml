@@ -3,16 +3,22 @@ kind: Kustomization
 
 namespace: monitoring
 
+{%- if DRYDOCK_GLOBAL_RESOURCES|default(false) %}
+resources:
+  patch("drydock-global-resources")
+{%- endif %}
+
 helmCharts:
 - name: kube-prometheus-stack
   repo: https://prometheus-community.github.io/helm-charts
-  version: 38.0.2
+  version: {{ DRYDOCK_PROMETHEUS_VERSION }}
   releaseName: prometheus
   includeCRDs: true
 {%- if DRYDOCK_PROMETHEUS_VALUES|default(false) %}
   valuesInline:
     {{ DRYDOCK_PROMETHEUS_VALUES | indent(4) }}
 {%- endif %}
+patch("drydock-global-helm-charts")
 
 {%- if DRYDOCK_PROMETHEUS_OVERLAYS|default(false) %}
 patches: {{ DRYDOCK_PROMETHEUS_OVERLAYS }}
