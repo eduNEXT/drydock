@@ -11,3 +11,13 @@ resources:
 {% if DRYDOCK_HPA|default(false) and DRYDOCK_ENABLE_OVERRIDES|default(false) -%}
 - hpa.yml
 {% endif -%}
+
+{% if DRYDOCK_NEWRELIC -%}
+configMapGenerator:
+- name: newrelic-cm
+  files:
+  - newrelic.ini
+  options:
+    labels:
+        app.kubernetes.io/name: openedx
+{% endif -%}

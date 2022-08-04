@@ -68,4 +68,37 @@ spec:
               memory: "{{ DRYDOCK_CMS_WORKER_REQUEST_MEMORY }}"
 ---
 {% endif -%}
+{%- if DRYDOCK_NEWRELIC -%}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lms
+spec:
+  template:
+    spec:
+      containers:
+        - name: lms
+          args:
+            - |
+              newrelic-admin run-program uwsgi \
+              --static-map /static=/openedx/staticfiles/ \
+              --static-map /media=/openedx/media/ \
+              --http 0.0.0.0:8000 --thunder-lock \
+              --single-interpreter --enable-threads \
+              --processes=${UWSGI_WORKERS:-2} \
+              --buffer-size=8192 \
+              --wsgi-file $SERVICE_VARIANT/wsgi.py
+          command: ["/bin/bash", "-c"]
+          env:
+          - name: NEW_RELIC_CONFIG_FILE
+            value: /openedx/newrelic/newrelic.ini
+          volumeMounts:
+          - mountPath: /openedx/newrelic/
+            name: newrelic-ini
+      volumes:
+      - configMap:
+          name: newrelic-cm
+        name: newrelic-ini
+---
+{% endif -%}
 {{ patch("drydock-overrides") }}
