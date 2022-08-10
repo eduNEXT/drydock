@@ -63,3 +63,8 @@ class TutorExtendedConfig(DrydockConfig):
 
     def get_root(self) -> str:
         return self.context.obj.root
+
+
+class TutorGlobalConfig(TutorExtendedConfig):
+    """Drydock configuration defaults for a global environment."""
+    DEFAULT_TEMPLATE_SET = "kustomized/global-stack"
