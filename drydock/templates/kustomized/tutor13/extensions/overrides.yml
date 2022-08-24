@@ -101,4 +101,35 @@ spec:
         name: newrelic-ini
 ---
 {% endif -%}
+{% if DRYDOCK_ENABLE_NFS %}
+{% if RUN_ELASTICSEARCH %}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: elasticsearch
+spec:
+  selector:
+    matchLabels:
+      target-service: elasticsearch
+{% endif -%}
+{% if RUN_MONGODB -%}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mongodb
+spec:
+  storageClassName: nfs-client
+{% endif -%}
+{% if RUN_MYSQL -%}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mysql
+spec:
+  storageClassName: nfs-client
+{% endif -%}
+{% endif -%}
 {{ patch("drydock-overrides") }}

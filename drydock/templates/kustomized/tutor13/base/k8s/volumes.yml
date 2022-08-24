@@ -78,4 +78,64 @@ spec:
     requests:
       storage: 1Gi
 {% endif %}
+
+{% if DRYDOCK_ENABLE_NFS %}
+{% if RUN_ELASTICSEARCH %}
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: elasticsearch
+  labels:
+    target-service: elasticsearch
+spec:
+  nfs:
+    path: /mnt/elasticsearch
+    server: {{ NFS_SERVER }}
+  persistentVolumeReclaimPolicy: Retain
+{% endif -%}
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: openedx-data
+  labels:
+    target-service: openedx-data
+spec:
+  nfs:
+    path: /edx/var/edxapp/shared-data/openedx-data
+    server: {{ NFS_SERVER }}
+  persistentVolumeReclaimPolicy: Retain
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: openedx-data
+spec:
+  selector:
+    matchLabels:
+      target-service: openedx-data
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: openedx-media
+  labels:
+    target-service: openedx-media
+spec:
+  nfs:
+    path: /edx/var/edxapp/shared-data/openedx-media
+    server: {{ NFS_SERVER }}
+  persistentVolumeReclaimPolicy: Retain
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: openedx-media
+spec:
+  selector:
+    matchLabels:
+      target-service: openedx-media
+{% endif -%}
+
 {{ patch("k8s-volumes") }}
