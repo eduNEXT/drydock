@@ -113,6 +113,22 @@ spec:
     matchLabels:
       target-service: elasticsearch
 {% endif -%}
+{% if RUN_REDIS -%}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: redis
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+  selector:
+    matchLabels:
+      target-service: redis
+{% endif -%}
 {% if RUN_MONGODB -%}
 ---
 apiVersion: v1

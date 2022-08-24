@@ -89,8 +89,30 @@ metadata:
   labels:
     target-service: elasticsearch
 spec:
+  capacity:
+    storage: 5Gi
+  accessModes:
+  - ReadWriteOnce
   nfs:
     path: /mnt/elasticsearch
+    server: {{ NFS_SERVER }}
+  persistentVolumeReclaimPolicy: Retain
+{% endif -%}
+{% if RUN_REDIS -%}
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: redis
+  labels:
+    target-service: redis
+spec:
+  capacity:
+    storage: 5Gi
+  accessModes:
+  - ReadWriteOnce
+  nfs:
+    path: /mnt/redis
     server: {{ NFS_SERVER }}
   persistentVolumeReclaimPolicy: Retain
 {% endif -%}
@@ -102,19 +124,14 @@ metadata:
   labels:
     target-service: openedx-data
 spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+  - ReadWriteMany
   nfs:
     path: /edx/var/edxapp/shared-data/openedx-data
     server: {{ NFS_SERVER }}
   persistentVolumeReclaimPolicy: Retain
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: openedx-data
-spec:
-  selector:
-    matchLabels:
-      target-service: openedx-data
 ---
 apiVersion: v1
 kind: PersistentVolume
@@ -123,19 +140,30 @@ metadata:
   labels:
     target-service: openedx-media
 spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+  - ReadWriteMany
   nfs:
     path: /edx/var/edxapp/shared-data/openedx-media
     server: {{ NFS_SERVER }}
   persistentVolumeReclaimPolicy: Retain
 ---
 apiVersion: v1
-kind: PersistentVolumeClaim
+kind: PersistentVolume
 metadata:
-  name: openedx-media
+  name: jenkins-data
+  labels:
+    target-service: jenkins-data
 spec:
-  selector:
-    matchLabels:
-      target-service: openedx-media
+  capacity:
+    storage: 1Gi
+  accessModes:
+  - ReadWriteMany
+  nfs:
+    path: /edx/var/edxapp/shared-data/jenkins
+    server: {{ NFS_SERVER }}
+  persistentVolumeReclaimPolicy: Retain
 {% endif -%}
 
 {{ patch("k8s-volumes") }}
