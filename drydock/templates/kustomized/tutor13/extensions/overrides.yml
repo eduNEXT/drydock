@@ -136,7 +136,9 @@ kind: PersistentVolumeClaim
 metadata:
   name: mongodb
 spec:
-  storageClassName: nfs-client
+  selector:
+    matchLabels:
+      target-service: mongodb
 {% endif -%}
 {% if RUN_MYSQL -%}
 ---
@@ -145,7 +147,20 @@ kind: PersistentVolumeClaim
 metadata:
   name: mysql
 spec:
-  storageClassName: nfs-client
+  selector:
+    matchLabels:
+      target-service: mysql
+{% endif -%}
+{% if RUN_MINIO -%}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: minio
+spec:
+  selector:
+    matchLabels:
+      target-service: minio
 {% endif -%}
 {% endif -%}
 {{ patch("drydock-overrides") }}

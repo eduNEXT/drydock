@@ -94,7 +94,7 @@ spec:
   accessModes:
   - ReadWriteOnce
   nfs:
-    path: /mnt/elasticsearch
+    path: /data/elasticsearch
     server: {{ NFS_SERVER }}
   persistentVolumeReclaimPolicy: Retain
 {% endif -%}
@@ -112,7 +112,43 @@ spec:
   accessModes:
   - ReadWriteOnce
   nfs:
-    path: /mnt/redis
+    path: /data/redis
+    server: {{ NFS_SERVER }}
+  persistentVolumeReclaimPolicy: Retain
+{% endif -%}
+{% if RUN_MYSQL %}
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mysql
+  labels:
+    target-service: mysql
+spec:
+  capacity:
+    storage: 5Gi
+  accessModes:
+  - ReadWriteOnce
+  nfs:
+    path: /data/mysql
+    server: {{ NFS_SERVER }}
+  persistentVolumeReclaimPolicy: Retain
+{% endif -%}
+{% if RUN_MONGODB %}
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mongodb
+  labels:
+    target-service: mongodb
+spec:
+  capacity:
+    storage: 5Gi
+  accessModes:
+  - ReadWriteOnce
+  nfs:
+    path: /data/mongodb
     server: {{ NFS_SERVER }}
   persistentVolumeReclaimPolicy: Retain
 {% endif -%}
@@ -165,5 +201,21 @@ spec:
     server: {{ NFS_SERVER }}
   persistentVolumeReclaimPolicy: Retain
 {% endif -%}
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: minio
+  labels:
+    target-service: minio
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+  - ReadWriteOnce
+  nfs:
+    path: /data/minio
+    server: {{ NFS_SERVER }}
+  persistentVolumeReclaimPolicy: Retain
 
 {{ patch("k8s-volumes") }}
