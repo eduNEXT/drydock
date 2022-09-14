@@ -10,7 +10,18 @@ resources:
 - k8s/jobs.yml
 {%- endif %}
 {%- if ENABLE_DRYDOCK_JOBS | default(false) %}
-- k8s/drydock-jobs.yml
+- k8s/jobs/mysql.yml
+- k8s/jobs/lms.yml
+- k8s/jobs/cms.yml
+{%- if RUN_MINIO | default(false) %}
+- k8s/jobs/minio.yml
+{%- endif %}
+{%- if RUN_FORUM | default(false) %}
+- k8s/jobs/forum.yml
+{%- endif %}
+{%- if RUN_NOTES | default(false) %}
+- k8s/jobs/notes.yml
+{%- endif %}
 {%- endif %}
 
 {{ patch("kustomization-resources") }}

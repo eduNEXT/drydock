@@ -1,0 +1,95 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: notes-job-mysql
+  labels:
+    app.kubernetes.io/component: job
+spec:
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: notes
+          image: {{ NOTES_DOCKER_IMAGE }}
+          command: |
+            mysql -u {{ MYSQL_ROOT_USERNAME }} --password="{{ MYSQL_ROOT_PASSWORD }}" --host "{{ MYSQL_HOST }}" --port {{ MYSQL_PORT }} -e 'CREATE DATABASE IF NOT EXISTS {{ NOTES_MYSQL_DATABASE }};'
+            mysql -u {{ MYSQL_ROOT_USERNAME }} --password="{{ MYSQL_ROOT_PASSWORD }}" --host "{{ MYSQL_HOST }}" --port {{ MYSQL_PORT }} -e "CREATE USER IF NOT EXISTS '{{ NOTES_MYSQL_USERNAME }}';"
+            mysql -u {{ MYSQL_ROOT_USERNAME }} --password="{{ MYSQL_ROOT_PASSWORD }}" --host "{{ MYSQL_HOST }}" --port {{ MYSQL_PORT }} -e "ALTER USER '{{ NOTES_MYSQL_USERNAME }}'@'%' IDENTIFIED BY '{{ NOTES_MYSQL_PASSWORD }}';"
+            mysql -u {{ MYSQL_ROOT_USERNAME }} --password="{{ MYSQL_ROOT_PASSWORD }}" --host "{{ MYSQL_HOST }}" --port {{ MYSQL_PORT }} -e "GRANT ALL ON {{ NOTES_MYSQL_DATABASE }}.* TO '{{ NOTES_MYSQL_USERNAME }}'@'%';"
+          env:
+            - name: DJANGO_SETTINGS_MODULE
+              value: notesserver.settings.tutor
+          volumeMounts:
+            - mountPath: /app/edx-notes-api/notesserver/settings/tutor.py
+              name: settings
+              subPath: tutor.py
+      volumes:
+        - name: settings
+          configMap:
+            name: notes-settings
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: notes-job
+  labels:
+    app.kubernetes.io/component: job
+spec:
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: notes
+          image: {{ NOTES_DOCKER_IMAGE }}
+          command: ./manage.py migrate
+          env:
+            - name: DJANGO_SETTINGS_MODULE
+              value: notesserver.settings.tutor
+          volumeMounts:
+            - mountPath: /app/edx-notes-api/notesserver/settings/tutor.py
+              name: settings
+              subPath: tutor.py
+      volumes:
+        - name: settings
+          configMap:
+            name: notes-settings
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: notes-job-lms
+  labels:
+    app.kubernetes.io/component: job
+spec:
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: notes
+          image: {{ NOTES_DOCKER_IMAGE }}
+          command: |
+            # Modify users created an incorrect email and that might clash with the newly created users
+            ./manage.py lms shell -c \
+              "from django.contrib.auth import get_user_model;\
+              get_user_model().objects.filter(username='notes').exclude(email='notes@openedx').update(email='notes@openedx')"
+
+            ./manage.py lms manage_user notes notes@openedx --staff --superuser
+            ./manage.py lms create_dot_application \
+                notes \
+                notes \
+                --redirect-uris "http://notes:8000" \
+                --skip-authorization \
+                --client-id notes \
+                --client-secret "{{ NOTES_OAUTH2_SECRET }}" \
+                --update
+          env:
+            - name: DJANGO_SETTINGS_MODULE
+              value: notesserver.settings.tutor
+          volumeMounts:
+            - mountPath: /app/edx-notes-api/notesserver/settings/tutor.py
+              name: settings
+              subPath: tutor.py
+      volumes:
+        - name: settings
+          configMap:
+            name: notes-settings
