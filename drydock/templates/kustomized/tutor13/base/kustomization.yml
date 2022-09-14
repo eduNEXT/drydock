@@ -9,6 +9,9 @@ resources:
 {%- if not DRYDOCK_DISABLE_JOBS | default(false) %}
 - k8s/jobs.yml
 {%- endif %}
+{%- if ENABLE_DRYDOCK_JOBS | default(false) %}
+- k8s/drydock-jobs.yml
+{%- endif %}
 
 {{ patch("kustomization-resources") }}
 

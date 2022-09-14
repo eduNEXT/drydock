@@ -1,0 +1,317 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: mysql-job
+  labels:
+    app.kubernetes.io/component: job
+spec:
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: mysql
+        image: {{ DOCKER_IMAGE_MYSQL }}
+        command: |
+          echo "Initialising MySQL..."
+          mysql_connection_max_attempts=10
+          mysql_connection_attempt=0
+          until mysql -u {{ MYSQL_ROOT_USERNAME }} --password="{{ MYSQL_ROOT_PASSWORD }}" --host "{{ MYSQL_HOST }}" --port {{ MYSQL_PORT }} -e 'exit'
+          do
+              mysql_connection_attempt=$(expr $mysql_connection_attempt + 1)
+              echo "    [$mysql_connection_attempt/$mysql_connection_max_attempts] Waiting for MySQL service (this may take a while)..."
+              if [ $mysql_connection_attempt -eq $mysql_connection_max_attempts ]
+              then
+                echo "MySQL initialisation error" 1>&2
+                exit 1
+              fi
+              sleep 10
+          done
+          echo "MySQL is up and running"
+
+          # edx-platform database
+          mysql -u {{ MYSQL_ROOT_USERNAME }} --password="{{ MYSQL_ROOT_PASSWORD }}" --host "{{ MYSQL_HOST }}" --port {{ MYSQL_PORT }} -e "CREATE DATABASE IF NOT EXISTS {{ OPENEDX_MYSQL_DATABASE }};"
+          mysql -u {{ MYSQL_ROOT_USERNAME }} --password="{{ MYSQL_ROOT_PASSWORD }}" --host "{{ MYSQL_HOST }}" --port {{ MYSQL_PORT }} -e "CREATE USER IF NOT EXISTS '{{ OPENEDX_MYSQL_USERNAME }}';"
+          mysql -u {{ MYSQL_ROOT_USERNAME }} --password="{{ MYSQL_ROOT_PASSWORD }}" --host "{{ MYSQL_HOST }}" --port {{ MYSQL_PORT }} -e "ALTER USER '{{ OPENEDX_MYSQL_USERNAME }}'@'%' IDENTIFIED BY '{{ OPENEDX_MYSQL_PASSWORD }}';"
+          mysql -u {{ MYSQL_ROOT_USERNAME }} --password="{{ MYSQL_ROOT_PASSWORD }}" --host "{{ MYSQL_HOST }}" --port {{ MYSQL_PORT }} -e "GRANT ALL ON {{ OPENEDX_MYSQL_DATABASE }}.* TO '{{ OPENEDX_MYSQL_USERNAME }}'@'%';"
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: lms-job
+  labels:
+    app.kubernetes.io/component: job
+spec:
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: lms
+        image: {{ DOCKER_IMAGE_OPENEDX }}
+        command: |
+          dockerize -wait tcp://{{ MYSQL_HOST }}:{{ MYSQL_PORT }} -timeout 20s
+          {%- if MONGODB_HOST.startswith("mongodb+srv://") %}
+          echo "MongoDB is using SRV records, so we cannot wait for it to be ready"
+          {%- else %}
+          dockerize -wait tcp://{{ MONGODB_HOST }}:{{ MONGODB_PORT }} -timeout 20s
+          {%- endif %}
+
+          echo "Loading settings $DJANGO_SETTINGS_MODULE"
+
+          ./manage.py lms migrate
+
+          # Create oauth2 apps for CMS SSO
+          # https://github.com/openedx/edx-platform/blob/master/docs/guides/studio_oauth.rst
+          ./manage.py lms manage_user cms cms@openedx --unusable-password
+          ./manage.py lms create_dot_application \
+            --grant-type authorization-code \
+            --redirect-uris "{% if ENABLE_HTTPS %}https{% else %}http{% endif %}://{{ CMS_HOST }}/complete/edx-oauth2/" \
+            --client-id {{ CMS_OAUTH2_KEY_SSO }} \
+            --client-secret {{ CMS_OAUTH2_SECRET }} \
+            --scopes user_id \
+            --skip-authorization \
+            --update cms-sso cms
+          ./manage.py lms create_dot_application \
+            --grant-type authorization-code \
+            --redirect-uris "http://{{ CMS_HOST }}:8001/complete/edx-oauth2/" \
+            --client-id {{ CMS_OAUTH2_KEY_SSO_DEV }} \
+            --client-secret {{ CMS_OAUTH2_SECRET }} \
+            --scopes user_id \
+            --skip-authorization \
+            --update cms-sso-dev cms
+
+          # Fix incorrect uploaded file path
+          if [ -d /openedx/data/uploads/ ]; then
+            if [ -n "$(ls -A /openedx/data/uploads/)" ]; then
+              echo "Migrating LMS uploaded files to shared directory"
+              mv /openedx/data/uploads/* /openedx/media/
+              rm -rf /openedx/data/uploads/
+            fi
+          fi
+
+          # Create waffle switches to enable some features, if they have not been explicitly defined before
+          # Completion tracking: add green ticks to every completed unit
+          (./manage.py lms waffle_switch --list | grep completion.enable_completion_tracking) || ./manage.py lms waffle_switch --create completion.enable_completion_tracking on
+        env:
+        - name: SERVICE_VARIANT
+          value: lms
+        - name: DJANGO_SETTINGS_MODULE
+          value: lms.envs.tutor.production
+        volumeMounts:
+          - mountPath: /openedx/edx-platform/lms/envs/tutor/
+            name: settings-lms
+          - mountPath: /openedx/edx-platform/cms/envs/tutor/
+            name: settings-cms
+          - mountPath: /openedx/config
+            name: config
+      volumes:
+      - name: settings-lms
+        configMap:
+          name: openedx-settings-lms
+      - name: settings-cms
+        configMap:
+          name: openedx-settings-cms
+      - name: config
+        configMap:
+          name: openedx-config
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: cms-job
+  labels:
+    app.kubernetes.io/component: job
+spec:
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: cms
+        image: {{ DOCKER_IMAGE_OPENEDX }}
+        command: |
+          dockerize -wait tcp://{{ MYSQL_HOST }}:{{ MYSQL_PORT }} -timeout 20s
+
+          echo "Loading settings $DJANGO_SETTINGS_MODULE"
+
+          ./manage.py cms migrate
+
+          # Fix incorrect uploaded file path
+          if [ -d /openedx/data/uploads/ ]; then
+            if [ -n "$(ls -A /openedx/data/uploads/)" ]; then
+              echo "Migrating CMS uploaded files to shared directory"
+              mv /openedx/data/uploads/* /openedx/media/
+              rm -rf /openedx/data/uploads/
+            fi
+          fi
+        env:
+        - name: SERVICE_VARIANT
+          value: cms
+        - name: DJANGO_SETTINGS_MODULE
+          value: cms.envs.tutor.production
+        volumeMounts:
+          - mountPath: /openedx/edx-platform/lms/envs/tutor/
+            name: settings-lms
+          - mountPath: /openedx/edx-platform/cms/envs/tutor/
+            name: settings-cms
+          - mountPath: /openedx/config
+            name: config
+      volumes:
+      - name: settings-lms
+        configMap:
+          name: openedx-settings-lms
+      - name: settings-cms
+        configMap:
+          name: openedx-settings-cms
+      - name: config
+        configMap:
+          name: openedx-config
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: minio-job
+  labels:
+    app.kubernetes.io/component: job
+spec:
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: minio
+          image: {{ MINIO_MC_DOCKER_IMAGE }}
+          command: |
+            mc config host add minio http://minio:9000 {{ OPENEDX_AWS_ACCESS_KEY }} {{ OPENEDX_AWS_SECRET_ACCESS_KEY }} --api s3v4
+            mc mb --ignore-existing minio/{{ MINIO_BUCKET_NAME }} minio/{{ MINIO_FILE_UPLOAD_BUCKET_NAME }} minio/{{ MINIO_VIDEO_UPLOAD_BUCKET_NAME }}
+
+            # Make common file upload bucket public (e.g: for forum image upload)
+            mc policy set public minio/{{ MINIO_BUCKET_NAME }}
+          env:
+            - name: MINIO_ROOT_USER
+              value: "{{ OPENEDX_AWS_ACCESS_KEY }}"
+            - name: MINIO_ROOT_PASSWORD
+              value: "{{ OPENEDX_AWS_SECRET_ACCESS_KEY }}"
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: notes-job-mysql
+  labels:
+    app.kubernetes.io/component: job
+spec:
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: notes
+          image: {{ NOTES_DOCKER_IMAGE }}
+          command: |
+            mysql -u {{ MYSQL_ROOT_USERNAME }} --password="{{ MYSQL_ROOT_PASSWORD }}" --host "{{ MYSQL_HOST }}" --port {{ MYSQL_PORT }} -e 'CREATE DATABASE IF NOT EXISTS {{ NOTES_MYSQL_DATABASE }};'
+            mysql -u {{ MYSQL_ROOT_USERNAME }} --password="{{ MYSQL_ROOT_PASSWORD }}" --host "{{ MYSQL_HOST }}" --port {{ MYSQL_PORT }} -e "CREATE USER IF NOT EXISTS '{{ NOTES_MYSQL_USERNAME }}';"
+            mysql -u {{ MYSQL_ROOT_USERNAME }} --password="{{ MYSQL_ROOT_PASSWORD }}" --host "{{ MYSQL_HOST }}" --port {{ MYSQL_PORT }} -e "ALTER USER '{{ NOTES_MYSQL_USERNAME }}'@'%' IDENTIFIED BY '{{ NOTES_MYSQL_PASSWORD }}';"
+            mysql -u {{ MYSQL_ROOT_USERNAME }} --password="{{ MYSQL_ROOT_PASSWORD }}" --host "{{ MYSQL_HOST }}" --port {{ MYSQL_PORT }} -e "GRANT ALL ON {{ NOTES_MYSQL_DATABASE }}.* TO '{{ NOTES_MYSQL_USERNAME }}'@'%';"
+          env:
+            - name: DJANGO_SETTINGS_MODULE
+              value: notesserver.settings.tutor
+          volumeMounts:
+            - mountPath: /app/edx-notes-api/notesserver/settings/tutor.py
+              name: settings
+              subPath: tutor.py
+      volumes:
+        - name: settings
+          configMap:
+            name: notes-settings
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: notes-job
+  labels:
+    app.kubernetes.io/component: job
+spec:
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: notes
+          image: {{ NOTES_DOCKER_IMAGE }}
+          command: ./manage.py migrate
+          env:
+            - name: DJANGO_SETTINGS_MODULE
+              value: notesserver.settings.tutor
+          volumeMounts:
+            - mountPath: /app/edx-notes-api/notesserver/settings/tutor.py
+              name: settings
+              subPath: tutor.py
+      volumes:
+        - name: settings
+          configMap:
+            name: notes-settings
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: notes-job-lms
+  labels:
+    app.kubernetes.io/component: job
+spec:
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: notes
+          image: {{ NOTES_DOCKER_IMAGE }}
+          command: |
+            # Modify users created an incorrect email and that might clash with the newly created users
+            ./manage.py lms shell -c \
+              "from django.contrib.auth import get_user_model;\
+              get_user_model().objects.filter(username='notes').exclude(email='notes@openedx').update(email='notes@openedx')"
+
+            ./manage.py lms manage_user notes notes@openedx --staff --superuser
+            ./manage.py lms create_dot_application \
+                notes \
+                notes \
+                --redirect-uris "http://notes:8000" \
+                --skip-authorization \
+                --client-id notes \
+                --client-secret "{{ NOTES_OAUTH2_SECRET }}" \
+                --update
+          env:
+            - name: DJANGO_SETTINGS_MODULE
+              value: notesserver.settings.tutor
+          volumeMounts:
+            - mountPath: /app/edx-notes-api/notesserver/settings/tutor.py
+              name: settings
+              subPath: tutor.py
+      volumes:
+        - name: settings
+          configMap:
+            name: notes-settings
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: forum-job
+  labels:
+    app.kubernetes.io/component: job
+spec:
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: forum
+        image: {{ FORUM_DOCKER_IMAGE }}
+        command: |
+          bundle exec rake search:initialize
+          bundle exec rake search:rebuild_indices
+        env:
+          - name: SEARCH_SERVER
+            value: "{{ ELASTICSEARCH_SCHEME }}://{{ ELASTICSEARCH_HOST }}:{{ ELASTICSEARCH_PORT }}"
+          - name: MONGODB_AUTH
+            value: "{% if MONGODB_USERNAME and MONGODB_PASSWORD %}{{ MONGODB_USERNAME}}:{{ MONGODB_PASSWORD }}@{% endif %}"
+          - name: MONGODB_HOST
+            value: "{{ MONGODB_HOST }}"
+          - name: MONGODB_PORT
+            value: "{{ MONGODB_PORT }}"
+          - name: MONGODB_DATABASE
+            value: "{{ FORUM_MONGODB_DATABASE }}"
+
+{{ patch("drydock-overrides") }}
