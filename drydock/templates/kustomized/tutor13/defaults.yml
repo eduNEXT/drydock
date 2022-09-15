@@ -40,3 +40,7 @@ MINIO_MC_DOCKER_IMAGE: "docker.io/minio/mc:RELEASE.2022-05-09T04-08-26Z"
 MINIO_BUCKET_NAME: "openedx"
 MINIO_FILE_UPLOAD_BUCKET_NAME: "openedx-file-uploads"
 MINIO_VIDEO_UPLOAD_BUCKET_NAME: "openedx-video-uploads"
+DRYDOCK_INIT_JOBS:
+- minio
+- forum
+- notes

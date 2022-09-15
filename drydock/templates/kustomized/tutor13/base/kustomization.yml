@@ -6,22 +6,15 @@ resources:
 - k8s/deployments.yml
 - k8s/services.yml
 - k8s/volumes.yml
-{%- if not DRYDOCK_DISABLE_JOBS | default(false) %}
-- k8s/jobs.yml
+{%- if DRYDOCK_INIT_JOBS %}
+- k8s/drydock-jobs/mysql.yml
+- k8s/drydock-jobs/lms.yml
+- k8s/drydock-jobs/cms.yml
+{%- for job in DRYDOCK_INIT_JOBS %}
+{%- if "kustomized/tutor13/base/k8s/drydock-jobs/{}.yml".format(job) in "kustomized/tutor13/base/k8s/drydock-jobs"| walk_templates %}
+- {{ "k8s/drydock-jobs/%s.yml" | format(job)}}
 {%- endif %}
-{%- if ENABLE_DRYDOCK_JOBS | default(false) %}
-- k8s/jobs/mysql.yml
-- k8s/jobs/lms.yml
-- k8s/jobs/cms.yml
-{%- if RUN_MINIO | default(false) %}
-- k8s/jobs/minio.yml
-{%- endif %}
-{%- if RUN_FORUM | default(false) %}
-- k8s/jobs/forum.yml
-{%- endif %}
-{%- if RUN_NOTES | default(false) %}
-- k8s/jobs/notes.yml
-{%- endif %}
+{%- endfor %}
 {%- endif %}
 
 {{ patch("kustomization-resources") }}
