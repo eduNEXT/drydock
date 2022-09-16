@@ -5,8 +5,7 @@ metadata:
   labels:
     app.kubernetes.io/component: job
   annotations:
-    argocd.argoproj.io/sync-wave: "-2"
-    argocd.argoproj.io/hook: PostSync
+    argocd.argoproj.io/sync-wave: "-3"
 spec:
   template:
     spec:

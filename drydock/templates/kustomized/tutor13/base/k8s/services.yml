@@ -106,6 +106,8 @@ metadata:
   name: mysql
   labels:
     app.kubernetes.io/name: mysql
+  annotations:
+    argocd.argoproj.io/sync-wave: "-4"
 spec:
   type: ClusterIP
   ports:
