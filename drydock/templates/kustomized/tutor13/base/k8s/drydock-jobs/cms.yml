@@ -4,6 +4,9 @@ metadata:
   name: cms-job
   labels:
     app.kubernetes.io/component: job
+  annotations:
+    argocd.argoproj.io/sync-wave: "-2"
+    argocd.argoproj.io/hook: PostSync
 spec:
   template:
     spec:
@@ -11,7 +14,9 @@ spec:
       containers:
       - name: cms
         image: {{ DOCKER_IMAGE_OPENEDX }}
-        command: |
+        command: ["/bin/sh", "-c"]
+        args:
+        - |
           dockerize -wait tcp://{{ MYSQL_HOST }}:{{ MYSQL_PORT }} -timeout 20s
 
           echo "Loading settings $DJANGO_SETTINGS_MODULE"

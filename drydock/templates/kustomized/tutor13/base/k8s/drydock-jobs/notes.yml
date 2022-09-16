@@ -4,14 +4,19 @@ metadata:
   name: notes-job-mysql
   labels:
     app.kubernetes.io/component: job
+  annotations:
+    argocd.argoproj.io/sync-wave: "-3"
+    argocd.argoproj.io/hook: PostSync
 spec:
   template:
     spec:
       restartPolicy: Never
       containers:
         - name: notes
-          image: {{ NOTES_DOCKER_IMAGE }}
-          command: |
+          image: {{ DOCKER_IMAGE_MYSQL }}
+          command: ["/bin/sh", "-c"]
+          args:
+          - |
             mysql -u {{ MYSQL_ROOT_USERNAME }} --password="{{ MYSQL_ROOT_PASSWORD }}" --host "{{ MYSQL_HOST }}" --port {{ MYSQL_PORT }} -e 'CREATE DATABASE IF NOT EXISTS {{ NOTES_MYSQL_DATABASE }};'
             mysql -u {{ MYSQL_ROOT_USERNAME }} --password="{{ MYSQL_ROOT_PASSWORD }}" --host "{{ MYSQL_HOST }}" --port {{ MYSQL_PORT }} -e "CREATE USER IF NOT EXISTS '{{ NOTES_MYSQL_USERNAME }}';"
             mysql -u {{ MYSQL_ROOT_USERNAME }} --password="{{ MYSQL_ROOT_PASSWORD }}" --host "{{ MYSQL_HOST }}" --port {{ MYSQL_PORT }} -e "ALTER USER '{{ NOTES_MYSQL_USERNAME }}'@'%' IDENTIFIED BY '{{ NOTES_MYSQL_PASSWORD }}';"
@@ -34,14 +39,18 @@ metadata:
   name: notes-job
   labels:
     app.kubernetes.io/component: job
+  annotations:
+    argocd.argoproj.io/sync-wave: "-2"
+    argocd.argoproj.io/hook: PostSync
 spec:
   template:
     spec:
       restartPolicy: Never
       containers:
         - name: notes
-          image: {{ NOTES_DOCKER_IMAGE }}
-          command: ./manage.py migrate
+          image: {{ DOCKER_IMAGE_OPENEDX }}
+          command: ["/bin/sh", "-c"]
+          args: [./manage.py migrate]
           env:
             - name: DJANGO_SETTINGS_MODULE
               value: notesserver.settings.tutor
@@ -60,14 +69,19 @@ metadata:
   name: notes-job-lms
   labels:
     app.kubernetes.io/component: job
+  annotations:
+    argocd.argoproj.io/sync-wave: "-2"
+    argocd.argoproj.io/hook: PostSync
 spec:
   template:
     spec:
       restartPolicy: Never
       containers:
         - name: notes
-          image: {{ NOTES_DOCKER_IMAGE }}
-          command: |
+          image: {{ DOCKER_IMAGE_OPENEDX }}
+          command: ["/bin/sh", "-c"]
+          args:
+          - |
             # Modify users created an incorrect email and that might clash with the newly created users
             ./manage.py lms shell -c \
               "from django.contrib.auth import get_user_model;\

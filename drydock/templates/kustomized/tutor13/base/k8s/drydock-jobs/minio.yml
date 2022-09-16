@@ -4,6 +4,9 @@ metadata:
   name: minio-job
   labels:
     app.kubernetes.io/component: job
+  annotations:
+    argocd.argoproj.io/sync-wave: "-2"
+    argocd.argoproj.io/hook: PostSync
 spec:
   template:
     spec:
@@ -11,7 +14,9 @@ spec:
       containers:
         - name: minio
           image: {{ MINIO_MC_DOCKER_IMAGE }}
-          command: |
+          command: ["/bin/sh", "-c"]
+          args:
+          - |
             mc config host add minio http://minio:9000 {{ OPENEDX_AWS_ACCESS_KEY }} {{ OPENEDX_AWS_SECRET_ACCESS_KEY }} --api s3v4
             mc mb --ignore-existing minio/{{ MINIO_BUCKET_NAME }} minio/{{ MINIO_FILE_UPLOAD_BUCKET_NAME }} minio/{{ MINIO_VIDEO_UPLOAD_BUCKET_NAME }}
 

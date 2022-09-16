@@ -4,6 +4,9 @@ metadata:
   name: lms-job
   labels:
     app.kubernetes.io/component: job
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1"
+    argocd.argoproj.io/hook: PostSync
 spec:
   template:
     spec:
@@ -11,7 +14,9 @@ spec:
       containers:
       - name: lms
         image: {{ DOCKER_IMAGE_OPENEDX }}
-        command: |
+        command: ["/bin/sh", "-c"]
+        args:
+        - |
           dockerize -wait tcp://{{ MYSQL_HOST }}:{{ MYSQL_PORT }} -timeout 20s
           {%- if MONGODB_HOST.startswith("mongodb+srv://") %}
           echo "MongoDB is using SRV records, so we cannot wait for it to be ready"
