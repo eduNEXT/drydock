@@ -5,7 +5,7 @@ metadata:
   labels:
     app.kubernetes.io/component: job
   annotations:
-    argocd.argoproj.io/sync-wave: "-3"
+    argocd.argoproj.io/sync-wave: "1"
 spec:
   template:
     spec:
@@ -39,14 +39,14 @@ metadata:
   labels:
     app.kubernetes.io/component: job
   annotations:
-    argocd.argoproj.io/sync-wave: "-2"
+    argocd.argoproj.io/sync-wave: "3"
 spec:
   template:
     spec:
       restartPolicy: Never
       containers:
         - name: notes
-          image: {{ DOCKER_IMAGE_OPENEDX }}
+          image: {{ NOTES_DOCKER_IMAGE }}
           command: ["/bin/sh", "-c"]
           args: [./manage.py migrate]
           env:
@@ -68,7 +68,7 @@ metadata:
   labels:
     app.kubernetes.io/component: job
   annotations:
-    argocd.argoproj.io/sync-wave: "-2"
+    argocd.argoproj.io/sync-wave: "3"
 spec:
   template:
     spec:

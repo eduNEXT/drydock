@@ -55,8 +55,6 @@ metadata:
   labels:
     app.kubernetes.io/component: volume
     app.kubernetes.io/name: mysql
-  annotations:
-    argocd.argoproj.io/sync-wave: "-4"
 spec:
   accessModes:
     - ReadWriteOnce
