@@ -6,7 +6,7 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: nginx
     {%- if ENABLE_HTTPS and not DRYDOCK_CUSTOM_CERTS%}
-    cert-manager.io/issuer: letsencrypt
+    cert-manager.io/issuer: letsencrypt-staging
     {%- endif %}
 spec:
   rules:
@@ -69,7 +69,7 @@ metadata:
   name: letsencrypt
   namespace: {{ K8S_NAMESPACE }}
   labels:
-    app.kubernetes.io/name: letsencrypt
+    app.kubernetes.io/name: letsencrypt-staging
 spec:
   acme:
     # Let's Encrypt will use this to contact you about expiring
@@ -78,7 +78,7 @@ spec:
     # Secret resource that will be used to store the account's private key.
     privateKeySecretRef:
       name: {{ K8S_NAMESPACE }}-letsencrypt-account-key
-    server: https://acme-v02.api.letsencrypt.org/directory
+    server: https://acme-staging-v02.api.letsencrypt.org/directory
     solvers:
     - http01:
         ingress:

@@ -21,17 +21,6 @@ spec:
             mysql -u {{ MYSQL_ROOT_USERNAME }} --password="{{ MYSQL_ROOT_PASSWORD }}" --host "{{ MYSQL_HOST }}" --port {{ MYSQL_PORT }} -e "CREATE USER IF NOT EXISTS '{{ NOTES_MYSQL_USERNAME }}';"
             mysql -u {{ MYSQL_ROOT_USERNAME }} --password="{{ MYSQL_ROOT_PASSWORD }}" --host "{{ MYSQL_HOST }}" --port {{ MYSQL_PORT }} -e "ALTER USER '{{ NOTES_MYSQL_USERNAME }}'@'%' IDENTIFIED BY '{{ NOTES_MYSQL_PASSWORD }}';"
             mysql -u {{ MYSQL_ROOT_USERNAME }} --password="{{ MYSQL_ROOT_PASSWORD }}" --host "{{ MYSQL_HOST }}" --port {{ MYSQL_PORT }} -e "GRANT ALL ON {{ NOTES_MYSQL_DATABASE }}.* TO '{{ NOTES_MYSQL_USERNAME }}'@'%';"
-          env:
-            - name: DJANGO_SETTINGS_MODULE
-              value: notesserver.settings.tutor
-          volumeMounts:
-            - mountPath: /app/edx-notes-api/notesserver/settings/tutor.py
-              name: settings
-              subPath: tutor.py
-      volumes:
-        - name: settings
-          configMap:
-            name: notes-settings
 ---
 apiVersion: batch/v1
 kind: Job
@@ -95,14 +84,25 @@ spec:
                 --client-secret "{{ NOTES_OAUTH2_SECRET }}" \
                 --update
           env:
-            - name: DJANGO_SETTINGS_MODULE
-              value: notesserver.settings.tutor
+          - name: SERVICE_VARIANT
+            value: lms
+          - name: DJANGO_SETTINGS_MODULE
+            value: lms.envs.tutor.production
           volumeMounts:
-            - mountPath: /app/edx-notes-api/notesserver/settings/tutor.py
-              name: settings
-              subPath: tutor.py
+            - mountPath: /openedx/edx-platform/lms/envs/tutor/
+              name: settings-lms
+            - mountPath: /openedx/edx-platform/cms/envs/tutor/
+              name: settings-cms
+            - mountPath: /openedx/config
+              name: config
       volumes:
-        - name: settings
-          configMap:
-            name: notes-settings
+      - name: settings-lms
+        configMap:
+          name: openedx-settings-lms
+      - name: settings-cms
+        configMap:
+          name: openedx-settings-cms
+      - name: config
+        configMap:
+          name: openedx-config
 {%- endif %}
