@@ -6,9 +6,6 @@ resources:
 - k8s/deployments.yml
 - k8s/services.yml
 - k8s/volumes.yml
-{%- if not DRYDOCK_DISABLE_JOBS | default(false) %}
-- k8s/jobs.yml
-{%- endif %}
 
 {{ patch("kustomization-resources") }}
 

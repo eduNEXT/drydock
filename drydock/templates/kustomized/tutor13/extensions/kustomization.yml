@@ -11,6 +11,14 @@ resources:
 {% if DRYDOCK_HPA|default(false) and DRYDOCK_ENABLE_OVERRIDES|default(false) -%}
 - hpa.yml
 {% endif -%}
+{%- if DRYDOCK_INIT_JOBS %}
+- drydock-jobs/mysql.yml
+- drydock-jobs/lms.yml
+- drydock-jobs/cms.yml
+- drydock-jobs/minio.yml
+- drydock-jobs/forum.yml
+- drydock-jobs/notes.yml
+{%- endif %}
 
 {% if DRYDOCK_NEWRELIC -%}
 configMapGenerator:

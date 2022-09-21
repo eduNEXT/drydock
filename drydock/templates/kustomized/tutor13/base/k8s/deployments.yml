@@ -116,6 +116,8 @@ metadata:
   name: cms-worker
   labels:
     app.kubernetes.io/name: cms-worker
+  annotations:
+    argocd.argoproj.io/sync-wave: "4"
 spec:
   selector:
     matchLabels:
@@ -216,6 +218,8 @@ metadata:
   name: lms-worker
   labels:
     app.kubernetes.io/name: lms-worker
+  annotations:
+    argocd.argoproj.io/sync-wave: "4"
 spec:
   selector:
     matchLabels:
