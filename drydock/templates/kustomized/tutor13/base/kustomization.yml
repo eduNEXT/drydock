@@ -6,16 +6,6 @@ resources:
 - k8s/deployments.yml
 - k8s/services.yml
 - k8s/volumes.yml
-{%- if DRYDOCK_INIT_JOBS %}
-- k8s/drydock-jobs/mysql.yml
-- k8s/drydock-jobs/lms.yml
-- k8s/drydock-jobs/cms.yml
-{%- for job in DRYDOCK_INIT_JOBS %}
-{%- if "kustomized/tutor13/base/k8s/drydock-jobs/{}.yml".format(job) in "kustomized/tutor13/base/k8s/drydock-jobs"| walk_templates %}
-- {{ "k8s/drydock-jobs/%s.yml" | format(job)}}
-{%- endif %}
-{%- endfor %}
-{%- endif %}
 
 {{ patch("kustomization-resources") }}
 
