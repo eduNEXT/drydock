@@ -8,6 +8,7 @@ metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "1"
 spec:
+  ttlSecondsAfterFinished: 100
   template:
     spec:
       restartPolicy: Never
@@ -31,6 +32,7 @@ metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "3"
 spec:
+  ttlSecondsAfterFinished: 100
   template:
     spec:
       restartPolicy: Never
@@ -60,6 +62,7 @@ metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "3"
 spec:
+  ttlSecondsAfterFinished: 100
   template:
     spec:
       restartPolicy: Never

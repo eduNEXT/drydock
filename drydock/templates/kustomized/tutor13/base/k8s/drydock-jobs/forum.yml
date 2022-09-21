@@ -8,6 +8,7 @@ metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "2"
 spec:
+  ttlSecondsAfterFinished: 100
   template:
     spec:
       restartPolicy: Never
