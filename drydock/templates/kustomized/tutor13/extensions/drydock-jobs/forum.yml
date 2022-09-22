@@ -22,7 +22,8 @@ spec:
           - -e
           - -c
           - 'bundle exec rake search:initialize
-            bundle exec rake search:rebuild_index'
+
+            bundle exec rake search:rebuild_indices'
         env:
           - name: SEARCH_SERVER
             value: "{{ ELASTICSEARCH_SCHEME }}://{{ ELASTICSEARCH_HOST }}:{{ ELASTICSEARCH_PORT }}"
@@ -34,10 +35,4 @@ spec:
             value: "{{ MONGODB_PORT }}"
           - name: MONGODB_DATABASE
             value: "{{ FORUM_MONGODB_DATABASE }}"
-          - name: MONGOHQ_URL
-            value: "mongodb://$(MONGODB_AUTH)$(MONGODB_HOST):$(MONGODB_PORT)/$(MONGODB_DATABASE)"
-          - name: SEARCH_SERVER_ES7
-            value: "$(SEARCH_SERVER)"
-          - name: MONGOID_AUTH_MECH
-            value: ":scram"
 {%- endif %}
