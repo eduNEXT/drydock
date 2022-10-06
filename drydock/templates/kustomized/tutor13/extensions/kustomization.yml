@@ -18,6 +18,7 @@ resources:
 - drydock-jobs/minio.yml
 - drydock-jobs/forum.yml
 - drydock-jobs/notes.yml
+- drydock-jobs/extra-jobs.yml
 {%- endif %}
 
 {% if DRYDOCK_NEWRELIC -%}
