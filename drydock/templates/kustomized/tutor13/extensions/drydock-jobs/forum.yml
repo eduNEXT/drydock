@@ -5,6 +5,8 @@ metadata:
   name: forum-job
   labels:
     app.kubernetes.io/component: job
+    drydock.io/target-service: forum
+    drydock.io/runner-service: forum
   annotations:
     argocd.argoproj.io/sync-wave: "2"
     argocd.argoproj.io/hook: Sync

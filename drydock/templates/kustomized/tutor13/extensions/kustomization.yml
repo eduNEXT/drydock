@@ -30,3 +30,17 @@ configMapGenerator:
     labels:
         app.kubernetes.io/name: openedx
 {% endif -%}
+
+{% if not RUN_MYSQL -%}
+# MySQL job deletion based on the thread in https://github.com/kubernetes-sigs/kustomize/issues/4526
+patches:
+- target:
+    kind: Job
+    labelSelector: drydock.io/runner-service=mysql
+  patch: |-
+    apiVersion: batch/v1
+    kind: Job
+    metadata:
+      name: does-not-matter
+    $patch: delete
+{%- endif %}
