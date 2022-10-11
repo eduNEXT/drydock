@@ -1,0 +1,85 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress
+  namespace: {{ K8S_NAMESPACE }}
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    {%- if DRYDOCK_AUTO_TLS and not DRYDOCK_CUSTOM_CERTS%}
+    cert-manager.io/issuer: letsencrypt
+    {%- endif %}
+spec:
+  rules:
+    {%- for host in [LMS_HOST, PREVIEW_LMS_HOST, CMS_HOST] %}
+  - host: {{ host }}
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: caddy
+            port:
+              number: 80
+    {%- endfor %}
+    {%- for host in DRYDOCK_INGRESS_EXTRA_HOSTS %}
+  - host: {{ host }}
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: caddy
+            port:
+              number: 80
+    {%- endfor %}
+  {% if DRYDOCK_AUTO_TLS or DRYDOCK_CUSTOM_CERTS -%}
+  tls:
+  - hosts:
+    {%- for host in [LMS_HOST, PREVIEW_LMS_HOST, CMS_HOST] %}
+    - {{ host }}
+    {%- endfor %}
+    {%- for host in DRYDOCK_INGRESS_EXTRA_HOSTS %}
+    - {{ host }}
+    {%- endfor %}
+    {% if DRYDOCK_CUSTOM_CERTS -%}
+    secretName: {{ DRYDOCK_CUSTOM_CERTS["secret_name"]|default("custom-tls-certs") }}
+    {% else -%}
+    secretName: {{ K8S_NAMESPACE }}-tls
+    {%- endif %}
+  {%- endif %}
+{% if DRYDOCK_CUSTOM_CERTS -%}
+---
+apiVersion: v1
+kind: Secret
+type: kubernetes.io/tls
+metadata:
+  name: {{ DRYDOCK_CUSTOM_CERTS["secret_name"]|default("custom-tls-certs") }}
+  namespace: {{ K8S_NAMESPACE }}
+data:
+  tls.crt: {{ DRYDOCK_CUSTOM_CERTS["crt"] }}
+  tls.key: {{ DRYDOCK_CUSTOM_CERTS["key"] }}
+{% elif DRYDOCK_AUTO_TLS %}
+---
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: letsencrypt
+  namespace: {{ K8S_NAMESPACE }}
+  labels:
+    app.kubernetes.io/name: letsencrypt
+spec:
+  acme:
+    # Let's Encrypt will use this to contact you about expiring
+    # certificates, and issues related to your account.
+    email: {{ DRYDOCK_LETSENCRYPT_EMAIL|default(CONTACT_EMAIL) }}
+    # Secret resource that will be used to store the account's private key.
+    privateKeySecretRef:
+      name: {{ K8S_NAMESPACE }}-letsencrypt-account-key
+    server: https://acme-v02.api.letsencrypt.org/directory
+    solvers:
+    - http01:
+        ingress:
+          class: nginx
+{% endif -%}
