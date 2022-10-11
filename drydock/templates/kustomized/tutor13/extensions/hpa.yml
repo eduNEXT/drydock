@@ -8,6 +8,8 @@ items:
   metadata:
     name: hpa-lms-deployment
     namespace: {{ K8S_NAMESPACE }}
+    annotations:
+      argocd.argoproj.io/sync-wave: "5"
   spec:
     maxReplicas: {{ DRYDOCK_LMS_MAX_REPLICAS }}
     minReplicas: {{ DRYDOCK_LMS_MIN_REPLICAS }}
@@ -21,6 +23,8 @@ items:
   metadata:
     name: hpa-cms-deployment
     namespace: {{ K8S_NAMESPACE }}
+    annotations:
+      argocd.argoproj.io/sync-wave: "5"
   spec:
     maxReplicas: {{ DRYDOCK_CMS_MAX_REPLICAS }}
     minReplicas: {{ DRYDOCK_CMS_MIN_REPLICAS }}
@@ -34,6 +38,8 @@ items:
   metadata:
     name: hpa-lms-worker-deployment
     namespace: {{ K8S_NAMESPACE }}
+    annotations:
+      argocd.argoproj.io/sync-wave: "5"
   spec:
     maxReplicas: {{ DRYDOCK_LMS_WORKERS_MAX_REPLICAS }}
     minReplicas: {{ DRYDOCK_LMS_WORKERS_MIN_REPLICAS }}
@@ -47,6 +53,8 @@ items:
   metadata:
     name: hpa-cms-worker-deployment
     namespace: {{ K8S_NAMESPACE }}
+    annotations:
+      argocd.argoproj.io/sync-wave: "5"
   spec:
     maxReplicas: {{ DRYDOCK_CMS_WORKERS_MAX_REPLICAS }}
     minReplicas: {{ DRYDOCK_CMS_WORKERS_MIN_REPLICAS }}
