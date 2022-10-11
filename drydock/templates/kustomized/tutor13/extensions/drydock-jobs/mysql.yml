@@ -4,6 +4,8 @@ metadata:
   name: mysql-job
   labels:
     app.kubernetes.io/component: job
+    drydock.io/target-service: mysql
+    drydock.io/runner-service: mysql
   annotations:
     argocd.argoproj.io/sync-wave: "1"
     argocd.argoproj.io/hook: Sync

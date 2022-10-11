@@ -4,6 +4,8 @@ metadata:
   name: lms-job
   labels:
     app.kubernetes.io/component: job
+    drydock.io/target-service: lms
+    drydock.io/runner-service: lms
   annotations:
     argocd.argoproj.io/sync-wave: "2"
     argocd.argoproj.io/hook: Sync
