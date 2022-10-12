@@ -36,7 +36,7 @@ class BaseManifests(ManifestRepository):
             - ["output"]: Name of the directory to store the manifests.
         """
         self.output_dir = options.get("output", "drydock-env")
-        self.template_root = options.get("template_root", self.DEFAULT_TEMPLATE_ROOT)
+        self.template_root = f"kustomized/{options.get('template_root', self.DEFAULT_TEMPLATE_ROOT)}"
         self.template_targets = [
             f"{self.template_root}/base",
             f"{self.template_root}/extensions",
