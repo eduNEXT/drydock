@@ -22,7 +22,7 @@ class BaseManifests(ManifestRepository):
     Generates an environment based on Tutor with the relevant Kubernetes configuration
     to be tracked by version control.
     """
-    DEFAULT_TEMPLATE_ROOT = "kustomized/tutor13"
+    DEFAULT_TEMPLATE_ROOT = "tutor13"
 
     def __init__(self, options: dict) -> None:
         """Initialize the class based on the `manifest_options` from the reference.
