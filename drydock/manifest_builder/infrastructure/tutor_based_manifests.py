@@ -22,13 +22,7 @@ class BaseManifests(ManifestRepository):
     Generates an environment based on Tutor with the relevant Kubernetes configuration
     to be tracked by version control.
     """
-
-    TEMPLATE_ROOT = "kustomized/tutor13"
-    TEMPLATE_TARGETS = [
-        f"{TEMPLATE_ROOT}/base",
-        f"{TEMPLATE_ROOT}/extensions",
-        f"{TEMPLATE_ROOT}/kustomization.yml",
-    ]
+    DEFAULT_TEMPLATE_ROOT = "tutor13"
 
     def __init__(self, options: dict) -> None:
         """Initialize the class based on the `manifest_options` from the reference.
@@ -42,13 +36,19 @@ class BaseManifests(ManifestRepository):
             - ["output"]: Name of the directory to store the manifests.
         """
         self.output_dir = options.get("output", "drydock-env")
+        self.template_root = f"kustomized/{options.get('template_root', self.DEFAULT_TEMPLATE_ROOT)}"
+        self.template_targets = [
+            f"{self.template_root}/base",
+            f"{self.template_root}/extensions",
+            f"{self.template_root}/kustomization.yml",
+    ]
 
     def render(self, root: str, config: DrydockConfig) -> None:
         """Register drydock custom templates and render a tutor env."""
         with hooks.Contexts.APP("drydock-base").enter():
             hooks.Filters.ENV_TEMPLATE_ROOTS.add_item(pkg_resources.resource_filename("drydock", "templates"))
             hooks.Filters.ENV_TEMPLATE_TARGETS.add_items(
-                [(target, "drydock") for target in self.TEMPLATE_TARGETS],
+                [(target, "drydock") for target in self.template_targets],
             )
         tutor_env.save(root, config.get_data())
         hooks.Filters.ENV_TEMPLATE_ROOTS.clear(context=hooks.Contexts.APP("drydock-base").name)
@@ -69,7 +69,7 @@ class BaseManifests(ManifestRepository):
         dst: str
             The path to save the final drydock env.
         """
-        base_dir = path_join(src, "env/drydock", f"{self.TEMPLATE_ROOT}")
+        base_dir = path_join(src, "env/drydock", f"{self.template_root}")
         plugins_dir = path_join(src, "env/plugins")
         shutil.move(base_dir, dst)
         if os.path.exists(plugins_dir):
