@@ -4,6 +4,8 @@ metadata:
   name: cms-job
   labels:
     app.kubernetes.io/component: job
+    drydock.io/target-service: cms
+    drydock.io/runner-service: cms
   annotations:
     argocd.argoproj.io/sync-wave: "3"
     argocd.argoproj.io/hook: Sync
