@@ -67,6 +67,23 @@ spec:
               cpu: "{{ DRYDOCK_CMS_WORKER_REQUEST_CPU }}"
               memory: "{{ DRYDOCK_CMS_WORKER_REQUEST_MEMORY }}"
 ---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: forum
+spec:
+  template:
+    spec:
+      containers:
+        - name: forum
+          resources:
+            limits:
+              cpu: "{{ DRYDOCK_FORUM_LIMIT_CPU }}"
+              memory: "{{ DRYDOCK_FORUM_LIMIT_MEMORY }}"
+            requests:
+              cpu: "{{ DRYDOCK_FORUM_REQUEST_CPU }}"
+              memory: "{{ DRYDOCK_FORUM_REQUEST_MEMORY }}"
+---
 {% endif -%}
 {%- if DRYDOCK_NEWRELIC -%}
 apiVersion: apps/v1
