@@ -117,7 +117,9 @@ metadata:
   labels:
     app.kubernetes.io/name: cms-worker
   annotations:
+{%- if DRYDOCK_INIT_JOBS %}
     argocd.argoproj.io/sync-wave: "4"
+{%- endif %}
 spec:
   selector:
     matchLabels:
@@ -219,7 +221,9 @@ metadata:
   labels:
     app.kubernetes.io/name: lms-worker
   annotations:
+{%- if DRYDOCK_INIT_JOBS %}
     argocd.argoproj.io/sync-wave: "4"
+{%- endif %}
 spec:
   selector:
     matchLabels:

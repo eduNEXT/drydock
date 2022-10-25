@@ -126,7 +126,9 @@ kind: Deployment
 metadata:
   name: forum
   annotations:
+{%- if DRYDOCK_INIT_JOBS %}
     argocd.argoproj.io/sync-wave: "4"
+{%- endif %}
 ---
 {% endif -%}
 {{ patch("drydock-overrides") }}
