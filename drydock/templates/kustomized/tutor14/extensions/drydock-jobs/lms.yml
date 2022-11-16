@@ -34,7 +34,7 @@ spec:
 
           # Create oauth2 apps for CMS SSO
           # https://github.com/openedx/edx-platform/blob/master/docs/guides/studio_oauth.rst
-          ./manage.py lms manage_user cms cms@openedx --unusable-password
+          ./manage.py lms manage_user cms-sso-user cms-sso-user@openedx --unusable-password
           ./manage.py lms create_dot_application \
             --grant-type authorization-code \
             --redirect-uris "{% if ENABLE_HTTPS %}https{% else %}http{% endif %}://{{ CMS_HOST }}/complete/edx-oauth2/" \
@@ -42,15 +42,7 @@ spec:
             --client-secret {{ CMS_OAUTH2_SECRET }} \
             --scopes user_id \
             --skip-authorization \
-            --update cms-sso cms
-          ./manage.py lms create_dot_application \
-            --grant-type authorization-code \
-            --redirect-uris "http://{{ CMS_HOST }}:8001/complete/edx-oauth2/" \
-            --client-id {{ CMS_OAUTH2_KEY_SSO_DEV }} \
-            --client-secret {{ CMS_OAUTH2_SECRET }} \
-            --scopes user_id \
-            --skip-authorization \
-            --update cms-sso-dev cms
+            --update cms-sso cms-sso-user
 
           # Fix incorrect uploaded file path
           if [ -d /openedx/data/uploads/ ]; then
