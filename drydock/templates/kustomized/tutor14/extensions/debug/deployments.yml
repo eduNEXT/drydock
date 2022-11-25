@@ -1,0 +1,111 @@
+{% if RUN_CMS %}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cms-debug
+  labels:
+    app.kubernetes.io/name: cms-debug
+spec:
+  replicas: 0
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: cms-debug
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: cms-debug
+    spec:
+      containers:
+        - name: cms-debug
+          image: {{ DOCKER_IMAGE_OPENEDX }}
+          env:
+          - name: SERVICE_VARIANT
+            value: cms
+          ports:
+            - containerPort: 8000
+          volumeMounts:
+            - mountPath: /openedx/data
+              name: cms-data
+            - mountPath: /openedx/media
+              name: cms-media
+            - mountPath: /openedx/edx-platform/lms/envs/tutor/
+              name: settings-lms
+            - mountPath: /openedx/edx-platform/cms/envs/tutor/
+              name: settings-cms
+            - mountPath: /openedx/config
+              name: config
+          resources:
+            requests:
+              memory: 2Gi
+      volumes:
+        - name: cms-data
+          persistentVolumeClaim:
+            claimName: openedx-data
+        - name: cms-media
+          persistentVolumeClaim:
+            claimName: openedx-media
+        - name: settings-lms
+          configMap:
+            name: openedx-settings-lms
+        - name: settings-cms
+          configMap:
+            name: openedx-settings-cms
+        - name: config
+          configMap:
+            name: openedx-config
+{% endif %}
+{% if RUN_LMS %}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lms-debug
+  labels:
+    app.kubernetes.io/name: lms-debug
+spec:
+  replicas: 0
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: lms-debug
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: lms-debug
+    spec:
+      containers:
+        - name: lms-debug
+          image: {{ DOCKER_IMAGE_OPENEDX }}
+          ports:
+            - containerPort: 8000
+          volumeMounts:
+            - mountPath: /openedx/data
+              name: lms-data
+            - mountPath: /openedx/media
+              name: lms-media
+            - mountPath: /openedx/edx-platform/lms/envs/tutor/
+              name: settings-lms
+            - mountPath: /openedx/edx-platform/cms/envs/tutor/
+              name: settings-cms
+            - mountPath: /openedx/config
+              name: config
+          resources:
+            requests:
+              memory: 2Gi
+      volumes:
+        - name: lms-data
+          persistentVolumeClaim:
+            claimName: openedx-data
+        - name: lms-media
+          persistentVolumeClaim:
+            claimName: openedx-media
+        - name: settings-lms
+          configMap:
+            name: openedx-settings-lms
+        - name: settings-cms
+          configMap:
+            name: openedx-settings-cms
+        - name: config
+          configMap:
+            name: openedx-config
+{% endif %}

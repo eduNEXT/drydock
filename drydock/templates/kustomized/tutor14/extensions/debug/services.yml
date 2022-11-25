@@ -1,0 +1,28 @@
+{% if RUN_CMS %}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cms-debug
+spec:
+  type: NodePort
+  ports:
+    - port: 8000
+      protocol: TCP
+  selector:
+    app.kubernetes.io/name: cms-debug
+{% endif %}
+{% if RUN_LMS %}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: lms-debug
+spec:
+  type: NodePort
+  ports:
+    - port: 8000
+      protocol: TCP
+  selector:
+    app.kubernetes.io/name: lms-debug
+{% endif %}

@@ -20,6 +20,11 @@ resources:
 - drydock-jobs/notes.yml
 - drydock-jobs/extra-jobs.yml
 {%- endif %}
+{%- if DRYDOCK_DEBUG %}
+- debug/deployments.yml
+- debug/services.yml
+- debug/ingress.yml
+{%- endif %}
 - multipurpose-jobs.yml
 
 {% if DRYDOCK_NEWRELIC -%}
