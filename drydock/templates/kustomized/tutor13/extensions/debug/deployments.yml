@@ -77,7 +77,7 @@ spec:
         runAsGroup: 0
       containers:
         - name: lms-debug
-          args: ./manage.py lms runserver 0.0.0.0:8000
+          args: [./manage.py lms runserver 0.0.0.0:8000]
           command: ["/bin/bash", "-c"]
           image: {{ DOCKER_IMAGE_OPENEDX }}
           env:
