@@ -6,6 +6,8 @@ metadata:
   name: cms-debug
   labels:
     app.kubernetes.io/name: cms-debug
+  annotations:
+    argocd.argoproj.io/sync-wave: "5"
 spec:
   replicas: 0
   selector:
@@ -16,8 +18,13 @@ spec:
       labels:
         app.kubernetes.io/name: cms-debug
     spec:
+      securityContext:
+        runAsUser: 0
+        runAsGroup: 0
       containers:
         - name: cms-debug
+          args: [./manage.py cms runserver 0.0.0.0:8000]
+          command: ["/bin/bash", "-c"]
           image: {{ DOCKER_IMAGE_OPENEDX }}
           env:
           - name: SERVICE_VARIANT
@@ -25,10 +32,6 @@ spec:
           ports:
             - containerPort: 8000
           volumeMounts:
-            - mountPath: /openedx/data
-              name: cms-data
-            - mountPath: /openedx/media
-              name: cms-media
             - mountPath: /openedx/edx-platform/lms/envs/tutor/
               name: settings-lms
             - mountPath: /openedx/edx-platform/cms/envs/tutor/
@@ -38,13 +41,9 @@ spec:
           resources:
             requests:
               memory: 2Gi
+          securityContext:
+            allowPrivilegeEscalation: false
       volumes:
-        - name: cms-data
-          persistentVolumeClaim:
-            claimName: openedx-data
-        - name: cms-media
-          persistentVolumeClaim:
-            claimName: openedx-media
         - name: settings-lms
           configMap:
             name: openedx-settings-lms
@@ -63,6 +62,8 @@ metadata:
   name: lms-debug
   labels:
     app.kubernetes.io/name: lms-debug
+  annotations:
+    argocd.argoproj.io/sync-wave: "5"
 spec:
   replicas: 0
   selector:
@@ -73,16 +74,17 @@ spec:
       labels:
         app.kubernetes.io/name: lms-debug
     spec:
+      securityContext:
+        runAsUser: 0
+        runAsGroup: 0
       containers:
         - name: lms-debug
+          args: [./manage.py lms runserver 0.0.0.0:8000]
+          command: ["/bin/bash", "-c"]
           image: {{ DOCKER_IMAGE_OPENEDX }}
           ports:
             - containerPort: 8000
           volumeMounts:
-            - mountPath: /openedx/data
-              name: lms-data
-            - mountPath: /openedx/media
-              name: lms-media
             - mountPath: /openedx/edx-platform/lms/envs/tutor/
               name: settings-lms
             - mountPath: /openedx/edx-platform/cms/envs/tutor/
@@ -92,13 +94,9 @@ spec:
           resources:
             requests:
               memory: 2Gi
+          securityContext:
+            allowPrivilegeEscalation: false
       volumes:
-        - name: lms-data
-          persistentVolumeClaim:
-            claimName: openedx-data
-        - name: lms-media
-          persistentVolumeClaim:
-            claimName: openedx-media
         - name: settings-lms
           configMap:
             name: openedx-settings-lms

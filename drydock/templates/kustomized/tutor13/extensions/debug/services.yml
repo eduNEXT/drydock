@@ -5,6 +5,8 @@ kind: Service
 metadata:
   name: lms-debug
   namespace: {{ K8S_NAMESPACE }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "5"
 spec:
   ports:
   - port: 8000

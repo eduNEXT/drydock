@@ -1,53 +1,35 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: ingress
+  name: ingress-canary
   namespace: {{ K8S_NAMESPACE }}
   annotations:
     kubernetes.io/ingress.class: nginx
     nginx.ingress.kubernetes.io/canary: "true"
-    nginx.ingress.kubernetes.io/canary-by-cookie: "my-cookie"
+    nginx.ingress.kubernetes.io/canary-by-cookie: {{ OPENEDX_DEBUG_COOKIE }}
     {%- if DRYDOCK_AUTO_TLS and not DRYDOCK_CUSTOM_CERTS%}
     cert-manager.io/issuer: letsencrypt
     {%- endif %}
+    argocd.argoproj.io/sync-wave: "5"
 spec:
   rules:
-    {%- for host in [LMS_HOST, CMS_HOST] %}
+    {%- for host, prefix in [(LMS_HOST, "lms"), (CMS_HOST, "cms")] %}
   - host: {{ host }}
     http:
       paths:
-      - pathType: Prefix
-        path: "/"
-        backend:
+      - backend:
           service:
-            name: caddy
+            name: {{prefix}}-debug
             port:
-              number: 80
+              number: 8000
+        path: /
+        pathType: Prefix
     {%- endfor %}
-    {%- for host in DRYDOCK_INGRESS_EXTRA_HOSTS %}
-  - host: {{ host }}
-    http:
-      paths:
-      - pathType: Prefix
-        path: "/"
-        backend:
-          service:
-            name: caddy
-            port:
-              number: 80
-    {%- endfor %}
-  {% if DRYDOCK_AUTO_TLS or DRYDOCK_CUSTOM_CERTS -%}
+  {% if DRYDOCK_AUTO_TLS -%}
   tls:
   - hosts:
-    {%- for host in [LMS_HOST, PREVIEW_LMS_HOST, CMS_HOST] %}
+    {%- for host in [LMS_HOST, CMS_HOST] %}
     - {{ host }}
     {%- endfor %}
-    {%- for host in DRYDOCK_INGRESS_EXTRA_HOSTS %}
-    - {{ host }}
-    {%- endfor %}
-    {% if DRYDOCK_CUSTOM_CERTS -%}
-    secretName: {{ DRYDOCK_CUSTOM_CERTS["secret_name"]|default("custom-tls-certs") }}
-    {% else -%}
     secretName: {{ K8S_NAMESPACE }}-tls
-    {%- endif %}
   {%- endif %}

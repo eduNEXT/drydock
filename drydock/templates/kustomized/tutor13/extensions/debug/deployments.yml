@@ -6,6 +6,8 @@ metadata:
   name: cms-debug
   labels:
     app.kubernetes.io/name: cms-debug
+  annotations:
+    argocd.argoproj.io/sync-wave: "5"
 spec:
   replicas: 0
   selector:

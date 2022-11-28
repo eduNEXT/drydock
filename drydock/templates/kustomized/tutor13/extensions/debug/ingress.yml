@@ -10,6 +10,7 @@ metadata:
     {%- if DRYDOCK_AUTO_TLS and not DRYDOCK_CUSTOM_CERTS%}
     cert-manager.io/issuer: letsencrypt
     {%- endif %}
+    argocd.argoproj.io/sync-wave: "5"
 spec:
   rules:
     {%- for host, prefix in [(LMS_HOST, "lms"), (CMS_HOST, "cms")] %}
