@@ -17,8 +17,8 @@ spec:
         app.kubernetes.io/name: cms-debug
     spec:
       securityContext:
-        runAsUser: 1000
-        runAsGroup: 1000
+        runAsUser: 0
+        runAsGroup: 0
       containers:
         - name: cms-debug
           args: [./manage.py cms runserver 0.0.0.0:8000]
@@ -73,8 +73,8 @@ spec:
         app.kubernetes.io/name: lms-debug
     spec:
       securityContext:
-        runAsUser: 1000
-        runAsGroup: 1000
+        runAsUser: 0
+        runAsGroup: 0
       containers:
         - name: lms-debug
           args: ./manage.py lms runserver 0.0.0.0:8000
