@@ -66,6 +66,7 @@ spec:
             requests:
               cpu: "{{ DRYDOCK_CMS_WORKER_REQUEST_CPU }}"
               memory: "{{ DRYDOCK_CMS_WORKER_REQUEST_MEMORY }}"
+{%- if FORUM_DOCKER_IMAGE is defined %}
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -83,6 +84,7 @@ spec:
             requests:
               cpu: "{{ DRYDOCK_FORUM_REQUEST_CPU }}"
               memory: "{{ DRYDOCK_FORUM_REQUEST_MEMORY }}"
+{% endif -%}
 ---
 {% endif -%}
 {%- if DRYDOCK_NEWRELIC -%}
