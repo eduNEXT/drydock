@@ -62,7 +62,6 @@ spec:
     kind: Deployment
     name: cms-worker
   targetCPUUtilizationPercentage: {{ DRYDOCK_CMS_WORKERS_TARGET_CPU }}
-{%- if FORUM_DOCKER_IMAGE is defined %}
 ---
 apiVersion: autoscaling/v1
 kind: HorizontalPodAutoscaler
@@ -79,4 +78,3 @@ spec:
     kind: Deployment
     name: cms-worker
   targetCPUUtilizationPercentage: {{ DRYDOCK_FORUM_TARGET_CPU }}
-{%- endif %}
