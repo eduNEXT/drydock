@@ -40,9 +40,6 @@ spec:
               name: settings-cms
             - mountPath: /openedx/config
               name: config
-          resources:
-            requests:
-              memory: 2Gi
           securityContext:
             allowPrivilegeEscalation: false
       volumes:
@@ -96,9 +93,6 @@ spec:
               name: settings-cms
             - mountPath: /openedx/config
               name: config
-          resources:
-            requests:
-              memory: 2Gi
           securityContext:
             allowPrivilegeEscalation: false
       volumes:

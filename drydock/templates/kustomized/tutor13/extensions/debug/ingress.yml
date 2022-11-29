@@ -1,7 +1,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: ingress-canary
+  name: ingress-debug
   namespace: {{ K8S_NAMESPACE }}
   annotations:
     kubernetes.io/ingress.class: nginx
@@ -12,6 +12,11 @@ metadata:
     {%- endif %}
     argocd.argoproj.io/sync-wave: "5"
 spec:
+  defaultBackend:
+    service:
+      name: caddy
+      port:
+        number: 80
   rules:
     {%- for host, prefix in [(LMS_HOST, "lms"), (CMS_HOST, "cms")] %}
   - host: {{ host }}
