@@ -6,7 +6,12 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: nginx
     nginx.ingress.kubernetes.io/canary: "true"
+    {% if DRYDOCK_DEBUG_BY_COOKIE -%}
     nginx.ingress.kubernetes.io/canary-by-cookie: {{ OPENEDX_DEBUG_COOKIE }}
+    {% elif DRYDOCK_DEBUG_BY_HEADER -%}
+    nginx.ingress.kubernetes.io/canary-by-header: {{ DRYDOCK_DEBUG_HEADER }}
+    nginx.ingress.kubernetes.io/canary-by-header-value: {{ DRYDOCK_DEBUG_HEADER_VALUE }}
+    {%- endif %}
     {%- if DRYDOCK_AUTO_TLS and not DRYDOCK_CUSTOM_CERTS%}
     cert-manager.io/issuer: letsencrypt
     {%- endif %}
