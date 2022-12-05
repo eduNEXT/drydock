@@ -9,7 +9,6 @@ metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "5"
 spec:
-  replicas: 0
   selector:
     matchLabels:
       app.kubernetes.io/name: cms-debug
@@ -64,7 +63,6 @@ metadata:
   labels:
     app.kubernetes.io/name: lms-debug
 spec:
-  replicas: 0
   selector:
     matchLabels:
       app.kubernetes.io/name: lms-debug
