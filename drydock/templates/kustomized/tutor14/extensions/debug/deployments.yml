@@ -40,6 +40,8 @@ spec:
               name: config
           securityContext:
             allowPrivilegeEscalation: false
+          stdin: true
+          tty: true
       volumes:
         - name: settings-lms
           configMap:
@@ -90,6 +92,8 @@ spec:
               name: config
           securityContext:
             allowPrivilegeEscalation: false
+          stdin: true
+          tty: true
       volumes:
         - name: settings-lms
           configMap:
