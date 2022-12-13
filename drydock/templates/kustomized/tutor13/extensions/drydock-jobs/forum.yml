@@ -7,10 +7,6 @@ metadata:
     app.kubernetes.io/component: job
     drydock.io/target-service: forum
     drydock.io/runner-service: forum
-  annotations:
-    argocd.argoproj.io/sync-wave: "2"
-    argocd.argoproj.io/hook: Sync
-    argocd.argoproj.io/hook-delete-policy: HookSucceeded
 spec:
   ttlSecondsAfterFinished: 100
   template:

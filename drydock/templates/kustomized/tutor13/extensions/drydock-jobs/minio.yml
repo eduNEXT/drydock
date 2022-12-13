@@ -7,10 +7,6 @@ metadata:
     app.kubernetes.io/component: job
     drydock.io/target-service: minio
     drydock.io/runner-service: minio
-  annotations:
-    argocd.argoproj.io/sync-wave: "1"
-    argocd.argoproj.io/hook: Sync
-    argocd.argoproj.io/hook-delete-policy: HookSucceeded
 spec:
   ttlSecondsAfterFinished: 100
   template:

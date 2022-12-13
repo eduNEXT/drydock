@@ -7,10 +7,6 @@ metadata:
     app.kubernetes.io/component: job
     drydock.io/target-service: notes
     drydock.io/runner-service: mysql
-  annotations:
-    argocd.argoproj.io/sync-wave: "1"
-    argocd.argoproj.io/hook: Sync
-    argocd.argoproj.io/hook-delete-policy: HookSucceeded
 spec:
   ttlSecondsAfterFinished: 100
   template:
@@ -35,10 +31,6 @@ metadata:
     app.kubernetes.io/component: job
     drydock.io/target-service: notes
     drydock.io/runner-service: notes
-  annotations:
-    argocd.argoproj.io/sync-wave: "3"
-    argocd.argoproj.io/hook: Sync
-    argocd.argoproj.io/hook-delete-policy: HookSucceeded
 spec:
   ttlSecondsAfterFinished: 100
   template:
@@ -69,10 +61,6 @@ metadata:
     app.kubernetes.io/component: job
     drydock.io/target-service: notes
     drydock.io/runner-service: lms
-  annotations:
-    argocd.argoproj.io/sync-wave: "3"
-    argocd.argoproj.io/hook: Sync
-    argocd.argoproj.io/hook-delete-policy: HookSucceeded
 spec:
   ttlSecondsAfterFinished: 100
   template:

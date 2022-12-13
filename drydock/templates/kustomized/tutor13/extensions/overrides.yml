@@ -86,6 +86,41 @@ spec:
               memory: "{{ DRYDOCK_FORUM_REQUEST_MEMORY }}"
 {% endif -%}
 ---
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: lms
+  annotations:
+    argocd.argoproj.io/sync-wave: "5"
+---
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: cms
+  annotations:
+    argocd.argoproj.io/sync-wave: "5"
+---
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: forum
+  annotations:
+    argocd.argoproj.io/sync-wave: "5"
+---
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: lms-worker
+  annotations:
+    argocd.argoproj.io/sync-wave: "5"
+---
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: cms-worker
+  annotations:
+    argocd.argoproj.io/sync-wave: "5"
+---
 {% endif -%}
 {%- if DRYDOCK_NEWRELIC -%}
 apiVersion: apps/v1
@@ -130,5 +165,99 @@ metadata:
     argocd.argoproj.io/sync-wave: "4"
 {%- endif %}
 ---
+{% endif -%}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lms-worker
+  annotations:
+    argocd.argoproj.io/sync-wave: "4"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cms-worker
+  annotations:
+    argocd.argoproj.io/sync-wave: "4"
+---
+{% if DRYDOCK_INIT_JOBS %}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: cms-job
+  annotations:
+    argocd.argoproj.io/sync-wave: "3"
+    argocd.argoproj.io/hook: Sync
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: lms-job
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
+    argocd.argoproj.io/hook: Sync
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: mysql-job
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+    argocd.argoproj.io/hook: Sync
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+---
+{%- if FORUM_DOCKER_IMAGE is defined %}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: forum-job
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
+    argocd.argoproj.io/hook: Sync
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+---
+{%- endif %}
+{%- if MINIO_DOCKER_IMAGE is defined %}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: minio-job
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+    argocd.argoproj.io/hook: Sync
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+---
+{%- endif %}
+{%- if NOTES_DOCKER_IMAGE is defined %}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: notes-job-mysql
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+    argocd.argoproj.io/hook: Sync
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: notes-job
+  annotations:
+    argocd.argoproj.io/sync-wave: "3"
+    argocd.argoproj.io/hook: Sync
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: notes-job-lms
+  annotations:
+    argocd.argoproj.io/sync-wave: "3"
+    argocd.argoproj.io/hook: Sync
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+---
+{%- endif %}
 {% endif -%}
 {{ patch("drydock-overrides") }}

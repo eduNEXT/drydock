@@ -6,10 +6,6 @@ metadata:
     app.kubernetes.io/component: job
     drydock.io/target-service: mysql
     drydock.io/runner-service: mysql
-  annotations:
-    argocd.argoproj.io/sync-wave: "1"
-    argocd.argoproj.io/hook: Sync
-    argocd.argoproj.io/hook-delete-policy: HookSucceeded
 spec:
   ttlSecondsAfterFinished: 100
   template:
