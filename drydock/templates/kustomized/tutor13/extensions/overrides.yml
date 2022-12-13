@@ -155,17 +155,6 @@ spec:
         name: newrelic-ini
 ---
 {% endif -%}
-{% if FORUM_DOCKER_IMAGE is defined %}
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: forum
-  annotations:
-{%- if DRYDOCK_INIT_JOBS %}
-    argocd.argoproj.io/sync-wave: "4"
-{%- endif %}
----
-{% endif -%}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -209,6 +198,13 @@ metadata:
     argocd.argoproj.io/hook-delete-policy: HookSucceeded
 ---
 {%- if FORUM_DOCKER_IMAGE is defined %}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: forum
+  annotations:
+    argocd.argoproj.io/sync-wave: "4"
+---
 apiVersion: batch/v1
 kind: Job
 metadata:
