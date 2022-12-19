@@ -71,6 +71,7 @@ apiVersion: autoscaling/v1
 kind: HorizontalPodAutoscaler
 metadata:
   name: lms
+  namespace: {{ K8S_NAMESPACE }}
   annotations:
     argocd.argoproj.io/sync-wave: "5"
 ---
@@ -78,6 +79,7 @@ apiVersion: autoscaling/v1
 kind: HorizontalPodAutoscaler
 metadata:
   name: cms
+  namespace: {{ K8S_NAMESPACE }}
   annotations:
     argocd.argoproj.io/sync-wave: "5"
 ---
@@ -85,6 +87,7 @@ apiVersion: autoscaling/v1
 kind: HorizontalPodAutoscaler
 metadata:
   name: lms-worker
+  namespace: {{ K8S_NAMESPACE }}
   annotations:
     argocd.argoproj.io/sync-wave: "5"
 ---
@@ -92,6 +95,7 @@ apiVersion: autoscaling/v1
 kind: HorizontalPodAutoscaler
 metadata:
   name: cms-worker
+  namespace: {{ K8S_NAMESPACE }}
   annotations:
     argocd.argoproj.io/sync-wave: "5"
 {%- if FORUM_DOCKER_IMAGE is defined %}
@@ -100,6 +104,7 @@ apiVersion: autoscaling/v1
 kind: HorizontalPodAutoscaler
 metadata:
   name: forum
+  namespace: {{ K8S_NAMESPACE }}
   annotations:
     argocd.argoproj.io/sync-wave: "5"
 ---
