@@ -10,7 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Please do not update the unreleased notes.
 
 <!-- Content should be placed here -->
-## [0.4.1](https://github.com/eduNEXT/drydock/compare/v0.4.0...v0.4.1) - 2022-12-07
+## [v0.4.1](https://github.com/eduNEXT/drydock/compare/v0.4.0...v0.4.1) - 2022-12-07
 
 ### [0.4.1](https://github.com/eduNEXT/drydock/compare/v0.4.0...v0.4.1) (2022-12-07)
 
@@ -22,7 +22,7 @@ Please do not update the unreleased notes.
 
 - Increase default debug replicas to at least one
 
-## [0.4.0](https://github.com/eduNEXT/drydock/compare/v0.3.4...v0.4.0) - 2022-12-01
+## [v0.4.0](https://github.com/eduNEXT/drydock/compare/v0.3.4...v0.4.0) - 2022-12-01
 
 ### [0.4.0](https://github.com/eduNEXT/drydock/compare/v0.3.4...v0.4.0) (2022-12-01)
 
@@ -39,7 +39,7 @@ Please do not update the unreleased notes.
 - Use the right target for the forum hpa.
 - Add missing patch in V14 templates.
 
-## [0.3.4](https://github.com/eduNEXT/drydock/compare/v0.3.3...v0.3.4) - 2022-11-09
+## [v0.3.4](https://github.com/eduNEXT/drydock/compare/v0.3.3...v0.3.4) - 2022-11-09
 
 ### [0.3.4](https://github.com/eduNEXT/drydock/compare/v0.3.3...v0.3.4) (2022-11-09)
 
@@ -47,7 +47,7 @@ Please do not update the unreleased notes.
 
 - Add multipurpose jobs for tutor version 14.
 
-## [0.3.3](https://github.com/eduNEXT/drydock/compare/v0.3.2...v0.3.3) - 2022-11-09
+## [v0.3.3](https://github.com/eduNEXT/drydock/compare/v0.3.2...v0.3.3) - 2022-11-09
 
 ### [0.3.3](https://github.com/eduNEXT/drydock/compare/v0.3.2...v0.3.3) (2022-11-09)
 
@@ -55,7 +55,7 @@ Please do not update the unreleased notes.
 
 - Add multipurpose jobs.
 
-## [0.3.2](https://github.com/eduNEXT/drydock/compare/v0.3.1...v0.3.2) - 2022-11-09
+## [v0.3.2](https://github.com/eduNEXT/drydock/compare/v0.3.1...v0.3.2) - 2022-11-09
 
 ### [0.3.2](https://github.com/eduNEXT/drydock/compare/v0.3.1...v0.3.2) (2022-11-09)
 
@@ -63,7 +63,7 @@ Please do not update the unreleased notes.
 
 - Add missing labels for notes jobs.
 
-## [0.3.1](https://github.com/eduNEXT/drydock/compare/v0.3.0...v0.3.1) - 2022-10-21
+## [v0.3.1](https://github.com/eduNEXT/drydock/compare/v0.3.0...v0.3.1) - 2022-10-21
 
 ### [0.3.1](https://github.com/eduNEXT/drydock/compare/v0.3.0...v0.3.1) (2022-10-21)
 
@@ -71,7 +71,7 @@ Please do not update the unreleased notes.
 
 - Refactor hpa with latest practices.
 
-## [0.3.0](https://github.com/eduNEXT/drydock/compare/v0.2.0...v0.3.0) - 2022-10-18
+## [v0.3.0](https://github.com/eduNEXT/drydock/compare/v0.2.0...v0.3.0) - 2022-10-18
 
 ### [0.3.0](https://github.com/eduNEXT/drydock/compare/v0.2.0...v0.3.0) (2022-10-18)
 
@@ -80,7 +80,7 @@ Please do not update the unreleased notes.
 - Make manifests template root configurable through reference.
 - Add templates with tutor14 support.
 
-## [0.2.0](https://github.com/eduNEXT/drydock/compare/v0.1.0...v0.2.0) - 2022-10-13
+## [v0.2.0](https://github.com/eduNEXT/drydock/compare/v0.1.0...v0.2.0) - 2022-10-13
 
 ### [0.2.0](https://github.com/eduNEXT/drydock/compare/v0.1.0...v0.2.0) (2022-10-13)
 
@@ -100,9 +100,9 @@ Please do not update the unreleased notes.
 - Move forum pod to wave 4, HPA to wave 5.
 - Remove MySQL jobs when MySQL running outside the cluster.
 
-## [0.1.0] - 2022-10-12
+## [v0.1.0](https://github.com/eduNEXT/drydock/commits/v0.1.0) - 2022-10-12
 
-### [0.1.0] (2022-10-12)
+### [0.1.0](https://github.com/eduNEXT/drydock/commits/v0.1.0) (2022-10-12)
 
 #### Features
 
