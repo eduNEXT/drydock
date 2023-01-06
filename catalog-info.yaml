@@ -1,0 +1,9 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: Drydock
+  description: Template library for manifests
+spec:
+  type: library
+  owner: shipyard-crew
+  lifecycle: production
