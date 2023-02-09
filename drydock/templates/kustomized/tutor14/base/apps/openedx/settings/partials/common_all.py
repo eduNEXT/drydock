@@ -6,17 +6,16 @@ from xmodule.modulestore.modulestore_settings import update_module_store_setting
 
 # Mongodb connection parameters: simply modify `mongodb_parameters` to affect all connections to MongoDb.
 mongodb_parameters = {
+    "db": "{{ MONGODB_DATABASE }}",
     "host": "{{ MONGODB_HOST }}",
     "port": {{ MONGODB_PORT }},
-    {% if MONGODB_USERNAME and MONGODB_PASSWORD %}
-    "user": "{{ MONGODB_USERNAME }}",
-    "password": "{{ MONGODB_PASSWORD }}",
-    {% else %}
-    "user": None,
-    "password": None,
-    {% endif %}
-    "db": "{{ MONGODB_DATABASE }}",
-    "replicaSet": None,
+    "user": {% if MONGODB_USERNAME %}"{{ MONGODB_USERNAME }}"{% else %}None{% endif %},
+    "password": {% if MONGODB_PASSWORD %}"{{ MONGODB_PASSWORD }}"{% else %}None{% endif %},
+    # Connection/Authentication
+    "ssl": {{ MONGODB_USE_SSL }},
+    "authSource": "{{ MONGODB_AUTH_SOURCE }}",
+    "replicaSet": {% if MONGODB_REPLICA_SET %}"{{ MONGODB_REPLICA_SET }}"{% else %}None{% endif %},
+    {% if MONGODB_AUTH_MECHANISM %}"authMechanism": "{{ MONGODB_AUTH_MECHANISM }}",{% endif %}
 }
 DOC_STORE_CONFIG = mongodb_parameters
 CONTENTSTORE = {
@@ -64,9 +63,6 @@ DATABASE_ROUTERS.remove(
 
 # Set uploaded media file path
 MEDIA_ROOT = "/openedx/media/"
-
-# Add your MFE and third-party app domains here
-CORS_ORIGIN_WHITELIST = []
 
 # Video settings
 VIDEO_IMAGE_SETTINGS["STORAGE_KWARGS"]["location"] = MEDIA_ROOT
@@ -122,7 +118,7 @@ LANGUAGE_COOKIE_NAME = "openedx-language-preference"
 # Allow the platform to include itself in an iframe
 X_FRAME_OPTIONS = "SAMEORIGIN"
 
-{% set jwt_rsa_key = rsa_import_key(JWT_RSA_PRIVATE_KEY) %}
+{% set jwt_rsa_key | rsa_import_key %}{{ JWT_RSA_PRIVATE_KEY }}{% endset %}
 JWT_AUTH["JWT_ISSUER"] = "{{ JWT_COMMON_ISSUER }}"
 JWT_AUTH["JWT_AUDIENCE"] = "{{ JWT_COMMON_AUDIENCE }}"
 JWT_AUTH["JWT_SECRET_KEY"] = "{{ JWT_COMMON_SECRET_KEY }}"
@@ -160,6 +156,16 @@ JWT_AUTH["JWT_ISSUERS"] = [
 # Enable/Disable some features globally
 FEATURES["ENABLE_DISCUSSION_SERVICE"] = False
 FEATURES["PREVENT_CONCURRENT_LOGINS"] = False
+FEATURES["ENABLE_CORS_HEADERS"] = True
+
+# CORS
+CORS_ALLOW_CREDENTIALS = True
+CORS_ORIGIN_ALLOW_ALL = False
+CORS_ALLOW_INSECURE = {% if ENABLE_HTTPS %}False{% else %}True{% endif %}
+CORS_ALLOW_HEADERS = corsheaders_default_headers + ('use-jwt-cookie',)
+
+# Add your MFE and third-party app domains here
+CORS_ORIGIN_WHITELIST = []
 
 # Disable codejail support
 # explicitely configuring python is necessary to prevent unsafe calls
