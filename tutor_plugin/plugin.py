@@ -84,13 +84,7 @@ def save(context, ref: str):
 
 drydock_command.add_command(save)
 
-hooks.filters.add_items(
-    "cli:commands",
-    [
-        drydock_command,
-    ],
-)
-
+hooks.Filters.CLI_COMMANDS.add_item(drydock_command)
 
 ################# You don't really have to bother about what's below this line,
 ################# except maybe for educational purposes :)

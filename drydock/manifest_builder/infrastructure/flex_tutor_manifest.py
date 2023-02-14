@@ -36,9 +36,9 @@ class FlexibleTutorManifest(ManifestRepository):
         for path in ["dev", "build", "local"]:
             shutil.rmtree(os.path.join(fixed_root, path))
 
-        hooks.filters.clear("env:templates:targets")
-        hooks.filters.add_items(
-            "env:templates:targets",
+        hooks.Filters.ENV_TEMPLATE_TARGETS.clear()
+
+        hooks.Filters.ENV_TEMPLATE_TARGETS.add_items(
             [
                 (
                     self.options.get("tutor_templates_version"),
