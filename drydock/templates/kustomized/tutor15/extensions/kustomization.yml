@@ -1,0 +1,52 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+{% if DRYDOCK_FLOWERS|default(false) -%}
+- flowers.yml
+{% endif -%}
+{% if DRYDOCK_INGRESS|default(false) -%}
+- ingress.yml
+{% endif -%}
+{% if DRYDOCK_HPA|default(false) and DRYDOCK_ENABLE_OVERRIDES|default(false) -%}
+- hpa.yml
+{% endif -%}
+{%- if DRYDOCK_INIT_JOBS %}
+- drydock-jobs/mysql.yml
+- drydock-jobs/lms.yml
+- drydock-jobs/cms.yml
+- drydock-jobs/minio.yml
+- drydock-jobs/forum.yml
+- drydock-jobs/notes.yml
+- drydock-jobs/extra-jobs.yml
+{%- endif %}
+{%- if DRYDOCK_DEBUG %}
+- debug/deployments.yml
+- debug/services.yml
+- debug/ingress.yml
+{%- endif %}
+- multipurpose-jobs.yml
+
+{% if DRYDOCK_NEWRELIC -%}
+configMapGenerator:
+- name: newrelic-cm
+  files:
+  - newrelic.ini
+  options:
+    labels:
+        app.kubernetes.io/name: openedx
+{% endif -%}
+
+{% if not RUN_MYSQL -%}
+# MySQL job deletion based on the thread in https://github.com/kubernetes-sigs/kustomize/issues/4526
+patches:
+- target:
+    kind: Job
+    labelSelector: drydock.io/runner-service=mysql
+  patch: |-
+    apiVersion: batch/v1
+    kind: Job
+    metadata:
+      name: does-not-matter
+    $patch: delete
+{%- endif %}
