@@ -84,9 +84,9 @@ spec:
             requests:
               cpu: "{{ DRYDOCK_FORUM_REQUEST_CPU }}"
               memory: "{{ DRYDOCK_FORUM_REQUEST_MEMORY }}"
-{% endif -%}
+{%- endif %}
 ---
-{% endif -%}
+{%- endif %}
 {%- if DRYDOCK_NEWRELIC -%}
 apiVersion: apps/v1
 kind: Deployment
@@ -119,8 +119,8 @@ spec:
           name: newrelic-cm
         name: newrelic-ini
 ---
-{% endif -%}
-{% if FORUM_DOCKER_IMAGE is defined %}
+{%- endif %}
+{%- if FORUM_DOCKER_IMAGE is defined %}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -128,5 +128,5 @@ metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "4"
 ---
-{% endif -%}
+{%- endif %}
 {{ patch("drydock-overrides") }}
