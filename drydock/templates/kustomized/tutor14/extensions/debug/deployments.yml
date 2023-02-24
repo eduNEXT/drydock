@@ -28,6 +28,8 @@ spec:
           env:
           - name: SERVICE_VARIANT
             value: cms
+          - name: DJANGO_SETTINGS_MODULE
+            value: cms.envs.tutor.production
           ports:
             - containerPort: 8000
           volumeMounts:

@@ -42,7 +42,7 @@ spec:
             --client-secret {{ CMS_OAUTH2_SECRET }} \
             --scopes user_id \
             --skip-authorization \
-            --update cms-sso cms-sso-user
+            --update cms-sso {{ DRYDOCK_CMS_SSO_USER }}
 
           # Fix incorrect uploaded file path
           if [ -d /openedx/data/uploads/ ]; then
