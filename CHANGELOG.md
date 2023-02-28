@@ -5,11 +5,31 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://github.com/eduNEXT/drydock/compare/v0.4.1...HEAD)
+## [Unreleased](https://github.com/eduNEXT/drydock/compare/v0.5.0...HEAD)
 
 Please do not update the unreleased notes.
 
 <!-- Content should be placed here -->
+## [v0.5.0](https://github.com/eduNEXT/drydock/compare/v0.4.1...v0.5.0) - 2023-02-28
+
+### [0.5.0](https://github.com/eduNEXT/drydock/compare/v0.4.1...v0.5.0) (2023-02-28)
+
+#### Features
+
+- add templates with tutor15 support. ([#35](https://github.com/eduNEXT/drydock/issues/35)) ([1e85e46](https://github.com/eduNEXT/drydock/commit/1e85e46e7f26ff1f153e972f12aea9e8b974ce6d))
+
+#### Bug Fixes
+
+- CMS_SSO_USER, cms debug pods and whitespace triming ([#37](https://github.com/eduNEXT/drydock/issues/37)) ([fb36c65](https://github.com/eduNEXT/drydock/commit/fb36c657e998a5f7bb68f94ad3695089e601c24b))
+
+#### Build Systems
+
+- add release GitHub workflow ([#32](https://github.com/eduNEXT/drydock/issues/32)) ([1e9a559](https://github.com/eduNEXT/drydock/commit/1e9a5598562b3a45d3077adf5bf5a42354a749e1))
+
+#### Code Refactoring
+
+- rename CMS SSO user to avoid conflicts with existent data ([#24](https://github.com/eduNEXT/drydock/issues/24)) ([6842da5](https://github.com/eduNEXT/drydock/commit/6842da52c2878c23abe45075eb29a6bbc0533eed))
+
 ## [v0.4.1](https://github.com/eduNEXT/drydock/compare/v0.4.0...v0.4.1) - 2022-12-07
 
 ### [0.4.1](https://github.com/eduNEXT/drydock/compare/v0.4.0...v0.4.1) (2022-12-07)
