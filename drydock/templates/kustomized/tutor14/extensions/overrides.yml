@@ -87,7 +87,7 @@ spec:
 {%- endif %}
 ---
 {%- endif %}
-{%- if DRYDOCK_NEWRELIC -%}
+{%- if DRYDOCK_NEWRELIC %}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
