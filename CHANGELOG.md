@@ -5,11 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://github.com/eduNEXT/drydock/compare/v0.5.0...HEAD)
+## [Unreleased](https://github.com/eduNEXT/drydock/compare/v0.5.1...HEAD)
 
 Please do not update the unreleased notes.
 
 <!-- Content should be placed here -->
+## [v0.5.1](https://github.com/eduNEXT/drydock/compare/v0.5.0...v0.5.1) - 2023-03-20
+
+### [0.5.1](https://github.com/eduNEXT/drydock/compare/v0.5.0...v0.5.1) (2023-03-20)
+
+### Bug Fixes
+
+- rendering NewRelic overrides properly in tutor14 Drydock templates ([#38](https://github.com/eduNEXT/drydock/issues/38)) ([423bac3](https://github.com/eduNEXT/drydock/commit/423bac33216385d02566fbef90c8918e0cba8f50))
+
 ## [v0.5.0](https://github.com/eduNEXT/drydock/compare/v0.4.1...v0.5.0) - 2023-02-28
 
 ### [0.5.0](https://github.com/eduNEXT/drydock/compare/v0.4.1...v0.5.0) (2023-02-28)
