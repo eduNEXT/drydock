@@ -18,7 +18,7 @@ spec:
           restartPolicy: OnFailure
           containers:
             - name: backup
-              image: ednxops/shipyard-utils
+              image: {{ BACKUP_IMAGE }}
               env:
                 - name: MYSQL_HOST
                   value: '{{ MYSQL_HOST }}'
@@ -29,12 +29,12 @@ spec:
                 - name: MYSQL_ROOT_PASSWORD
                   value: '{{ MYSQL_ROOT_PASSWORD }}'
                 - name: AWS_ACCESS_KEY_ID
-                  value: '{{ BACKUPS_AWS_ACCESS_KEY }}'
+                  value: '{{ BACKUP_AWS_ACCESS_KEY }}'
                 - name: AWS_SECRET_ACCESS_KEY
-                  value: '{{ BACKUPS_AWS_SECRET_KEY }}'
+                  value: '{{ BACKUP_AWS_SECRET_KEY }}'
                 - name: S3_BUCKET_NAME
-                  value: '{{ BACKUPS_BUCKET_NAME }}'
-                {% if BACKUP_ENDPOINT is defined %}
+                  value: '{{ BACKUP_BUCKET_NAME }}'
+                {% if BACKUP_ENDPOINT %}
                 - name: BACKUP_ENDPOINT
                   value: '{{ BACKUP_ENDPOINT }}'
                 {% endif %}
@@ -47,7 +47,7 @@ spec:
               args: ["FILENAME=$(date +'%Y-%m-%d').sql.gz && \
                     mysqldump --column-statistics=0 -u $MYSQL_ROOT_USERNAME -h $MYSQL_HOST -P $MYSQL_PORT \
                     --password=$MYSQL_ROOT_PASSWORD --all-databases --single-transaction --flush-logs \
-                    | gzip > $FILENAME && aws {% if BACKUP_ENDPOINT is defined %} --endpoint-url $BACKUP_ENDPOINT {% endif %} s3 mv $FILENAME s3://$S3_BUCKET_NAME/backups/mysql/"]
+                    | gzip > $FILENAME && aws {% if BACKUP_ENDPOINT %} --endpoint-url $BACKUP_ENDPOINT {% endif %} s3 mv $FILENAME s3://$S3_BUCKET_NAME/backups/mysql/"]
           {% if BACKUP_K8S_USE_EPHEMERAL_VOLUMES %}
           volumes:
             - name: backup-volume
@@ -80,7 +80,7 @@ spec:
           restartPolicy: OnFailure
           containers:
             - name: backup
-              image: ednxops/shipyard-utils
+              image: {{ BACKUP_IMAGE }}
               env:
                 - name: MONGODB_HOST
                   value: '{{ MONGODB_HOST }}'
@@ -93,12 +93,12 @@ spec:
                 - name: MONGODB_DATABASES
                   value: '{{ MONGODB_DATABASE }}'
                 - name: AWS_ACCESS_KEY_ID
-                  value: '{{ BACKUPS_AWS_ACCESS_KEY }}'
+                  value: '{{ BACKUP_AWS_ACCESS_KEY }}'
                 - name: AWS_SECRET_ACCESS_KEY
-                  value: '{{ BACKUPS_AWS_SECRET_KEY }}'
+                  value: '{{ BACKUP_AWS_SECRET_KEY }}'
                 - name: S3_BUCKET_NAME
-                  value: '{{ BACKUPS_BUCKET_NAME }}'
-                  {% if BACKUP_ENDPOINT is defined %}
+                  value: '{{ BACKUP_BUCKET_NAME }}'
+                  {% if BACKUP_ENDPOINT %}
                 - name: BACKUP_ENDPOINT
                   value: '{{ BACKUP_ENDPOINT }}'
                   {% endif %}
@@ -112,7 +112,7 @@ spec:
               mongodump {% if MONGODB_USERNAME %} --username $MONGODB_USERNAME --password $MONGODB_PASSWORD --authenticationDatabase=admin {% endif %}\
               --host $MONGODB_HOST:$MONGODB_PORT \
               -d $MONGODB_DATABASES --gzip \
-              --archive=$FILENAME && aws {% if BACKUP_ENDPOINT is defined %} --endpoint-url $BACKUP_ENDPOINT {% endif %} s3 mv $FILENAME s3://$S3_BUCKET_NAME/backups/mongo/"]
+              --archive=$FILENAME && aws {% if BACKUP_ENDPOINT %} --endpoint-url $BACKUP_ENDPOINT {% endif %} s3 mv $FILENAME s3://$S3_BUCKET_NAME/backups/mongo/"]
           {% if BACKUP_K8S_USE_EPHEMERAL_VOLUMES %}
           volumes:
             - name: backup-volume

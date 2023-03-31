@@ -14,36 +14,33 @@ config = {
     # Add here your new settings
     "defaults": {
         "VERSION": __version__,
+        "IMAGE": "ednxops/shipyard-utils",
+        "CRON_SCHEDULE": '0 2 * * *',
+        "AWS_ACCESS_KEY": "",
+        "AWS_SECRET_KEY": "",
+        "BUCKET_NAME": "",
+        "ENDPOINT": None,
+        "K8S_USE_EPHEMERAL_VOLUMES": False,
+        "K8S_EPHEMERAL_VOLUME_SIZE": "8Gi"
     },
 }
 
 hooks.Filters.CONFIG_DEFAULTS.add_items(
     [
-        # Add your new settings that have default values here.
-        # Each new setting is a pair: (setting_name, default_value).
-        # Prefix your setting names with 'DRYDOCK_BACKUPS_'.
-        ("DRYDOCK_BACKUPS_VERSION", __version__),
+        (f"BACKUP_{key}", value)
+        for key, value in config.get("defaults", {}).items()
     ]
 )
 
 hooks.Filters.CONFIG_UNIQUE.add_items(
     [
-        # Add settings that don't have a reasonable default for all users here.
-        # For instance: passwords, secret keys, etc.
-        # Each new setting is a pair: (setting_name, unique_generated_value).
-        # Prefix your setting names with 'DRYDOCK_BACKUPS_'.
-        # For example:
-        ### ("DRYDOCK_BACKUPS_SECRET_KEY", "{{ 24|random_string }}"),
+        (f"BACKUP_{key}", value)
+        for key, value in config.get("unique", {}).items()
     ]
 )
 
 hooks.Filters.CONFIG_OVERRIDES.add_items(
-    [
-        # Danger zone!
-        # Add values to override settings from Tutor core or other plugins here.
-        # Each override is a pair: (setting_name, new_value). For example:
-        ### ("PLATFORM_NAME", "My platform"),
-    ]
+    list(config.get("overrides", {}).items())
 )
 
 
