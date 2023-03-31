@@ -42,7 +42,8 @@ setup(
     install_requires=["tutor"],
     entry_points={
         "tutor.plugin.v1": [
-            "drydock = tutor_plugin.plugin"
+            "drydock = tutor_plugin.plugin",
+            "drydock-backups = drydock_backups.plugin",
         ]
     },
     classifiers=[
