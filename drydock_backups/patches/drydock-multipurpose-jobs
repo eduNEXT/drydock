@@ -87,9 +87,9 @@ spec:
                 - name: MONGODB_PORT
                   value: '{{ MONGODB_PORT }}'
                 - name: MONGODB_USERNAME
-                  value: '{{ MONGODB_USERNAME }}'
+                  value: '{{ BACKUP_MONGO_USERNAME }}'
                 - name: MONGODB_PASSWORD
-                  value: '{{ MONGODB_PASSWORD }}'
+                  value: '{{ BACKUP_MONGO_PASSWORD }}'
                 - name: MONGODB_DATABASES
                   value: '{{ MONGODB_DATABASE }}'
                 - name: AWS_ACCESS_KEY_ID

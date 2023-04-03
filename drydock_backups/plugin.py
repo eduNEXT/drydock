@@ -23,7 +23,9 @@ config = {
         "K8S_USE_EPHEMERAL_VOLUMES": False,
         "K8S_EPHEMERAL_VOLUME_SIZE": "8Gi",
         "MYSQL_USERNAME": '{{ MYSQL_ROOT_USERNAME }}',
-        "MYSQL_PASSWORD": '{{ MYSQL_ROOT_PASSWORD }}'
+        "MYSQL_PASSWORD": '{{ MYSQL_ROOT_PASSWORD }}',
+        "MONGO_PASSWORD": '{{ MONGODB_PASSWORD }}',
+        "MONGO_USERNAME": '{{ MONGODB_USERNAME }}'
     },
 }
 
