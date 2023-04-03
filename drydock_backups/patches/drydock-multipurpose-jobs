@@ -25,9 +25,9 @@ spec:
                 - name: MYSQL_PORT
                   value: '{{ MYSQL_PORT }}'
                 - name: MYSQL_ROOT_USERNAME
-                  value: '{{ MYSQL_ROOT_USERNAME }}'
+                  value: '{{ BACKUP_MYSQL_USERNAME }}'
                 - name: MYSQL_ROOT_PASSWORD
-                  value: '{{ MYSQL_ROOT_PASSWORD }}'
+                  value: '{{ BACKUP_MYSQL_PASSWORD }}'
                 - name: AWS_ACCESS_KEY_ID
                   value: '{{ BACKUP_AWS_ACCESS_KEY }}'
                 - name: AWS_SECRET_ACCESS_KEY

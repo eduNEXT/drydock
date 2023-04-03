@@ -21,7 +21,9 @@ config = {
         "BUCKET_NAME": "",
         "ENDPOINT": None,
         "K8S_USE_EPHEMERAL_VOLUMES": False,
-        "K8S_EPHEMERAL_VOLUME_SIZE": "8Gi"
+        "K8S_EPHEMERAL_VOLUME_SIZE": "8Gi",
+        "MYSQL_USERNAME": '{{ MYSQL_ROOT_USERNAME }}',
+        "MYSQL_PASSWORD": '{{ MYSQL_ROOT_PASSWORD }}'
     },
 }
 
