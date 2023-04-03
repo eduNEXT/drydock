@@ -1,0 +1,25 @@
+FROM mysql:8-debian as base
+
+RUN apt-get update && apt-get install -y wget gnupg2
+
+RUN wget -qO - https://www.mongodb.org/static/pgp/server-6.0.asc | apt-key add -
+
+# RUN echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu focal/mongodb-org/6.0 multiverse" | tee /etc/apt/sources.list.d/mongodb-org-6.0.list
+RUN echo "deb http://repo.mongodb.org/apt/debian bullseye/mongodb-org/6.0 main" | tee /etc/apt/sources.list.d/mongodb-org-6.0.list
+
+RUN apt-get update && apt-get install -y \
+    mongodb-mongosh \
+    awscli \
+    && rm -rf /var/lib/apt/lists/*
+
+# Crear usuario "backup" y asignar permisos para MySQL y MongoDB
+RUN useradd -m backupuser
+RUN echo "backupuser    ALL=(ALL) NOPASSWD: /usr/bin/mysql, /usr/bin/mongodump" >> /etc/sudoers
+
+
+# Cambiar al usuario "backupuser"
+USER backupuser
+
+WORKDIR /home/backupuser
+
+RUN echo
