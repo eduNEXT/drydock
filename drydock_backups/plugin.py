@@ -11,7 +11,6 @@ from tutor import hooks
 from .__about__ import __version__
 
 config = {
-    # Add here your new settings
     "defaults": {
         "VERSION": __version__,
         "IMAGE": "ednxops/shipyard-utils",
@@ -19,6 +18,7 @@ config = {
         "AWS_ACCESS_KEY": "",
         "AWS_SECRET_KEY": "",
         "BUCKET_NAME": "",
+        "BUCKET_PATH": "backups",
         "ENDPOINT": None,
         "K8S_USE_EPHEMERAL_VOLUMES": False,
         "K8S_EPHEMERAL_VOLUME_SIZE": "8Gi",

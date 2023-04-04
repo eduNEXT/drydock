@@ -34,6 +34,8 @@ spec:
                   value: '{{ BACKUP_AWS_SECRET_KEY }}'
                 - name: S3_BUCKET_NAME
                   value: '{{ BACKUP_BUCKET_NAME }}'
+                - name: BUCKET_PATH
+                  value: '{{ BACKUP_BUCKET_PATH }}'
                 {% if BACKUP_ENDPOINT %}
                 - name: BACKUP_ENDPOINT
                   value: '{{ BACKUP_ENDPOINT }}'
@@ -47,7 +49,7 @@ spec:
               args: ["FILENAME=$(date +'%Y-%m-%d').sql.gz && \
                     mysqldump --column-statistics=0 -u $MYSQL_ROOT_USERNAME -h $MYSQL_HOST -P $MYSQL_PORT \
                     --password=$MYSQL_ROOT_PASSWORD --all-databases --single-transaction --flush-logs \
-                    | gzip > $FILENAME && aws {% if BACKUP_ENDPOINT %} --endpoint-url $BACKUP_ENDPOINT {% endif %} s3 mv $FILENAME s3://$S3_BUCKET_NAME/backups/mysql/"]
+                    | gzip > $FILENAME && aws {% if BACKUP_ENDPOINT %} --endpoint-url $BACKUP_ENDPOINT {% endif %} s3 mv $FILENAME s3://$S3_BUCKET_NAME/$BUCKET_PATH/mysql/"]
           {% if BACKUP_K8S_USE_EPHEMERAL_VOLUMES %}
           volumes:
             - name: backup-volume
@@ -98,6 +100,8 @@ spec:
                   value: '{{ BACKUP_AWS_SECRET_KEY }}'
                 - name: S3_BUCKET_NAME
                   value: '{{ BACKUP_BUCKET_NAME }}'
+                - name: BUCKET_PATH
+                  value: '{{ BACKUP_BUCKET_PATH }}'
                   {% if BACKUP_ENDPOINT %}
                 - name: BACKUP_ENDPOINT
                   value: '{{ BACKUP_ENDPOINT }}'
@@ -112,7 +116,7 @@ spec:
               mongodump {% if MONGODB_USERNAME %} --username $MONGODB_USERNAME --password $MONGODB_PASSWORD --authenticationDatabase=admin {% endif %}\
               --host $MONGODB_HOST:$MONGODB_PORT \
               -d $MONGODB_DATABASES --gzip \
-              --archive=$FILENAME && aws {% if BACKUP_ENDPOINT %} --endpoint-url $BACKUP_ENDPOINT {% endif %} s3 mv $FILENAME s3://$S3_BUCKET_NAME/backups/mongo/"]
+              --archive=$FILENAME && aws {% if BACKUP_ENDPOINT %} --endpoint-url $BACKUP_ENDPOINT {% endif %} s3 mv $FILENAME s3://$S3_BUCKET_NAME/$BUCKET_PATH/mongo/"]
           {% if BACKUP_K8S_USE_EPHEMERAL_VOLUMES %}
           volumes:
             - name: backup-volume
