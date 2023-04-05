@@ -24,10 +24,10 @@ Configuration variables
 - **BACKUP_CUSTOM_STORAGE_ENDPOINT**: Custom endpoint to access the bucket. Default: `None`
 - **BACKUP_K8S_USE_EPHEMERAL_VOLUMES**: Use ephemeral volumes to set up the cronjob. Default: `False`
 - **BACKUP_K8S_EPHEMERAL_VOLUME_SIZE**: Size of the ephemeral volume. Default: `8Gi`
-- **BACKUP_MYSQL_USERNAME**: Username to access the mysql database.
-- **BACKUP_MYSQL_PASSWORD**: Password to access the mysql database.
-- **BACKUP_MONGO_PASSWORD**: Password to access the mongodb database.
-- **BACKUP_MONGO_USERNAME**: Username to access the mongodb database.
+- **BACKUP_MYSQL_USERNAME**: Username to access the mysql database. Default: MYSQL_ROOT_USERNAME from the `config.yml` file.
+- **BACKUP_MYSQL_PASSWORD**: Password to access the mysql database. Default: MYSQL_ROOT_PASSWORD from the `config.yml` file.
+- **BACKUP_MONGO_PASSWORD**: Password to access the mongodb database. Default: MONGODB_PASSWORD from the `config.yml` file.
+- **BACKUP_MONGO_USERNAME**: Username to access the mongodb database. Default: MONGODB_USERNAME from the `config.yml` file.
 
 You can set ups these variables in the `config.yml` file.
 
