@@ -1,0 +1,131 @@
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: backup-mysql-cron
+  labels:
+    app.kubernetes.io/component: cronjob
+spec:
+  suspend: false
+  schedule: {{ BACKUP_CRON_SCHEDULE }}
+  startingDeadlineSeconds: 900
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+            - name: backup
+              image: {{ BACKUP_IMAGE }}
+              env:
+                - name: MYSQL_HOST
+                  value: '{{ MYSQL_HOST }}'
+                - name: MYSQL_PORT
+                  value: '{{ MYSQL_PORT }}'
+                - name: MYSQL_ROOT_USERNAME
+                  value: '{{ BACKUP_MYSQL_USERNAME }}'
+                - name: MYSQL_ROOT_PASSWORD
+                  value: '{{ BACKUP_MYSQL_PASSWORD }}'
+                - name: AWS_ACCESS_KEY_ID
+                  value: '{{ BACKUP_AWS_ACCESS_KEY }}'
+                - name: AWS_SECRET_ACCESS_KEY
+                  value: '{{ BACKUP_AWS_SECRET_KEY }}'
+                - name: S3_BUCKET_NAME
+                  value: '{{ BACKUP_BUCKET_NAME }}'
+                - name: BUCKET_PATH
+                  value: '{{ BACKUP_BUCKET_PATH }}'
+                {% if BACKUP_CUSTOM_STORAGE_ENDPOINT %}
+                - name: BACKUP_CUSTOM_STORAGE_ENDPOINT
+                  value: '{{ BACKUP_CUSTOM_STORAGE_ENDPOINT }}'
+                {% endif %}
+              {% if BACKUP_K8S_USE_EPHEMERAL_VOLUMES %}
+              volumeMounts:
+                - mountPath: /data/
+                  name: backup-volume
+              {% endif %}
+              command: ["/bin/sh", "-c"]
+              args: ["FILENAME=$(date +'%Y-%m-%d').sql.gz && \
+                    mysqldump --column-statistics=0 -u $MYSQL_ROOT_USERNAME -h $MYSQL_HOST -P $MYSQL_PORT \
+                    --password=$MYSQL_ROOT_PASSWORD --all-databases --single-transaction --flush-logs \
+                    | gzip > $FILENAME && aws {% if BACKUP_CUSTOM_STORAGE_ENDPOINT %} --endpoint-url $BACKUP_CUSTOM_STORAGE_ENDPOINT {% endif %} s3 mv $FILENAME s3://$S3_BUCKET_NAME/$BUCKET_PATH/mysql/"]
+          {% if BACKUP_K8S_USE_EPHEMERAL_VOLUMES %}
+          volumes:
+            - name: backup-volume
+              ephemeral:
+                volumeClaimTemplate:
+                  spec:
+                    accessModes:
+                      - ReadWriteOnce
+                    resources:
+                      requests:
+                        storage: {{ BACKUP_K8S_EPHEMERAL_VOLUME_SIZE }}
+          {% endif %}
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: backup-mongo-cron
+  labels:
+    app.kubernetes.io/component: cronjob
+spec:
+  suspend: false
+  schedule: {{ BACKUP_CRON_SCHEDULE }}
+  startingDeadlineSeconds: 900
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+            - name: backup
+              image: {{ BACKUP_IMAGE }}
+              env:
+                - name: MONGODB_HOST
+                  value: '{{ MONGODB_HOST }}'
+                - name: MONGODB_PORT
+                  value: '{{ MONGODB_PORT }}'
+                - name: MONGODB_USERNAME
+                  value: '{{ BACKUP_MONGO_USERNAME }}'
+                - name: MONGODB_PASSWORD
+                  value: '{{ BACKUP_MONGO_PASSWORD }}'
+                - name: MONGODB_DATABASES
+                  value: '{{ MONGODB_DATABASE }}'
+                - name: AWS_ACCESS_KEY_ID
+                  value: '{{ BACKUP_AWS_ACCESS_KEY }}'
+                - name: AWS_SECRET_ACCESS_KEY
+                  value: '{{ BACKUP_AWS_SECRET_KEY }}'
+                - name: S3_BUCKET_NAME
+                  value: '{{ BACKUP_BUCKET_NAME }}'
+                - name: BUCKET_PATH
+                  value: '{{ BACKUP_BUCKET_PATH }}'
+                  {% if BACKUP_CUSTOM_STORAGE_ENDPOINT %}
+                - name: BACKUP_CUSTOM_STORAGE_ENDPOINT
+                  value: '{{ BACKUP_CUSTOM_STORAGE_ENDPOINT }}'
+                  {% endif %}
+              {% if BACKUP_K8S_USE_EPHEMERAL_VOLUMES %}
+              volumeMounts:
+                - mountPath: /data/
+                  name: backup-volume
+              {% endif %}
+              command: ["/bin/sh", "-c"]
+              args: ["FILENAME=$(date +'%Y-%m-%d').gz && \
+              mongodump {% if MONGODB_USERNAME %} --username $MONGODB_USERNAME --password $MONGODB_PASSWORD --authenticationDatabase=admin {% endif %}\
+              --host $MONGODB_HOST:$MONGODB_PORT \
+              -d $MONGODB_DATABASES --gzip \
+              --archive=$FILENAME && aws {% if BACKUP_CUSTOM_STORAGE_ENDPOINT %} --endpoint-url $BACKUP_CUSTOM_STORAGE_ENDPOINT {% endif %} s3 mv $FILENAME s3://$S3_BUCKET_NAME/$BUCKET_PATH/mongo/"]
+          {% if BACKUP_K8S_USE_EPHEMERAL_VOLUMES %}
+          volumes:
+            - name: backup-volume
+              ephemeral:
+                volumeClaimTemplate:
+                  spec:
+                    accessModes:
+                      - ReadWriteOnce
+                    resources:
+                      requests:
+                        storage: {{ BACKUP_K8S_EPHEMERAL_VOLUME_SIZE }}
+          {% endif %}
