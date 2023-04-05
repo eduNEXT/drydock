@@ -1,9 +1,9 @@
 Drydock-backuyps
 ================
 
-Is a tutor plugin used to easily store backups of mysql and mongodb databases through k8s cronjobs. It backup the databases and stores them in a bucket.
+This is a tutor plugin used to easily store backups of mysql and mongodb databases through k8s cronjobs. It backup the databases and stores them in a bucket.
 
-This plugin assumes that the destination bucket is already created and that the credentials to access it are already configured (Works with S3 and Minio buckets indicating his endpoint url through `CUSTOM_STORAGE_ENDPOINT`).
+This plugin assumes that the destination bucket is already created and that the credentials to access it are already configured (Works with S3 and Minio buckets indicating his endpoint url through `BACKUP_CUSTOM_STORAGE_ENDPOINT`).
 
 Installation and activation
 ---------------------------
@@ -15,19 +15,19 @@ You can enable it adding `drydock-backups` to the `plugins` section of the `conf
 Configuration variables
 -----------------------
 
-- **IMAGE**: The image used to run the cronjob. Default: `ednxops/shipyard-utils:v1.0.0`
-- **CRON_SCHEDULE**: Cron schedule to run the backup. Default: `0 2 * * *`
-- **AWS_ACCESS_KEY**: AWS access key to access the bucket or minIO user.
-- **AWS_SECRET_KEY**: AWS secret key to access the bucket or minIO password.
-- **BUCKET_NAME**: Name of the bucket where the backups will be stored.
-- **BUCKET_PATH**: Path inside the bucket where the backups will be stored.
-- **CUSTOM_STORAGE_ENDPOINT**: Custom endpoint to access the bucket. Default: `None`
-- **K8S_USE_EPHEMERAL_VOLUMES**: Use ephemeral volumes to set up the cronjob. Default: `False`
-- **K8S_EPHEMERAL_VOLUME_SIZE**: Size of the ephemeral volume. Default: `8Gi`
-- **MYSQL_USERNAME**: Username to access the mysql database.
-- **MYSQL_PASSWORD**: Password to access the mysql database.
-- **MONGO_PASSWORD**: Password to access the mongodb database.
-- **MONGO_USERNAME**: Username to access the mongodb database.
+- **BACKUP_IMAGE**: The image used to run the cronjob. Default: `ednxops/shipyard-utils:v1.0.0`
+- **BACKUP_CRON_SCHEDULE**: Cron schedule to run the backup. Default: `0 2 * * *`
+- **BACKUP_AWS_ACCESS_KEY**: AWS access key to access the bucket or minIO user.
+- **BACKUP_AWS_SECRET_KEY**: AWS secret key to access the bucket or minIO password.
+- **BACKUP_BUCKET_NAME**: Name of the bucket where the backups will be stored.
+- **BACKUP_BUCKET_PATH**: Path inside the bucket where the backups will be stored.
+- **BACKUP_CUSTOM_STORAGE_ENDPOINT**: Custom endpoint to access the bucket. Default: `None`
+- **BACKUP_K8S_USE_EPHEMERAL_VOLUMES**: Use ephemeral volumes to set up the cronjob. Default: `False`
+- **BACKUP_K8S_EPHEMERAL_VOLUME_SIZE**: Size of the ephemeral volume. Default: `8Gi`
+- **BACKUP_MYSQL_USERNAME**: Username to access the mysql database.
+- **BACKUP_MYSQL_PASSWORD**: Password to access the mysql database.
+- **BACKUP_MONGO_PASSWORD**: Password to access the mongodb database.
+- **BACKUP_MONGO_USERNAME**: Username to access the mongodb database.
 
 You can set ups these variables in the `config.yml` file.
 

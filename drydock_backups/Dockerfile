@@ -1,4 +1,4 @@
-FROM mysql:8-debian as base
+FROM mysql:5-debian as base
 
 RUN apt-get update && apt-get install -y wget gnupg2
 
