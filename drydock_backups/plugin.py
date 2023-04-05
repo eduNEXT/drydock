@@ -19,13 +19,13 @@ config = {
         "AWS_SECRET_KEY": "",
         "BUCKET_NAME": "",
         "BUCKET_PATH": "backups",
-        "ENDPOINT": None,
+        "CUSTOM_STORAGE_ENDPOINT": None,
         "K8S_USE_EPHEMERAL_VOLUMES": False,
         "K8S_EPHEMERAL_VOLUME_SIZE": "8Gi",
-        "MYSQL_USERNAME": '{{ MYSQL_ROOT_USERNAME }}',
-        "MYSQL_PASSWORD": '{{ MYSQL_ROOT_PASSWORD }}',
-        "MONGO_PASSWORD": '{{ MONGODB_PASSWORD }}',
-        "MONGO_USERNAME": '{{ MONGODB_USERNAME }}'
+        "MYSQL_USERNAME": '',
+        "MYSQL_PASSWORD": '',
+        "MONGO_PASSWORD": '',
+        "MONGO_USERNAME": ''
     },
 }
 
