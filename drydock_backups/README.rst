@@ -1,7 +1,7 @@
 Drydock-backuyps
 ================
 
-This is a tutor plugin used to easily store backups of mysql and mongodb databases through k8s cronjobs. It backup the databases and stores them in a bucket.
+This is a tutor plugin used to easily store backups of mysql and mongodb databases through k8s cronjobs. It backups the databases and stores them in a bucket.
 
 This plugin assumes that the destination bucket is already created and that the credentials to access it are already configured (Works with S3 and Minio buckets indicating his endpoint url through `BACKUP_CUSTOM_STORAGE_ENDPOINT`).
 
@@ -36,7 +36,7 @@ Docker image
 
 The docker image used to run the cronjob is `ednxops/shipyard-utils:v1.0.0` and it is available in `DockerHub <https://hub.docker.com/r/ednxops/shipyard-utils>`_.
 
-The dockerfile used to build the image is the Dockerfile located in the drydock-backups folder of this repository. Is builded manually and pushed to DockerHub with the following commands:
+The dockerfile used to build the image is the Dockerfile located in the drydock-backups folder of this repository. It is built manually and pushed to DockerHub with the following commands:
 
 .. code-block:: bash
 
@@ -46,6 +46,6 @@ The dockerfile used to build the image is the Dockerfile located in the drydock-
 Utilities
 ---------
 
-In the path `/utils` we have some utilities to help us to manage the backups.
+In the path `/utils` we have some utilities to help us managing the backups.
 
 - **s3_backups_expiration**: This terraform script is to add to S3 bucket lifecycle rules. Is used to delete the backups that are older than a certain number of days.
