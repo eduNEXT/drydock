@@ -47,7 +47,7 @@ spec:
               {% endif %}
               command: ["/bin/sh", "-c"]
               args: ["FILENAME=$(date +'%Y-%m-%d').sql.gz && \
-                    mysqldump --column-statistics=0 -u $MYSQL_ROOT_USERNAME -h $MYSQL_HOST -P $MYSQL_PORT \
+                    mysqldump -u $MYSQL_ROOT_USERNAME -h $MYSQL_HOST -P $MYSQL_PORT \
                     --password=$MYSQL_ROOT_PASSWORD --all-databases --single-transaction --flush-logs \
                     | gzip > $FILENAME && aws {% if BACKUP_CUSTOM_STORAGE_ENDPOINT %} --endpoint-url $BACKUP_CUSTOM_STORAGE_ENDPOINT {% endif %} s3 mv $FILENAME s3://$S3_BUCKET_NAME/$BUCKET_PATH/mysql/"]
           {% if BACKUP_K8S_USE_EPHEMERAL_VOLUMES %}
