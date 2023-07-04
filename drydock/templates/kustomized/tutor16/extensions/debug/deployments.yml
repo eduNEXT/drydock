@@ -1,0 +1,103 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cms-debug
+  labels:
+    app.kubernetes.io/name: cms-debug
+  annotations:
+    argocd.argoproj.io/sync-wave: "5"
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: cms-debug
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: cms-debug
+    spec:
+      securityContext:
+        runAsUser: 0
+        runAsGroup: 0
+      containers:
+        - name: cms-debug
+          args: [./manage.py cms runserver 0.0.0.0:8000]
+          command: ["/bin/bash", "-c"]
+          image: {{ DOCKER_IMAGE_OPENEDX }}
+          env:
+          - name: SERVICE_VARIANT
+            value: cms
+          - name: DJANGO_SETTINGS_MODULE
+            value: cms.envs.tutor.production
+          ports:
+            - containerPort: 8000
+          volumeMounts:
+            - mountPath: /openedx/edx-platform/lms/envs/tutor/
+              name: settings-lms
+            - mountPath: /openedx/edx-platform/cms/envs/tutor/
+              name: settings-cms
+            - mountPath: /openedx/config
+              name: config
+          securityContext:
+            allowPrivilegeEscalation: false
+          stdin: true
+          tty: true
+      volumes:
+        - name: settings-lms
+          configMap:
+            name: openedx-settings-lms
+        - name: settings-cms
+          configMap:
+            name: openedx-settings-cms
+        - name: config
+          configMap:
+            name: openedx-config
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lms-debug
+  labels:
+    app.kubernetes.io/name: lms-debug
+  annotations:
+    argocd.argoproj.io/sync-wave: "5"
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: lms-debug
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: lms-debug
+    spec:
+      securityContext:
+        runAsUser: 0
+        runAsGroup: 0
+      containers:
+        - name: lms-debug
+          args: [./manage.py lms runserver 0.0.0.0:8000]
+          command: ["/bin/bash", "-c"]
+          image: {{ DOCKER_IMAGE_OPENEDX }}
+          ports:
+            - containerPort: 8000
+          volumeMounts:
+            - mountPath: /openedx/edx-platform/lms/envs/tutor/
+              name: settings-lms
+            - mountPath: /openedx/edx-platform/cms/envs/tutor/
+              name: settings-cms
+            - mountPath: /openedx/config
+              name: config
+          securityContext:
+            allowPrivilegeEscalation: false
+          stdin: true
+          tty: true
+      volumes:
+        - name: settings-lms
+          configMap:
+            name: openedx-settings-lms
+        - name: settings-cms
+          configMap:
+            name: openedx-settings-cms
+        - name: config
+          configMap:
+            name: openedx-config

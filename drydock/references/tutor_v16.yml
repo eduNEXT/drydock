@@ -1,0 +1,10 @@
+#
+# The tutor16 reference.
+---
+drydock:
+  builder_class:  drydock.manifest_builder.application.manifest_builder.ManifestBuilder
+  config_class: drydock.manifest_builder.infrastructure.tutor_config.TutorExtendedConfig
+  manifest_class: drydock.manifest_builder.infrastructure.flex_tutor_manifest.FlexibleTutorManifest
+  manifest_options:
+    output: "manifest-output"
+    tutor_templates_version: "kustomized/tutor16"

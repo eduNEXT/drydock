@@ -45,14 +45,14 @@ class BaseManifests(ManifestRepository):
 
     def render(self, root: str, config: DrydockConfig) -> None:
         """Register drydock custom templates and render a tutor env."""
-        with hooks.Contexts.APP("drydock-base").enter():
+        with hooks.Contexts.app("drydock-base").enter():
             hooks.Filters.ENV_TEMPLATE_ROOTS.add_item(pkg_resources.resource_filename("drydock", "templates"))
             hooks.Filters.ENV_TEMPLATE_TARGETS.add_items(
                 [(target, "drydock") for target in self.template_targets],
             )
         tutor_env.save(root, config.get_data())
-        hooks.Filters.ENV_TEMPLATE_ROOTS.clear(context=hooks.Contexts.APP("drydock-base").name)
-        hooks.Filters.ENV_TEMPLATE_TARGETS.clear(context=hooks.Contexts.APP("drydock-base").name)
+        hooks.Filters.ENV_TEMPLATE_ROOTS.clear(context=hooks.Contexts.app("drydock-base").name)
+        hooks.Filters.ENV_TEMPLATE_TARGETS.clear(context=hooks.Contexts.app("drydock-base").name)
 
     def relocate_env(self, src: str, dst: str) -> None:
         """Moves the drydock rendered templates and tutor plugins to src.
