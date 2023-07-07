@@ -4,7 +4,6 @@ kind: Kustomization
 resources:
 - k8s/namespace.yml
 - k8s/deployments.yml
-- k8s/jobs.yml
 - k8s/services.yml
 - k8s/volumes.yml
 {{ patch("kustomization-resources") }}
