@@ -1,0 +1,80 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: lms-job
+  labels:
+    app.kubernetes.io/component: job
+    drydock.io/target-service: lms
+    drydock.io/runner-service: lms
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
+    argocd.argoproj.io/hook: Sync
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+spec:
+  ttlSecondsAfterFinished: 100
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: lms
+        image: {{ DOCKER_IMAGE_OPENEDX }}
+        command: ["/bin/sh", "-c"]
+        args:
+        - |
+          dockerize -wait tcp://{{ MYSQL_HOST }}:{{ MYSQL_PORT }} -timeout 20s
+          {%- if MONGODB_HOST.startswith("mongodb+srv://") %}
+          echo "MongoDB is using SRV records, so we cannot wait for it to be ready"
+          {%- else %}
+          dockerize -wait tcp://{{ MONGODB_HOST }}:{{ MONGODB_PORT }} -timeout 20s
+          {%- endif %}
+
+          echo "Loading settings $DJANGO_SETTINGS_MODULE"
+
+          ./manage.py lms migrate
+
+          # Create oauth2 apps for CMS SSO
+          # https://github.com/openedx/edx-platform/blob/master/docs/guides/studio_oauth.rst
+          ./manage.py lms manage_user {{ DRYDOCK_CMS_SSO_USER }} {{ DRYDOCK_CMS_SSO_USER }}@openedx --unusable-password
+          ./manage.py lms create_dot_application \
+            --grant-type authorization-code \
+            --redirect-uris "{% if ENABLE_HTTPS %}https{% else %}http{% endif %}://{{ CMS_HOST }}/complete/edx-oauth2/" \
+            --client-id {{ CMS_OAUTH2_KEY_SSO }} \
+            --client-secret {{ CMS_OAUTH2_SECRET }} \
+            --scopes user_id \
+            --skip-authorization \
+            --update cms-sso {{ DRYDOCK_CMS_SSO_USER }}
+
+          # Fix incorrect uploaded file path
+          if [ -d /openedx/data/uploads/ ]; then
+            if [ -n "$(ls -A /openedx/data/uploads/)" ]; then
+              echo "Migrating LMS uploaded files to shared directory"
+              mv /openedx/data/uploads/* /openedx/media/
+              rm -rf /openedx/data/uploads/
+            fi
+          fi
+
+          # Create waffle switches to enable some features, if they have not been explicitly defined before
+          # Completion tracking: add green ticks to every completed unit
+          (./manage.py lms waffle_switch --list | grep completion.enable_completion_tracking) || ./manage.py lms waffle_switch --create completion.enable_completion_tracking on
+        env:
+        - name: SERVICE_VARIANT
+          value: lms
+        - name: DJANGO_SETTINGS_MODULE
+          value: lms.envs.tutor.production
+        volumeMounts:
+          - mountPath: /openedx/edx-platform/lms/envs/tutor/
+            name: settings-lms
+          - mountPath: /openedx/edx-platform/cms/envs/tutor/
+            name: settings-cms
+          - mountPath: /openedx/config
+            name: config
+      volumes:
+      - name: settings-lms
+        configMap:
+          name: openedx-settings-lms
+      - name: settings-cms
+        configMap:
+          name: openedx-settings-cms
+      - name: config
+        configMap:
+          name: openedx-config

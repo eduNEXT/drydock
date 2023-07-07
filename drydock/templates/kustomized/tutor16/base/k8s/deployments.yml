@@ -1,0 +1,483 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: caddy
+  labels:
+    app.kubernetes.io/name: caddy
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: caddy
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: caddy
+    spec:
+      {%- if ENABLE_WEB_PROXY %}
+      # This Deployment uses a persistent volume claim. This requires
+      # that in order to enable rolling updates (i.e. use a deployment
+      # strategy other than Replace), we schedule the new Pod to the
+      # same node as the original Pod.
+      affinity:
+        podAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                - key: app.kubernetes.io/name
+                  operator: In
+                  values:
+                    - caddy
+              topologyKey: "kubernetes.io/hostname"
+      {%- endif %}
+      containers:
+        - name: caddy
+          image: {{ DOCKER_IMAGE_CADDY }}
+          env:
+          - name: default_site_port
+            value: "{% if not ENABLE_HTTPS or not ENABLE_WEB_PROXY %}:80{% endif %}"
+          volumeMounts:
+            - mountPath: /etc/caddy/
+              name: config
+            {%- if ENABLE_WEB_PROXY %}
+            - mountPath: /data/
+              name: data
+            {%- endif %}
+          ports:
+            - containerPort: 80
+            {%- if ENABLE_WEB_PROXY %}
+            - containerPort: 443
+            {%- endif %}
+      volumes:
+        - name: config
+          configMap:
+            name: caddy-config
+        {%- if ENABLE_WEB_PROXY %}
+        - name: data
+          persistentVolumeClaim:
+            claimName: caddy
+        {%- endif %}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cms
+  labels:
+    app.kubernetes.io/name: cms
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: cms
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: cms
+    spec:
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+      containers:
+        - name: cms
+          image: {{ DOCKER_IMAGE_OPENEDX }}
+          env:
+          - name: SERVICE_VARIANT
+            value: cms
+          - name: DJANGO_SETTINGS_MODULE
+            value: cms.envs.tutor.production
+          - name: UWSGI_WORKERS
+            value: "{{ OPENEDX_CMS_UWSGI_WORKERS }}"
+          ports:
+            - containerPort: 8000
+          volumeMounts:
+            - mountPath: /openedx/edx-platform/lms/envs/tutor/
+              name: settings-lms
+            - mountPath: /openedx/edx-platform/cms/envs/tutor/
+              name: settings-cms
+            - mountPath: /openedx/config
+              name: config
+            - mountPath: /openedx/edx-platform/uwsgi.ini
+              name: uwsgi-config
+              subPath: uwsgi.ini
+          resources:
+            requests:
+              memory: 2Gi
+          securityContext:
+            allowPrivilegeEscalation: false
+      volumes:
+        - name: settings-lms
+          configMap:
+            name: openedx-settings-lms
+        - name: settings-cms
+          configMap:
+            name: openedx-settings-cms
+        - name: config
+          configMap:
+            name: openedx-config
+        - name: uwsgi-config
+          configMap:
+            name: openedx-uwsgi-config
+            items:
+              - key: uwsgi.ini
+                path: uwsgi.ini
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cms-worker
+  labels:
+    app.kubernetes.io/name: cms-worker
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: cms-worker
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: cms-worker
+    spec:
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+      containers:
+        - name: cms-worker
+          image: {{ DOCKER_IMAGE_OPENEDX }}
+          args: ["celery", "--app=cms.celery", "worker", "--loglevel=info", "--hostname=edx.cms.core.default.%%h", "--max-tasks-per-child", "100", "--exclude-queues=edx.lms.core.default"]
+          env:
+          - name: SERVICE_VARIANT
+            value: cms
+          - name: DJANGO_SETTINGS_MODULE
+            value: cms.envs.tutor.production
+          volumeMounts:
+            - mountPath: /openedx/edx-platform/lms/envs/tutor/
+              name: settings-lms
+            - mountPath: /openedx/edx-platform/cms/envs/tutor/
+              name: settings-cms
+            - mountPath: /openedx/config
+              name: config
+          securityContext:
+            allowPrivilegeEscalation: false
+      volumes:
+        - name: settings-lms
+          configMap:
+            name: openedx-settings-lms
+        - name: settings-cms
+          configMap:
+            name: openedx-settings-cms
+        - name: config
+          configMap:
+            name: openedx-config
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lms
+  labels:
+    app.kubernetes.io/name: lms
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: lms
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: lms
+    spec:
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+      containers:
+        - name: lms
+          image: {{ DOCKER_IMAGE_OPENEDX }}
+          env:
+          - name: SERVICE_VARIANT
+            value: lms
+          - name: DJANGO_SETTINGS_MODULE
+            value: lms.envs.tutor.production
+          - name: UWSGI_WORKERS
+            value: "{{ OPENEDX_LMS_UWSGI_WORKERS }}"
+          ports:
+            - containerPort: 8000
+          volumeMounts:
+            - mountPath: /openedx/edx-platform/lms/envs/tutor/
+              name: settings-lms
+            - mountPath: /openedx/edx-platform/cms/envs/tutor/
+              name: settings-cms
+            - mountPath: /openedx/config
+              name: config
+            - mountPath: /openedx/edx-platform/uwsgi.ini
+              name: uwsgi-config
+              subPath: uwsgi.ini
+          resources:
+            requests:
+              memory: 2Gi
+          securityContext:
+            allowPrivilegeEscalation: false
+      volumes:
+        - name: settings-lms
+          configMap:
+            name: openedx-settings-lms
+        - name: settings-cms
+          configMap:
+            name: openedx-settings-cms
+        - name: config
+          configMap:
+            name: openedx-config
+        - name: uwsgi-config
+          configMap:
+            name: openedx-uwsgi-config
+            items:
+            - key: uwsgi.ini
+              path: uwsgi.ini
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lms-worker
+  labels:
+    app.kubernetes.io/name: lms-worker
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: lms-worker
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: lms-worker
+    spec:
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+      containers:
+        - name: lms-worker
+          image: {{ DOCKER_IMAGE_OPENEDX }}
+          args: ["celery", "--app=lms.celery", "worker", "--loglevel=info", "--hostname=edx.lms.core.default.%%h", "--max-tasks-per-child=100", "--exclude-queues=edx.cms.core.default"]
+          env:
+          - name: SERVICE_VARIANT
+            value: lms
+          - name: DJANGO_SETTINGS_MODULE
+            value: lms.envs.tutor.production
+          volumeMounts:
+            - mountPath: /openedx/edx-platform/lms/envs/tutor/
+              name: settings-lms
+            - mountPath: /openedx/edx-platform/cms/envs/tutor/
+              name: settings-cms
+            - mountPath: /openedx/config
+              name: config
+          securityContext:
+            allowPrivilegeEscalation: false
+      volumes:
+        - name: settings-lms
+          configMap:
+            name: openedx-settings-lms
+        - name: settings-cms
+          configMap:
+            name: openedx-settings-cms
+        - name: config
+          configMap:
+            name: openedx-config
+{% if RUN_ELASTICSEARCH %}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: elasticsearch
+  labels:
+    app.kubernetes.io/name: elasticsearch
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: elasticsearch
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: elasticsearch
+    spec:
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: "OnRootMismatch"
+      containers:
+        - name: elasticsearch
+          image: {{ DOCKER_IMAGE_ELASTICSEARCH }}
+          env:
+            - name: cluster.name
+              value: "openedx"
+            - name: bootstrap.memory_lock
+              value: "true"
+            - name: discovery.type
+              value: "single-node"
+            - name: ES_JAVA_OPTS
+              value: "-Xms{{ ELASTICSEARCH_HEAP_SIZE }} -Xmx{{ ELASTICSEARCH_HEAP_SIZE }}"
+            - name: TAKE_FILE_OWNERSHIP
+              value: "1"
+          ports:
+            - containerPort: 9200
+          securityContext:
+            allowPrivilegeEscalation: false
+          volumeMounts:
+            - mountPath: /usr/share/elasticsearch/data
+              name: data
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: elasticsearch
+{% endif %}
+{% if RUN_MONGODB %}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongodb
+  labels:
+    app.kubernetes.io/name: mongodb
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: mongodb
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: mongodb
+    spec:
+      securityContext:
+        runAsUser: 999
+        runAsGroup: 999
+        fsGroup: 999
+        fsGroupChangePolicy: "OnRootMismatch"
+      containers:
+        - name: mongodb
+          image: {{ DOCKER_IMAGE_MONGODB }}
+          args: ["mongod", "--nojournal", "--storageEngine", "wiredTiger"]
+          ports:
+            - containerPort: 27017
+          volumeMounts:
+            - mountPath: /data/db
+              name: data
+          securityContext:
+            allowPrivilegeEscalation: false
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: mongodb
+{% endif %}
+{% if RUN_MYSQL %}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql
+  labels:
+    app.kubernetes.io/name: mysql
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: mysql
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: mysql
+    spec:
+      securityContext:
+        runAsUser: 999
+        runAsGroup: 999
+        fsGroup: 999
+        fsGroupChangePolicy: "OnRootMismatch"
+      containers:
+        - name: mysql
+          image: {{ DOCKER_IMAGE_MYSQL }}
+          args: ["mysqld", "--character-set-server=utf8", "--collation-server=utf8_general_ci"]
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: "{{ MYSQL_ROOT_PASSWORD }}"
+          ports:
+            - containerPort: 3306
+          volumeMounts:
+            - mountPath: /var/lib/mysql
+              name: data
+          securityContext:
+            allowPrivilegeEscalation: false
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: mysql
+{% endif %}
+{% if RUN_SMTP %}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: smtp
+  labels:
+    app.kubernetes.io/name: smtp
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: smtp
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: smtp
+    spec:
+      securityContext:
+        runAsUser: 100
+        runAsGroup: 101
+      containers:
+        - name: smtp
+          image: {{ DOCKER_IMAGE_SMTP }}
+          ports:
+            - containerPort: 8025
+{% endif %}
+{% if RUN_REDIS %}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis
+  labels:
+    app.kubernetes.io/name: redis
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: redis
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: redis
+    spec:
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: "OnRootMismatch"
+      containers:
+        - name: redis
+          image: {{ DOCKER_IMAGE_REDIS }}
+          args: ["redis-server", "/openedx/redis/config/redis.conf"]
+          workingDir: /openedx/redis/data
+          ports:
+            - containerPort: {{ REDIS_PORT }}
+          volumeMounts:
+            - mountPath: /openedx/redis/config/
+              name: config
+            - mountPath: /openedx/redis/data
+              name: data
+          securityContext:
+            allowPrivilegeEscalation: false
+      volumes:
+        - name: config
+          configMap:
+            name: redis-config
+        - name: data
+          persistentVolumeClaim:
+            claimName: redis
+{% endif %}
+{{ patch("k8s-deployments") }}
