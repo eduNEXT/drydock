@@ -8,6 +8,7 @@ import tempfile
 from os.path import join as path_join
 
 import pkg_resources
+from packaging import version
 from tutor import env as tutor_env
 from tutor import fmt, hooks
 from tutor.exceptions import TutorError
@@ -44,7 +45,10 @@ class BaseManifests(ManifestRepository):
     ]
 
     def _get_hook_context_app(self, app_name):
-        if int(tutor_env.__version__.split(".")[0]) > 16:
+        """Get the hook context for the given app name."""
+
+        tutor_version = version.parse(tutor_env.__version__)
+        if tutor_version > version.parse("15"):
             return hooks.Contexts.app(app_name)
         return hooks.Contexts.APP(app_name)
 
