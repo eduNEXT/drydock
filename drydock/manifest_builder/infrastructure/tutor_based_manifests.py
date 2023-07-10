@@ -8,6 +8,7 @@ import tempfile
 from os.path import join as path_join
 
 import pkg_resources
+from packaging import version
 from tutor import env as tutor_env
 from tutor import fmt, hooks
 from tutor.exceptions import TutorError
@@ -43,16 +44,26 @@ class BaseManifests(ManifestRepository):
             f"{self.template_root}/kustomization.yml",
     ]
 
+    def _get_hook_context_app(self, app_name):
+        """Get the hook context for the given app name."""
+
+        tutor_version = version.parse(tutor_env.__version__)
+        if tutor_version > version.parse("15"):
+            return hooks.Contexts.app(app_name)
+        return hooks.Contexts.APP(app_name)
+
     def render(self, root: str, config: DrydockConfig) -> None:
         """Register drydock custom templates and render a tutor env."""
-        with hooks.Contexts.app("drydock-base").enter():
+
+        hook_context = self._get_hook_context_app("drydock-base")
+        with hook_context.enter():
             hooks.Filters.ENV_TEMPLATE_ROOTS.add_item(pkg_resources.resource_filename("drydock", "templates"))
             hooks.Filters.ENV_TEMPLATE_TARGETS.add_items(
                 [(target, "drydock") for target in self.template_targets],
             )
         tutor_env.save(root, config.get_data())
-        hooks.Filters.ENV_TEMPLATE_ROOTS.clear(context=hooks.Contexts.app("drydock-base").name)
-        hooks.Filters.ENV_TEMPLATE_TARGETS.clear(context=hooks.Contexts.app("drydock-base").name)
+        hooks.Filters.ENV_TEMPLATE_ROOTS.clear(context=hook_context.name)
+        hooks.Filters.ENV_TEMPLATE_TARGETS.clear(context=hook_context.name)
 
     def relocate_env(self, src: str, dst: str) -> None:
         """Moves the drydock rendered templates and tutor plugins to src.
