@@ -5,11 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://github.com/eduNEXT/drydock/compare/v0.7.0...HEAD)
+## [Unreleased](https://github.com/eduNEXT/drydock/compare/v0.7.1...HEAD)
 
 Please do not update the unreleased notes.
 
 <!-- Content should be placed here -->
+## [v0.7.1](https://github.com/eduNEXT/drydock/compare/v0.7.0...v0.7.1) - 2023-07-10
+
+### [0.7.1](https://github.com/eduNEXT/drydock/compare/v0.7.0...v0.7.1) (2023-07-10)
+
+### Bug Fixes
+
+- drydock fails in older versions to tutor palm ([#43](https://github.com/eduNEXT/drydock/issues/43)) ([c3c5e0a](https://github.com/eduNEXT/drydock/commit/c3c5e0a30f3d5f672a170f567568c59e4d16f0d3))
+
 ## [v0.7.0](https://github.com/eduNEXT/drydock/compare/v0.6.1...v0.7.0) - 2023-07-07
 
 ### [0.7.0](https://github.com/eduNEXT/drydock/compare/v0.6.1...v0.7.0) (2023-07-07)
