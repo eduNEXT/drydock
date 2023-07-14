@@ -48,7 +48,7 @@ class BaseManifests(ManifestRepository):
         """Get the hook context for the given app name."""
 
         tutor_version = version.parse(tutor_env.__version__)
-        if tutor_version > version.parse("15"):
+        if tutor_version >= version.parse("16"):
             return hooks.Contexts.app(app_name)
         return hooks.Contexts.APP(app_name)
 
