@@ -4,22 +4,22 @@ set -eo pipefail
 
 FILENAME="$(date +'%Y-%m-%d').gz"
 
+MONGODB_URI="mongodb://"
+MONGODB_PORT=${MONGODB_PORT:-27017}
+MONGODB_HOST=${MONGODB_HOST:-mongodb}
+MONGODB_AUTHDB=${MONGODB_AUTHDB:-admin}
+
+if [ -n "${MONGODB_USERNAME}" ] && [ -n "${MONGODB_PASSWORD}" ]; then
+    MONGODB_URI+="${MONGODB_USERNAME}:${MONGODB_PASSWORD}@"
+fi
+
+MONGODB_URI+="${MONGODB_HOST}:${MONGODB_PORT}/${MONGODB_DATABASES}?authSource=${MONGODB_AUTHDB}"
+
 if [ "$1" = 'mysql' ]; then
-      echo "1"
       mysqldump -u $MYSQL_ROOT_USERNAME -h $MYSQL_HOST -P $MYSQL_PORT --password=$MYSQL_ROOT_PASSWORD \
             --all-databases --single-transaction --flush-logs | gzip > $FILENAME
 elif [ "$1" = 'mongo' ]; then
-      if [[ -z "${MONGODB_USERNAME}" ]]; then
-            mongodump \
-            --host $MONGODB_HOST:$MONGODB_PORT \
-            -d $MONGODB_DATABASES --gzip \
-            --archive=$FILENAME
-      else
-            mongodump --username $MONGODB_USERNAME --password $MONGODB_PASSWORD --authenticationDatabase=admin \
-            --host $MONGODB_HOST:$MONGODB_PORT \
-            -d $MONGODB_DATABASES --gzip \
-            --archive=$FILENAME
-      fi
+      mongodump --uri="${MONGODB_URI}" --gzip --archive=$FILENAME
 else
     echo "Unknown database type"
     exit 1
