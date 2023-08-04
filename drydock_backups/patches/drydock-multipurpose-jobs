@@ -100,7 +100,7 @@ spec:
                 - name: MONGODB_PASSWORD
                   value: '{{ BACKUP_MONGO_PASSWORD }}'
                 - name: MONGODB_DATABASES
-                  value: '{{ MONGODB_DATABASE }}'
+                  value: '{{ BACKUP_MONGODB_DATABASE }}'
                 - name: AWS_ACCESS_KEY_ID
                   value: '{{ BACKUP_AWS_ACCESS_KEY }}'
                 - name: AWS_SECRET_ACCESS_KEY
