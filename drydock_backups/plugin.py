@@ -13,7 +13,7 @@ from .__about__ import __version__
 config = {
     "defaults": {
         "VERSION": __version__,
-        "IMAGE": "ednxops/shipyard-utils:v1.0.0",
+        "IMAGE": "ednxops/shipyard-utils:v1.1.0",
         "CRON_SCHEDULE": '0 2 * * *',
         "AWS_ACCESS_KEY": "",
         "AWS_SECRET_KEY": "",

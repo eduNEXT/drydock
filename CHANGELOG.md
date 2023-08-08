@@ -5,11 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://github.com/eduNEXT/drydock/compare/v0.7.2...HEAD)
+## [Unreleased](https://github.com/eduNEXT/drydock/compare/v0.7.3...HEAD)
 
 Please do not update the unreleased notes.
 
 <!-- Content should be placed here -->
+## [v0.7.3](https://github.com/eduNEXT/drydock/compare/v0.7.2...v0.7.3) - 2023-08-08
+
+### [0.7.3](https://github.com/eduNEXT/drydock/compare/v0.7.2...v0.7.3) (2023-08-08)
+
+### Bug Fixes
+
+- set the correct path to use pvc volume ([#45](https://github.com/eduNEXT/drydock/issues/45)) ([6f9189c](https://github.com/eduNEXT/drydock/commit/6f9189c64699f9bbedbcc03d2ee2152ed58bdb2e))
+
 ## [v0.7.2](https://github.com/eduNEXT/drydock/compare/v0.7.1...v0.7.2) - 2023-07-14
 
 ### [0.7.2](https://github.com/eduNEXT/drydock/compare/v0.7.1...v0.7.2) (2023-07-14)
