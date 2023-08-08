@@ -16,6 +16,8 @@ RUN echo "backupuser ALL=(ALL) NOPASSWD: /usr/bin/mysql, /usr/bin/mongodump" >> 
 
 USER backupuser
 
-WORKDIR /home/backupuser
+WORKDIR /data
 
-RUN echo
+COPY docker-entrypoint.sh /usr/local/bin/
+
+ENTRYPOINT ["docker-entrypoint.sh"]

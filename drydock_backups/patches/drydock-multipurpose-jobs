@@ -15,6 +15,11 @@ spec:
     spec:
       template:
         spec:
+          securityContext:
+            runAsUser: 1000
+            runAsGroup: 1000
+            fsGroup: 1000
+            fsGroupChangePolicy: "OnRootMismatch"
           restartPolicy: OnFailure
           containers:
             - name: backup
@@ -45,11 +50,8 @@ spec:
                 - mountPath: /data/
                   name: backup-volume
               {% endif %}
-              command: ["/bin/sh", "-c"]
-              args: ["FILENAME=$(date +'%Y-%m-%d').sql.gz && \
-                    mysqldump -u $MYSQL_ROOT_USERNAME -h $MYSQL_HOST -P $MYSQL_PORT \
-                    --password=$MYSQL_ROOT_PASSWORD --all-databases --single-transaction --flush-logs \
-                    | gzip > $FILENAME && aws {% if BACKUP_CUSTOM_STORAGE_ENDPOINT %} --endpoint-url $BACKUP_CUSTOM_STORAGE_ENDPOINT {% endif %} s3 mv $FILENAME s3://$S3_BUCKET_NAME/$BUCKET_PATH/mysql/"]
+              args:
+                - mysql
           {% if BACKUP_K8S_USE_EPHEMERAL_VOLUMES %}
           volumes:
             - name: backup-volume
@@ -79,6 +81,11 @@ spec:
     spec:
       template:
         spec:
+          securityContext:
+            runAsUser: 1000
+            runAsGroup: 1000
+            fsGroup: 1000
+            fsGroupChangePolicy: "OnRootMismatch"
           restartPolicy: OnFailure
           containers:
             - name: backup
@@ -93,7 +100,7 @@ spec:
                 - name: MONGODB_PASSWORD
                   value: '{{ BACKUP_MONGO_PASSWORD }}'
                 - name: MONGODB_DATABASES
-                  value: '{{ MONGODB_DATABASE }}'
+                  value: '{{ BACKUP_MONGODB_DATABASE }}'
                 - name: AWS_ACCESS_KEY_ID
                   value: '{{ BACKUP_AWS_ACCESS_KEY }}'
                 - name: AWS_SECRET_ACCESS_KEY
@@ -111,12 +118,8 @@ spec:
                 - mountPath: /data/
                   name: backup-volume
               {% endif %}
-              command: ["/bin/sh", "-c"]
-              args: ["FILENAME=$(date +'%Y-%m-%d').gz && \
-              mongodump {% if MONGODB_USERNAME %} --username $MONGODB_USERNAME --password $MONGODB_PASSWORD --authenticationDatabase=admin {% endif %}\
-              --host $MONGODB_HOST:$MONGODB_PORT \
-              -d $MONGODB_DATABASES --gzip \
-              --archive=$FILENAME && aws {% if BACKUP_CUSTOM_STORAGE_ENDPOINT %} --endpoint-url $BACKUP_CUSTOM_STORAGE_ENDPOINT {% endif %} s3 mv $FILENAME s3://$S3_BUCKET_NAME/$BUCKET_PATH/mongo/"]
+              args:
+                - mongo
           {% if BACKUP_K8S_USE_EPHEMERAL_VOLUMES %}
           volumes:
             - name: backup-volume
