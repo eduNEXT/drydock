@@ -28,5 +28,5 @@ fi
 if [[ -z "${BACKUP_CUSTOM_STORAGE_ENDPOINT}" ]]; then
       aws s3 mv $FILENAME s3://$S3_BUCKET_NAME/$BUCKET_PATH/$1/
 else
-      aws -endpoint-url $BACKUP_CUSTOM_STORAGE_ENDPOINT s3 mv $FILENAME s3://$S3_BUCKET_NAME/$BUCKET_PATH/$1/
+      aws --endpoint-url $BACKUP_CUSTOM_STORAGE_ENDPOINT s3 mv $FILENAME s3://$S3_BUCKET_NAME/$BUCKET_PATH/$1/
 fi
