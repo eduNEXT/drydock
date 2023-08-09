@@ -22,8 +22,11 @@ spec:
         runAsGroup: 0
       containers:
         - name: cms-debug
-          args: [./manage.py cms runserver 0.0.0.0:8000]
-          command: ["/bin/bash", "-c"]
+          args: 
+            - ./manage.py cms runserver 0.0.0.0:8000 --insecure
+          command: 
+            - "/bin/bash"
+            - "-c"
           image: {{ DOCKER_IMAGE_OPENEDX }}
           env:
           - name: SERVICE_VARIANT
@@ -76,8 +79,11 @@ spec:
         runAsGroup: 0
       containers:
         - name: lms-debug
-          args: [./manage.py lms runserver 0.0.0.0:8000]
-          command: ["/bin/bash", "-c"]
+          args: 
+            - ./manage.py lms runserver 0.0.0.0:8000 --insecure
+          command: 
+            - "/bin/bash"
+            - "-c"
           image: {{ DOCKER_IMAGE_OPENEDX }}
           env:
           - name: SERVICE_VARIANT
