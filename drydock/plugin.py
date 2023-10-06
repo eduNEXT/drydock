@@ -36,6 +36,7 @@ config = {
         "FORUM_OVERRIDES": {
             "MONGOID_AUTH_SOURCE": "{{ FORUM_MONGODB_DATABASE }}"
         },
+        "GRACEFUL_UWSGI": False,
     },
     # Add here settings that don't have a reasonable default for all users. For
     # instance: passwords, secret keys, etc.
