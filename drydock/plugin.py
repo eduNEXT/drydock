@@ -29,6 +29,8 @@ config = {
         "CUSTOM_CERTS": {},
         "DEBUG": False,
         "ENABLE_CELERY_TUNING": False,
+        "ENABLE_MULTITENANCY": False,
+        "ENABLE_SCORM": False,
     },
     # Add here settings that don't have a reasonable default for all users. For
     # instance: passwords, secret keys, etc.

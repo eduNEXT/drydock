@@ -1,0 +1,17 @@
+{% if DRYDOCK_ENABLE_SCORM -%}
+@scorm_matcher {
+    path /scorm-proxy/*
+}
+route @scorm_matcher {
+{% if MINIO_HOST is defined %}
+    uri replace /scorm-proxy/ /{{ MINIO_BUCKET_NAME }}/
+    reverse_proxy minio:9000 {
+    header_up Host {{ MINIO_HOST }}
+{% else %}
+    uri /scorm-proxy/* strip_prefix /scorm-proxy
+    reverse_proxy https://{{ S3_STORAGE_BUCKET }}.s3.amazonaws.com {
+    header_up Host {{ S3_STORAGE_BUCKET }}.s3.amazonaws.com
+{% endif %}
+    }
+}
+{% endif %}
