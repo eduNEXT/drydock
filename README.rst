@@ -1,89 +1,48 @@
-drydock: a flexible manifest builder for Open edX
-=================================================
+Drydock
+=======
 
-**⚠️ Warning**: drydock is currently in an alpha stage and may suffer substantial changes
-while it transitions in to a stable stage.
+Drydock is an opinionated tool offering a set of Tutor plugins aiming to provide features that enhance the operation of OpenedX installations in Kubernetes. It is developed by `Edunext <https://www.edunext.co/>`_
 
+
+- A set of Kubernetes Jobs that replace the current tutor jobs with `ArgoCD Sync Waves <https://argo-cd.readthedocs.io/en/stable/user-guide/sync-waves/>`_ that allow for a more controlled deployment of openedx.
+- A set of Kustomization overrides adding `ArgoCD Sync Waves <https://argo-cd.readthedocs.io/en/stable/user-guide/sync-waves/>`_ annotations to needed additional resources such as debug, workers or hpa.
+- Backup cronjobs that allow backup of the MySQL and MongoDB databases.
+- Integration of New Relic monitoring
+- Add flower deployment for Celery
+- Add a custom nginx and cert-manager configuration
+- Add a set of debug resources to help diagnose issues
 
 Installation
 ------------
 
-::
+.. code-block:: bash
 
     tvm plugins install -e git+https://github.com/edunext/drydock#egg=drydock
     tutor plugins enable drydock
+    tutor config save
 
 Getting started
 ---------------
 
-Drydock aims to offer flexibility on the kind of environment you want to generate, for that reason
-you can chose different kind of implementations (of renderers?) depending on your needs. At the
-moment Drydock ships with a basic manifest builder that wraps the Kubernetes generated files by tutor
-in a Kustomize application with some useful extra resources.
+.. code-block:: bash
 
-To use drydock just use the reference that defines the implementation you want drydock to use and run:
-
-..  code:: bash
-
-    tutor drydock save -r reference.yml
-
-An example reference would look something like this:
-
-..  code:: yaml
-
-    drydock:
-      builder_class:  drydock.manifest_builder.application.manifest_builder.ManifestBuilder
-      config_class: drydock.manifest_builder.infrastructure.tutor_config.TutorConfig
-      manifest_class: drydock.manifest_builder.infrastructure.tutor_based_manifests.BaseManifests
-      manifest_options:
-        output: "drydock-environment"
-
-This will render the default drydock environment on the `drydock-environment` directory, allowing
-you to check the files onto version control and use tools for continuous deployment such as
-Flux or ArgoCD. The default environment is generated using Tutor and its templates, as a result
-it should be compatible with all the plugins, variables and patches.
-
-**Note:** If you are using module or yaml plugins in tutor and set ``manifest_options.output=env``
-you will have to define your ``TUTOR_PLUGINS_ROOT`` outside of your ``TUTOR_ROOT`` because 
-drydock will override your tutor env and erase your plugins.
+    tutor config save
 
 
-Extended builder
-~~~~~~~~~~~~~~~~
-Drydock also ships with an extended builder that adds the ability to use arbitrary
-templates as an extra overlay for the Kustomize app used by the base builder.
-To use it one must run drydock with the following reference:
+Configuration
+-------------
 
-..  code:: yaml
+The following configuration options are available:
 
-    ---
-    drydock:
-      builder_class:  drydock.manifest_builder.application.manifest_builder.ManifestBuilder
-      config_class: drydock.manifest_builder.infrastructure.tutor_config.TutorExtendedConfig
-      manifest_class: drydock.manifest_builder.infrastructure.tutor_based_manifests.ExtendedManifest
-      manifest_options:
-        output: "env"
-        extra_templates: extra_templates_root
-
-Where ``extra_templates_root`` points to the directory that holds your extra templates.
-In ``extra_templates_root`` you must include an directory named ``extra-extensions``.
-Inside ``extra-extensions`` you can write any template that you want but is meant to
-be used as a Kustomize overlay, therefore you will need at least a Kustomization.yml file.
-
-One use case is to use the extended builder to add helm chart definitions:
-
-..  code:: yaml
-
-    # extra_templates_root/extra-extensions/kustomization.yml
-    apiVersion: kustomize.config.k8s.io/v1beta1
-    kind: Kustomization
-
-    helmCharts:
-      - name: ingress-nginx
-        repo: https://kubernetes.github.io/ingress-nginx
-        namespace: ingress-nginx
-        version: 4.0.18
-        releaseName: ingress-nginxx
+- `DRYDOCK_INIT_JOBS`: Whether run the initialization jobs or not. Defaults to `false`.
+- `DRYDOCK_CMS_SSO_USER`: The username of the CMS SSO user. Defaults to `cms`.
+- `DRYDOCK_AUTO_TLS`: Whether to use cert-manager to automatically generate TLS certificates. Defaults to `false`.
+- `DRYDOCK_FLOWER`: Whether to deploy a flower deployment for celery. Defaults to `false`.
+- `DRYDOCK_INGRESS`: Whether to deploy an ingress for the LMS and CMS. Defaults to `false`.
+- `DRYDOCK_INGRESS_EXTRA_HOSTS`: A list of extra hosts to add to the ingress. Defaults to `[]`.
+- `DRYDOCK_CUSTOM_CERTS`: A dictionary of custom certificates to use with cert-manager. Defaults to `{}`.
+- `DRYDOCK_NEWRELIC_LICENSE_KEY`: The New Relic license key. Defaults to `""`.
+- `DRYDOCK_DEBUG`: Whether to deploy debug resources. Defaults to `false`.
 
 Rationale
 ---------
@@ -98,8 +57,6 @@ allows for such advanced customization options.
 This projects intends to fill that gap with a solution that should allow many
 community members to collaborate in one repo on the heavy toll that is the
 maintainance of openedx operations.
-
-
 
 License
 -------
