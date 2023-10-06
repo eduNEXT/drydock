@@ -28,9 +28,11 @@ config = {
         "NEWRELIC_LICENSE_KEY": "",
         "CUSTOM_CERTS": {},
         "DEBUG": False,
-        "ENABLE_CELERY_TUNING": False,
-        "ENABLE_MULTITENANCY": False,
-        "ENABLE_SCORM": False,
+        "ENABLE_CELERY_TUNING": True,
+        "ENABLE_MULTITENANCY": True,
+        "ENABLE_SCORM": True,
+        "ENABLE_SENTRY": True,
+        "SENTRY_DSN": "",
     },
     # Add here settings that don't have a reasonable default for all users. For
     # instance: passwords, secret keys, etc.
