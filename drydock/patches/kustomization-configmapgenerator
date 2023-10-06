@@ -1,0 +1,8 @@
+{% if DRYDOCK_NEWRELIC_LICENSE_KEY -%}
+- name: newrelic-cm
+  files:
+  - plugins/drydock/k8s/newrelic.ini
+  options:
+    labels:
+        app.kubernetes.io/name: openedx
+{% endif -%}

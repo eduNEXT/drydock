@@ -1,0 +1,48 @@
+patches:
+{% if DRYDOCK_NEWRELIC_LICENSE_KEY %}
+- target:
+    kind: Deployment
+    name: lms
+  path: plugins/drydock/k8s/newrelic.yml
+{% endif -%}
+- target:
+    kind: Job
+    labelSelector: app.kubernetes.io/component=job
+  patch: |-
+    - op: add
+      path: /metadata/annotations
+      value:
+        argocd.argoproj.io/hook: Skip
+        argocd.argoproj.io/hook-delete-policy: HookFailed
+    - op: add
+      path: /spec
+      value:
+        ttlSecondsAfterFinished: 100
+# Patch the sync waves
+- target:
+    kind: Deployment
+    name:  "lms-worker|cms-worker|forum"
+  patch: |-
+    - op: add
+      path: /metadata/annotations
+      value:
+        argocd.argoproj.io/sync-wave: "4"
+{%- if DRYDOCK_DEBUG is defined and DRYDOCK_DEBUG %}
+- target:
+    kind: Deployment|Ingress|Service
+    name:  "cms-debug|lms-debug|ingress-debug"
+  patch: |-
+    - op: add
+      path: /metadata/annotations
+      value:
+        argocd.argoproj.io/sync-wave: "5"
+{%- endif %}
+{%- if POD_AUTOSCALING_LMS_HPA is defined and POD_AUTOSCALING_LMS_HPA %}
+- target:
+    kind: HorizontalPodAutoscaler
+  patch: |-
+    - op: add
+      path: /metadata/annotations
+      value:
+        argocd.argoproj.io/sync-wave: "5"
+{%- endif %}

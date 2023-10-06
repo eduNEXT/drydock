@@ -1,0 +1,26 @@
+- op: add
+  path: /spec/template/spec/containers/0/args
+  value:
+  - uwsgi
+  - uwsgi.ini
+- op: add
+  path: /spec/template/spec/containers/0/command
+  value:
+  - newrelic-admin
+  - run-program
+- op: add
+  path: /spec/template/spec/containers/0/env/0
+  value:
+    name: NEW_RELIC_CONFIG_FILE
+    value: /openedx/newrelic/newrelic.ini
+- op: add
+  path: /spec/template/spec/containers/0/volumeMounts/0
+  value:
+    mountPath: /openedx/newrelic/
+    name: newrelic-ini
+- op: add
+  path: /spec/template/spec/volumes/0
+  value:
+    configMap:
+      name: newrelic-cm
+    name: newrelic-ini

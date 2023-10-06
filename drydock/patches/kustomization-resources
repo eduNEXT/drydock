@@ -1,0 +1,20 @@
+- plugins/drydock/k8s/multipurpose-jobs.yml
+{%- if DRYDOCK_INIT_JOBS %}
+- plugins/drydock/k8s/drydock-jobs/mysql.yml
+- plugins/drydock/k8s/drydock-jobs/lms.yml
+- plugins/drydock/k8s/drydock-jobs/cms.yml
+- plugins/drydock/k8s/drydock-jobs/minio.yml
+- plugins/drydock/k8s/drydock-jobs/forum.yml
+- plugins/drydock/k8s/drydock-jobs/notes.yml
+{%- endif %}
+{% if DRYDOCK_FLOWER -%}
+- plugins/drydock/k8s/flower.yml
+{%- endif %}
+{% if DRYDOCK_INGRESS -%}
+- plugins/drydock/k8s/ingress.yml
+{%- endif %}
+{% if DRYDOCK_DEBUG -%}
+- plugins/drydock/k8s/debug/deployments.yml
+- plugins/drydock/k8s/debug/services.yml
+- plugins/drydock/k8s/debug/ingress.yml
+{%- endif %}
