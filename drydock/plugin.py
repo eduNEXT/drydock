@@ -33,6 +33,9 @@ config = {
         "ENABLE_SCORM": True,
         "ENABLE_SENTRY": True,
         "SENTRY_DSN": "",
+        "FORUM_OVERRIDES": {
+            "MONGOID_AUTH_SOURCE": "{{ FORUM_MONGODB_DATABASE }}"
+        },
     },
     # Add here settings that don't have a reasonable default for all users. For
     # instance: passwords, secret keys, etc.

@@ -87,3 +87,16 @@ patches:
       path: /spec/template/spec/terminationGracePeriodSeconds
       value: 300
 {% endif -%}
+{% if DRYDOCK_FORUM_OVERRIDES -%}
+- target:
+    kind: Deployment
+    name: forum
+  patch: |-
+    - op: add
+      path: /spec/template/spec/containers/0/env/-
+      value:
+{% for key, value in DRYDOCK_FORUM_OVERRIDES.items() %}
+        name: {{ key }}
+        value: {{ value }}
+{% endfor %}
+{% endif -%}
