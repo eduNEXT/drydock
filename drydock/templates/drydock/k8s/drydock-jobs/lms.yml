@@ -3,7 +3,7 @@ kind: Job
 metadata:
   name: drydock-lms-job
   labels:
-    shipyard.io/component: job
+    drydock.io/component: job
     drydock.io/target-service: lms
     drydock.io/runner-service: lms
   annotations:

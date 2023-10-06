@@ -4,7 +4,7 @@ kind: Job
 metadata:
   name: drydock-minio-job
   labels:
-    shipyard.io/component: job
+    drydock.io/component: job
     drydock.io/target-service: minio
     drydock.io/runner-service: minio
   annotations:

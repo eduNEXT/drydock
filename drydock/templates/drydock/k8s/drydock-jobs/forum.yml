@@ -4,7 +4,7 @@ kind: Job
 metadata:
   name: drydock-forum-job
   labels:
-    shipyard.io/component: job
+    drydock.io/component: job
     drydock.io/target-service: forum
     drydock.io/runner-service: forum
   annotations:

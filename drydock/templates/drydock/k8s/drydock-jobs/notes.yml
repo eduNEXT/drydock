@@ -4,7 +4,7 @@ kind: Job
 metadata:
   name: drydock-notes-job-mysql
   labels:
-    shipyard.io/component: job
+    drydock.io/component: job
     drydock.io/target-service: notes
     drydock.io/runner-service: mysql
   annotations:
