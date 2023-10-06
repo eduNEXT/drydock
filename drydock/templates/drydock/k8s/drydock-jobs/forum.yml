@@ -1,0 +1,46 @@
+{%- if FORUM_DOCKER_IMAGE is defined %}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: drydock-forum-job
+  labels:
+    drydock.io/component: job
+    drydock.io/target-service: forum
+    drydock.io/runner-service: forum
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
+    argocd.argoproj.io/hook: Sync
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+spec:
+  ttlSecondsAfterFinished: 100
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: forum
+        image: {{ FORUM_DOCKER_IMAGE }}
+        args:
+          - sh
+          - -e
+          - -c
+          - 'bundle exec rake search:initialize
+
+            bundle exec rake search:rebuild_indices'
+        env:
+          - name: SEARCH_SERVER
+            value: "{{ ELASTICSEARCH_SCHEME }}://{{ ELASTICSEARCH_HOST }}:{{ ELASTICSEARCH_PORT }}"
+          - name: MONGODB_AUTH
+            value: "{% if MONGODB_USERNAME and MONGODB_PASSWORD %}{{ MONGODB_USERNAME}}:{{ MONGODB_PASSWORD }}@{% endif %}"
+          - name: MONGODB_HOST
+            value: "{{ MONGODB_HOST }}"
+          - name: MONGODB_PORT
+            value: "{{ MONGODB_PORT }}"
+          - name: MONGODB_DATABASE
+            value: "{{ FORUM_MONGODB_DATABASE }}"
+          - name: MONGOID_USE_SSL
+            value: "{{ 'true' if MONGODB_USE_SSL else 'false' }}"
+          - name: MONGOID_AUTH_SOURCE
+            value: "{{MONGODB_AUTH_SOURCE}}"
+          - name: MONGOID_AUTH_MECH
+            value: "{{ MONGODB_AUTH_MECHANISM|auth_mech_as_ruby }}"
+{%- endif %}
