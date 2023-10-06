@@ -12,11 +12,11 @@ EOX_CORE_SENTRY_IGNORED_ERRORS: [
   },
   {
     "exc_class": "opaque_keys.InvalidKeyError",
-    "exc_text": ["*No enrollment found for user*"]
+    "exc_text": [".*No enrollment found for user.*"]
   },
   {
-    "exc_class": "opaque_keys.InvalidKeyError",
-    "exc_text": ["*No course found by course id*"]
+    "exc_class": "opaque_keys.NotFoundError",
+    "exc_text": [".*No course found by course id.*"]
   },
 ]
 {% endif %}

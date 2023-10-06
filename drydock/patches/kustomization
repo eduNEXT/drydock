@@ -47,58 +47,9 @@ patches:
         argocd.argoproj.io/sync-wave: "5"
 {%- endif %}
 {% if DRYDOCK_ENABLE_CELERY_TUNING %}
-- target:
-    kind: Deployment
-    name:  "cms-worker"
-  patch: |-
-    - op: add
-      path: /spec/template/spec/containers/0/args
-      value:
-      - celery
-      - --app=cms.celery
-      - worker
-      - --loglevel=info
-      - --concurrency=1
-      - --hostname=edx.cms.core.default.%%h
-      - --max-tasks-per-child=1
-      - --prefetch-multiplier=1
-      - --exclude-queues=edx.lms.core.default
-- target:
-    kind: Deployment
-    name:  "lms-worker"
-  patch: |-
-    - op: add
-      path: /spec/template/spec/containers/0/args
-      value:
-      - celery
-      - --app=lms.celery
-      - worker
-      - --loglevel=info
-      - --concurrency=1
-      - --hostname=edx.lms.core.default.%%h
-      - --max-tasks-per-child=1
-      - --prefetch-multiplier=1
-      - --exclude-queues=edx.cms.core.default
-- target:
-    kind: Deployment
-    name:  "lms-worker|cms-worker"
-  patch: |-
-    - op: add
-      path: /spec/template/spec/terminationGracePeriodSeconds
-      value: 300
-{% endif -%}
-{% if DRYDOCK_FORUM_OVERRIDES -%}
-- target:
-    kind: Deployment
-    name: forum
-  patch: |-
-    - op: add
-      path: /spec/template/spec/containers/0/env/-
-      value:
-{% for key, value in DRYDOCK_FORUM_OVERRIDES.items() %}
-        name: {{ key }}
-        value: {{ value }}
-{% endfor %}
+- path: plugins/drydock/k8s/celery-lms.yml
+- path: plugins/drydock/k8s/celery-cms.yml
+- path: plugins/drydock/k8s/forum-overrides.yml
 {% endif -%}
 {% if DRYDOCK_GRACEFUL_UWSGI -%}
 - target:

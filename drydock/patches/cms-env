@@ -8,15 +8,15 @@ EOX_CORE_SENTRY_INTEGRATION_DSN: "{{ DRYDOCK_SENTRY_DSN }}"
 EOX_CORE_SENTRY_IGNORED_ERRORS: [
     {
     "exc_class": "openedx.core.djangoapps.user_authn.exceptions.AuthFailedError",
-    "exc_text": ["*Email or password is incorrect"]
+    "exc_text": [".*Email or password is incorrect"]
     },
     {
     "exc_class": "opaque_keys.InvalidKeyError",
-    "exc_text": ["*No enrollment found for user*"]
+    "exc_text": [".*No enrollment found for user.*"]
     },
     {
-    "exc_class": "opaque_keys.InvalidKeyError",
-    "exc_text": ["*No course found by course id*"]
+    "exc_class": "opaque_keys.NotFoundError",
+    "exc_text": [".*No course found by course id.*"]
     },
 ]
 {% endif %}

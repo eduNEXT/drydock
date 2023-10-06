@@ -1,0 +1,14 @@
+{% if FORUM_DOCKER_IMAGE is defined -%}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: forum
+spec:
+  template:
+    spec:
+      containers:
+        - name: forum
+          env:
+            - name: MONGOID_AUTH_SOURCE
+              value: "{{ FORUM_MONGODB_DATABASE }}"
+{% endif -%}
