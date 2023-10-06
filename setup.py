@@ -13,7 +13,7 @@ def load_readme():
 def load_about():
     about = {}
     with io.open(
-        os.path.join(HERE, "tutor_plugin", "__about__.py"),
+        os.path.join(HERE, "drydock", "__about__.py"),
         "rt",
         encoding="utf-8",
     ) as f:
@@ -34,7 +34,7 @@ setup(
     },
     license="AGPLv3",
     author="eduNEXT",
-    description="Manifest builder for k8s Open edX hosting",
+    description="A Tutor plugin to manage our opinionated Open edX operations",
     long_description=load_readme(),
     packages=find_packages(exclude=["tests*"]),
     include_package_data=True,
@@ -42,7 +42,7 @@ setup(
     install_requires=["tutor", "packaging"],
     entry_points={
         "tutor.plugin.v1": [
-            "drydock = tutor_plugin.plugin",
+            "drydock = drydock.plugin",
             "drydock-backups = drydock_backups.plugin",
         ]
     },
