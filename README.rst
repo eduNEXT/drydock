@@ -43,6 +43,12 @@ The following configuration options are available:
 - `DRYDOCK_CUSTOM_CERTS`: A dictionary of custom certificates to use with cert-manager. Defaults to `{}`.
 - `DRYDOCK_NEWRELIC_LICENSE_KEY`: The New Relic license key. Defaults to `""`.
 - `DRYDOCK_DEBUG`: Whether to deploy debug resources. Defaults to `false`.
+- `DRYDOCK_ENABLE_CELERY_TUNING` : Whether to enable celery tuning. Defaults to `true`.
+- `DRYDOCK_ENABLE_MULTITENANCY` : Whether to enable multitennacy. Defaults to `true`.
+- `DRYDOCK_ENABLE_SCORM` : Whether to enable scorm. Defaults to `true`.
+- `DRYDOCK_ENABLE_SENTRY` : Whether to enable sentry. Defaults to `true`.
+- `DRYDOCK_SENTRY_DSN` : The sentry DSN. Defaults to `""`.
+- `DRYDOCK_GRACEFUL_UWSGI` : Whether to enable graceful uwsgi. Defaults to `false`.
 
 Rationale
 ---------
