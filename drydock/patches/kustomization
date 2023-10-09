@@ -47,8 +47,8 @@ patches:
         argocd.argoproj.io/sync-wave: "5"
 {%- endif %}
 {% if DRYDOCK_ENABLE_CELERY_TUNING %}
-- path: plugins/drydock/k8s/celery-lms.yml
-- path: plugins/drydock/k8s/celery-cms.yml
+- path: plugins/drydock/k8s/graceful-uwsgi/uwsgi-lms.yml
+- path: plugins/drydock/k8s/graceful-uwsgi/uwsgi-cms.yml
 - path: plugins/drydock/k8s/forum-overrides.yml
 {% endif -%}
 {% if DRYDOCK_GRACEFUL_UWSGI -%}
