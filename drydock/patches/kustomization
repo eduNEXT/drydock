@@ -5,6 +5,11 @@ patches:
     name: lms
   path: plugins/drydock/k8s/newrelic.yml
 {% endif -%}
+- path: plugins/drydock/k8s/forum-overrides.yml
+{% if DRYDOCK_POD_LIFECYCLE -%}
+- path: plugins/drydock/k8s/lifecycle/lms.yml
+- path: plugins/drydock/k8s/lifecycle/cms.yml
+{% endif -%}
 - target:
     kind: Job
     labelSelector: app.kubernetes.io/component=job
@@ -46,3 +51,7 @@ patches:
       value:
         argocd.argoproj.io/sync-wave: "5"
 {%- endif %}
+{% if DRYDOCK_ENABLE_CELERY_TUNING %}
+- path: plugins/drydock/k8s/celery/cms-worker.yml
+- path: plugins/drydock/k8s/celery/lms-worker.yml
+{% endif -%}

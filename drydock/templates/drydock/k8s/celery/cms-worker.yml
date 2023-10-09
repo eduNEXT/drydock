@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cms-worker
+spec:
+  template:
+    spec:
+      terminationGracePeriodSeconds: 300
+      containers:
+        - name: cms-worker
+          args:
+            - celery
+            - --app=cms.celery
+            - worker
+            - --loglevel=info
+            - --concurrency=1
+            - --hostname=edx.cms.core.default.%%h
+            - --max-tasks-per-child=1
+            - --prefetch-multiplier=1
+            - --exclude-queues=edx.lms.core.default
