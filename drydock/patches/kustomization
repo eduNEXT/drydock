@@ -5,6 +5,9 @@ patches:
     name: lms
   path: plugins/drydock/k8s/newrelic.yml
 {% endif -%}
+- path: plugins/drydock/k8s/forum-overrides.yml
+- path: plugins/drydock/k8s/probes/lms.yml
+- path: plugins/drydock/k8s/probes/cms.yml
 - target:
     kind: Job
     labelSelector: app.kubernetes.io/component=job
@@ -47,59 +50,6 @@ patches:
         argocd.argoproj.io/sync-wave: "5"
 {%- endif %}
 {% if DRYDOCK_ENABLE_CELERY_TUNING %}
-- path: plugins/drydock/k8s/graceful-uwsgi/uwsgi-lms.yml
-- path: plugins/drydock/k8s/graceful-uwsgi/uwsgi-cms.yml
-- path: plugins/drydock/k8s/forum-overrides.yml
-{% endif -%}
-{% if DRYDOCK_GRACEFUL_UWSGI -%}
-- target:
-    kind: Deployment
-    name: lms|cms
-  patch: |-
-    - op: add
-      path: /spec/template/spec/containers/0/lifecycle
-      value:
-        preStop:
-          exec:
-            command:
-            - /bin/sh
-            - -c
-            - sleep 30
-    - op: add
-      path: /spec/template/spec/terminationGracePeriodSeconds
-      value: 60
-- target:
-    kind: Deployment
-    name: lms
-  patch: |-
-    - op: add
-      path: /spec/template/spec/containers/0/startupProbe
-      value:
-        httpGet:
-          httpHeaders:
-          - name: Host
-            value: {{ LMS_HOST }}
-          path: /heartbeat
-          port: 8000
-        initialDelaySeconds: 5
-        periodSeconds: 5
-        failureThreshold: 5
-        timeoutSeconds: 3
-- target:
-    kind: Deployment
-    name: cms
-  patch: |-
-    - op: add
-      path: /spec/template/spec/containers/0/startupProbe
-      value:
-        httpGet:
-          httpHeaders:
-          - name: Host
-            value: {{ CMS_HOST }}
-          path: /heartbeat
-          port: 8000
-        initialDelaySeconds: 5
-        periodSeconds: 5
-        failureThreshold: 5
-        timeoutSeconds: 3
+- path: plugins/drydock/k8s/celery/cms-worker.yml
+- path: plugins/drydock/k8s/celery/lms-worker.yml
 {% endif -%}

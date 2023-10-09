@@ -12,6 +12,14 @@ Drydock is an opinionated tool offering a set of Tutor plugins aiming to provide
 - Add a custom nginx and cert-manager configuration
 - Add a set of debug resources to help diagnose issues
 
+Extra plugins added:
+
+- A patch that allows for the tuning of celery workers via `DRYDOCK_ENABLE_CELERY_TUNING`
+- Allows caddy to catch requests for multiple domains through `DRYDOCK_ENABLE_MULTITENANCY`
+- Add scorm matcher to caddy through `DRYDOCK_ENABLE_SCORM`
+- A patch that allows for the use of sentry via `DRYDOCK_ENABLE_SENTRY` and `DRYDOCK_SENTRY_DSN`
+- Patch for cms and lms worker pods to allow pod probes, lifecycle and readiness probes to work properly
+
 Installation
 ------------
 
@@ -48,7 +56,6 @@ The following configuration options are available:
 - `DRYDOCK_ENABLE_SCORM` : Whether to enable scorm. Defaults to `true`.
 - `DRYDOCK_ENABLE_SENTRY` : Whether to enable sentry. Defaults to `true`.
 - `DRYDOCK_SENTRY_DSN` : The sentry DSN. Defaults to `""`.
-- `DRYDOCK_GRACEFUL_UWSGI` : Whether to enable graceful uwsgi. Defaults to `false`.
 
 Rationale
 ---------
