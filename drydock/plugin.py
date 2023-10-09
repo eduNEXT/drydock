@@ -33,7 +33,6 @@ config = {
         "ENABLE_SCORM": True,
         "ENABLE_SENTRY": True,
         "SENTRY_DSN": "",
-        "GRACEFUL_UWSGI": False,
         "POD_LIFECYCLE": True,
     },
     # Add here settings that don't have a reasonable default for all users. For

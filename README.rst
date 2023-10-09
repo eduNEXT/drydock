@@ -18,7 +18,7 @@ Extra plugins added:
 - Allows caddy to catch requests for multiple domains through `DRYDOCK_ENABLE_MULTITENANCY`
 - Add scorm matcher to caddy through `DRYDOCK_ENABLE_SCORM`
 - A patch that allows for the use of sentry via `DRYDOCK_ENABLE_SENTRY` and `DRYDOCK_SENTRY_DSN`
-- Patch for cms and lms worker pods to allow pod probes, lifecycle and readiness probes to work properly. Enabled via `DRYDOCK_POD_LIFECYCLE`
+- Patch for cms and lms worker pods to allow pod probes and lifecycle to work properly. Enabled via `DRYDOCK_POD_LIFECYCLE`
 
 Installation
 ------------
