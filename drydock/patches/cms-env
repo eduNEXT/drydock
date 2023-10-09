@@ -7,6 +7,9 @@ CELERY_ACKS_LATE: true
 EOX_CORE_SENTRY_INTEGRATION_DSN: "{{ DRYDOCK_SENTRY_DSN }}"
 EOX_CORE_SENTRY_IGNORED_ERRORS: [
     {
+      "exc_class": "xmodule.exceptions.NotFoundError"
+    },
+    {
     "exc_class": "openedx.core.djangoapps.user_authn.exceptions.AuthFailedError",
     "exc_text": [".*Email or password is incorrect"]
     },
