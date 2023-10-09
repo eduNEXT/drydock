@@ -6,8 +6,10 @@ patches:
   path: plugins/drydock/k8s/newrelic.yml
 {% endif -%}
 - path: plugins/drydock/k8s/forum-overrides.yml
-- path: plugins/drydock/k8s/probes/lms.yml
-- path: plugins/drydock/k8s/probes/cms.yml
+{% if DRYDOCK_POD_LIFECYCLE -%}
+- path: plugins/drydock/k8s/licycle/lms.yml
+- path: plugins/drydock/k8s/licycle/cms.yml
+{% endif -%}
 - target:
     kind: Job
     labelSelector: app.kubernetes.io/component=job
