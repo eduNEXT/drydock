@@ -9,6 +9,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Please do not update the unreleased notes.
 
+## [v15.0.0](https://github.com/eduNEXT/drydock/compare/v0.7.3...v15.0.0) - 2023-10-09
+
+### [15.0.0](https://github.com/eduNEXT/drydock/compare/v0.7.3...v15.0.0) (2023-10-09)
+
+#### Features
+
+- drydock refactor to work without reference logic and enable tutor cli via skipping tutor jobs instead of delete them. ([#47](https://github.com/eduNEXT/drydock/pull/47)) ([5b09240](https://github.com/eduNEXT/drydock/commit/5b0924017f474d364bb4b919e703b89955a713a2))
+- add plugins extra, extracted from namespace template ([#48](https://github.com/eduNEXT/drydock/pull/48)) ([36c033f](https://github.com/eduNEXT/drydock/commit/36c033faecf7c3ebc701a085cb33e55629910d88))
+
 <!-- Content should be placed here -->
 ## [v0.7.3](https://github.com/eduNEXT/drydock/compare/v0.7.2...v0.7.3) - 2023-08-08
 
