@@ -27,11 +27,7 @@ patches:
 - target:
     kind: Deployment|Ingress|Service
     name:  "cms-debug|lms-debug|ingress-debug"
-  patch: |-
-    - op: add
-      path: /metadata/annotations
-      value:
-        argocd.argoproj.io/sync-wave: "5"
+  path: plugins/drydock/k8s/patches/debug-resources.yml
 {%- endif %}
 - target:
     kind: HorizontalPodAutoscaler
