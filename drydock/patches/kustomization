@@ -38,7 +38,6 @@ patches:
       value:
         argocd.argoproj.io/sync-wave: "5"
 {%- endif %}
-{%- if POD_AUTOSCALING_LMS_HPA is defined and POD_AUTOSCALING_LMS_HPA %}
 - target:
     kind: HorizontalPodAutoscaler
   patch: |-
@@ -46,7 +45,6 @@ patches:
       path: /metadata/annotations
       value:
         argocd.argoproj.io/sync-wave: "5"
-{%- endif %}
 {% if DRYDOCK_ENABLE_CELERY_TUNING %}
 - path: plugins/drydock/k8s/celery/cms-worker.yml
 - path: plugins/drydock/k8s/celery/lms-worker.yml
