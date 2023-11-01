@@ -1,5 +1,5 @@
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: not-used
+kind: not-used
 metadata:
   name: not-used
   annotations:
