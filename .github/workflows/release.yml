@@ -40,7 +40,7 @@ jobs:
         with:
           branch: ${{ github.ref }}
           commit_message: "chore(release): preparing ${{ steps.tag_version.outputs.new_version }}"
-          file_pattern: CHANGELOG.md setup.cfg drydock/* tutor_plugin/*
+          file_pattern: CHANGELOG.md setup.cfg drydock/*
   release:
     needs: bumpversion
     if: needs.bumpversion.outputs.version
