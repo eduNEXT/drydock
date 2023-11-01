@@ -1,0 +1,6 @@
+apiVersion: not-used
+kind: HorizontalPodAutoscaler
+metadata:
+  name: not-used
+  annotations:
+    argocd.argoproj.io/sync-wave: "5"

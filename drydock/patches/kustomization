@@ -18,11 +18,7 @@ patches:
 - target:
     kind: Deployment
     name:  "lms-worker|cms-worker|forum"
-  patch: |-
-    - op: add
-      path: /metadata/annotations
-      value:
-        argocd.argoproj.io/sync-wave: "4"
+  path: plugins/drydock/k8s/patches/async-forum-deployments.yml
 {%- if DRYDOCK_DEBUG is defined and DRYDOCK_DEBUG %}
 - target:
     kind: Deployment|Ingress|Service
@@ -31,11 +27,7 @@ patches:
 {%- endif %}
 - target:
     kind: HorizontalPodAutoscaler
-  patch: |-
-    - op: add
-      path: /metadata/annotations
-      value:
-        argocd.argoproj.io/sync-wave: "5"
+  path: plugins/drydock/k8s/patches/hpa.yml
 {% if DRYDOCK_ENABLE_CELERY_TUNING %}
 - path: plugins/drydock/k8s/celery/cms-worker.yml
 - path: plugins/drydock/k8s/celery/lms-worker.yml
