@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://github.com/eduNEXT/drydock/compare/v0.7.3...HEAD)
+## [Unreleased](https://github.com/eduNEXT/drydock/compare/v15.1.0...HEAD)
 
 Please do not update the unreleased notes.
 
@@ -19,6 +19,19 @@ Please do not update the unreleased notes.
 - add plugins extra, extracted from namespace template ([#48](https://github.com/eduNEXT/drydock/pull/48)) ([36c033f](https://github.com/eduNEXT/drydock/commit/36c033faecf7c3ebc701a085cb33e55629910d88))
 
 <!-- Content should be placed here -->
+## [v15.1.0](https://github.com/eduNEXT/drydock/compare/v0.7.3...v15.1.0) - 2023-11-01
+
+### [15.1.0](https://github.com/eduNEXT/drydock/compare/v15.0.0...v15.1.0) (2023-11-01)
+
+#### Features
+
+- replacing Kustomize JSON patches with strategic merge patches. ([65a4b70](https://github.com/eduNEXT/drydock/commit/65a4b70367fd3ffead87695445b1a1be0acd9c3c))
+
+#### Bug Fixes
+
+- removing inexistent folder from github actions release flow ([81f3a06](https://github.com/eduNEXT/drydock/commit/81f3a0699f6043d7fccb140dd97db1c98ad08286))
+- using Github PAT to bypass main branch protection ([ad40e6a](https://github.com/eduNEXT/drydock/commit/ad40e6a256bed62551e8f7436f43ae7841264776))
+
 ## [v0.7.3](https://github.com/eduNEXT/drydock/compare/v0.7.2...v0.7.3) - 2023-08-08
 
 ### [0.7.3](https://github.com/eduNEXT/drydock/compare/v0.7.2...v0.7.3) (2023-08-08)
