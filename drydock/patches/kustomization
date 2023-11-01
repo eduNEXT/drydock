@@ -19,10 +19,6 @@ patches:
       value:
         argocd.argoproj.io/hook: Skip
         argocd.argoproj.io/hook-delete-policy: HookFailed
-    - op: add
-      path: /spec
-      value:
-        ttlSecondsAfterFinished: 100
 # Patch the sync waves
 - target:
     kind: Deployment
