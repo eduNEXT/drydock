@@ -13,12 +13,7 @@ patches:
 - target:
     kind: Job
     labelSelector: app.kubernetes.io/component=job
-  patch: |-
-    - op: add
-      path: /metadata/annotations
-      value:
-        argocd.argoproj.io/hook: Skip
-        argocd.argoproj.io/hook-delete-policy: HookFailed
+  path: plugins/drydock/k8s/patches/tutor-jobs.yml
 # Patch the sync waves
 - target:
     kind: Deployment
