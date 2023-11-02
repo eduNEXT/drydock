@@ -1,0 +1,23 @@
+{% if DRYDOCK_AUTO_TLS -%}
+---
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: letsencrypt
+  namespace: {{ K8S_NAMESPACE }}
+  labels:
+    app.kubernetes.io/name: letsencrypt
+spec:
+  acme:
+    # Let's Encrypt will use this to contact you about expiring
+    # certificates, and issues related to your account.
+    email: {{ DRYDOCK_LETSENCRYPT_EMAIL|default(CONTACT_EMAIL) }}
+    # Secret resource that will be used to store the account's private key.
+    privateKeySecretRef:
+      name: {{ K8S_NAMESPACE }}-letsencrypt-account-key
+    server: https://acme-v02.api.letsencrypt.org/directory
+    solvers:
+    - http01:
+        ingress:
+          class: nginx
+{% endif -%}

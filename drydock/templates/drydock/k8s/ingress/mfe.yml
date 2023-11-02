@@ -1,0 +1,35 @@
+{%- if MFE_HOST is defined %}
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-mfe
+  namespace: {{ K8S_NAMESPACE }}
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    {%- if DRYDOCK_AUTO_TLS and not DRYDOCK_CUSTOM_CERTS%}
+    cert-manager.io/issuer: letsencrypt
+    {%- endif %}
+spec:
+  rules:
+  - host: {{ MFE_HOST }}
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: {% if DRYDOCK_BYPASS_CADDY -%}notes{% else -%}caddy{% endif %}
+            port:
+              number: 80
+  {% if DRYDOCK_AUTO_TLS or DRYDOCK_CUSTOM_CERTS -%}
+  tls:
+  - hosts:
+    - {{ MFE_HOST }}
+    {% if DRYDOCK_CUSTOM_CERTS -%}
+    secretName: {{ DRYDOCK_CUSTOM_CERTS["secret_name"]|default("custom-tls-certs") }}
+    {% else -%}
+    secretName: mfe-host-tls
+    {%- endif %}
+  {%- endif %}
+{%- endif %}
