@@ -20,14 +20,14 @@ spec:
           service:
             name: {% if DRYDOCK_BYPASS_CADDY -%}cms{% else -%}caddy{% endif %}
             port:
-              number: 80
-  {% if DRYDOCK_AUTO_TLS or DRYDOCK_CUSTOM_CERTS -%}
+              number: {% if DRYDOCK_BYPASS_CADDY -%}8000{% else -%}80{% endif %}
+  {%- if DRYDOCK_AUTO_TLS or DRYDOCK_CUSTOM_CERTS %}
   tls:
   - hosts:
     - {{ CMS_HOST }}
-    {% if DRYDOCK_CUSTOM_CERTS -%}
+    {%- if DRYDOCK_CUSTOM_CERTS %}
     secretName: {{ DRYDOCK_CUSTOM_CERTS["secret_name"]|default("custom-tls-certs") }}
-    {% else -%}
+    {%- else %}
     secretName: cms-host-tls
     {%- endif %}
   {%- endif %}
