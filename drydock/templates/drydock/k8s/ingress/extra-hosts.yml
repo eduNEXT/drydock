@@ -1,5 +1,4 @@
 {%- for host in DRYDOCK_INGRESS_EXTRA_HOSTS %}
-{%- if host != MFE_HOST %}
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -33,5 +32,4 @@ spec:
     secretName: {{ host|replace(".", "-") }}-tls
     {%- endif %}
   {%- endif %}
-{%- endif %}
 {%- endfor %}
