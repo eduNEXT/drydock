@@ -28,6 +28,7 @@ config = {
         "NEWRELIC_LICENSE_KEY": "",
         "CUSTOM_CERTS": {},
         "DEBUG": False,
+        "LETSENCRYPT_EMAIL": None,
         "ENABLE_CELERY_TUNING": True,
         "ENABLE_MULTITENANCY": True,
         "ENABLE_SCORM": True,

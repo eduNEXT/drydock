@@ -11,7 +11,7 @@ spec:
   acme:
     # Let's Encrypt will use this to contact you about expiring
     # certificates, and issues related to your account.
-    email: {{ DRYDOCK_LETSENCRYPT_EMAIL|default(CONTACT_EMAIL) }}
+    email: {{ DRYDOCK_LETSENCRYPT_EMAIL|default(CONTACT_EMAIL, true) }}
     # Secret resource that will be used to store the account's private key.
     privateKeySecretRef:
       name: {{ K8S_NAMESPACE }}-letsencrypt-account-key
