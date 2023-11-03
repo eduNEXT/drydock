@@ -4,8 +4,8 @@ kind: Ingress
 metadata:
   name: ingress-lms
   namespace: {{ K8S_NAMESPACE }}
-  {%- if DRYDOCK_AUTO_TLS and not DRYDOCK_CUSTOM_CERTS %}
   annotations:
+  {%- if DRYDOCK_AUTO_TLS and not DRYDOCK_CUSTOM_CERTS %}
     cert-manager.io/issuer: letsencrypt
   {%- endif %}
   {%- if DRYDOCK_ENABLE_SCORM and DRYDOCK_BYPASS_CADDY %}
@@ -88,11 +88,11 @@ metadata:
   name: ingress-lms-preview
   namespace: {{ K8S_NAMESPACE }}
   annotations:
-    kubernetes.io/ingress.class: nginx
-    {%- if DRYDOCK_AUTO_TLS and not DRYDOCK_CUSTOM_CERTS %}
+  {%- if DRYDOCK_AUTO_TLS and not DRYDOCK_CUSTOM_CERTS %}
     cert-manager.io/issuer: letsencrypt
-    {%- endif %}
+  {%- endif %}
 spec:
+  ingressClassName: nginx
   rules:
   - host: {{ PREVIEW_LMS_HOST }}
     http:

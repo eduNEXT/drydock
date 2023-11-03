@@ -4,10 +4,29 @@ kind: Ingress
 metadata:
   name: ingress-cms
   namespace: {{ K8S_NAMESPACE }}
-  {%- if DRYDOCK_AUTO_TLS and not DRYDOCK_CUSTOM_CERTS%}
   annotations:
+    {%- if DRYDOCK_AUTO_TLS and not DRYDOCK_CUSTOM_CERTS%}
     cert-manager.io/issuer: letsencrypt
     {%- endif %}
+    {%- if DRYDOCK_ENABLE_SCORM and DRYDOCK_BYPASS_CADDY %}
+    nginx.ingress.kubernetes.io/server-snippet: |
+      location /scorm-proxy {
+        proxy_http_version     1.1;
+        proxy_set_header       Connection "";
+        proxy_set_header       Authorization '';
+        proxy_set_header       Host {% if MINIO_HOST is defined %}{{ MINIO_HOST }}{% else %}{{ S3_STORAGE_BUCKET }}.s3.amazonaws.com{%- endif %};
+        proxy_hide_header      x-amz-id-2;
+        proxy_hide_header      x-amz-request-id;
+        proxy_hide_header      x-amz-meta-server-side-encryption;
+        proxy_hide_header      x-amz-server-side-encryption;
+        proxy_hide_header      Set-Cookie;
+        proxy_ignore_headers   Set-Cookie;
+        proxy_intercept_errors on;
+        add_header             Cache-Control max-age=31536000;
+        rewrite /scorm-proxy(.*) $1 break;
+        proxy_pass https://{%- if MINIO_HOST is defined %}{{ MINIO_HOST }}{% else %}{{ S3_STORAGE_BUCKET }}.s3.amazonaws.com{%- endif %};
+      }
+  {%- endif %}
 spec:
   ingressClassName: nginx
   rules:
