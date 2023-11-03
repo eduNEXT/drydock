@@ -20,7 +20,7 @@ spec:
           service:
             name: {% if DRYDOCK_BYPASS_CADDY -%}mfe{% else -%}caddy{% endif %}
             port:
-              number: {% if DRYDOCK_BYPASS_CADDY -%}9001{% else -%}80{% endif %}
+              number: {% if DRYDOCK_BYPASS_CADDY -%}8002{% else -%}80{% endif %}
       - pathType: Prefix
         path: "/"
         backend:
@@ -28,26 +28,33 @@ spec:
             name: {% if DRYDOCK_BYPASS_CADDY -%}lms{% else -%}caddy{% endif %}
             port:
               number: {% if DRYDOCK_BYPASS_CADDY -%}8000{% else -%}80{% endif %}
-  {%- for item in DRYDOCK_INGRESS_LMS_EXTRA_HOSTS %}
-  - host: {{ item.host }}
+      {{ patch("drydock-lms-extra-paths")|indent(6) }}
+  {%- for host in DRYDOCK_INGRESS_LMS_EXTRA_HOSTS %}
+  - host: {{ host }}
     http:
       paths:
-      {%- for path in item.paths %}
-      - path: {{ path }}
-        pathType: Prefix
+      - pathType: Prefix
+        path: "/learning"
+        backend:
+          service:
+            name: {% if DRYDOCK_BYPASS_CADDY -%}mfe{% else -%}caddy{% endif %}
+            port:
+              number: {% if DRYDOCK_BYPASS_CADDY -%}8002{% else -%}80{% endif %}
+      - pathType: Prefix
+        path: "/"
         backend:
           service:
             name: {% if DRYDOCK_BYPASS_CADDY -%}lms{% else -%}caddy{% endif %}
             port:
               number: {% if DRYDOCK_BYPASS_CADDY -%}8000{% else -%}80{% endif %}
-      {%- endfor %}
+      {{ patch("drydock-lms-extra-paths")|indent(6) }}
   {%- endfor %}
-  {% if DRYDOCK_AUTO_TLS or DRYDOCK_CUSTOM_CERTS -%}
+  {%- if DRYDOCK_AUTO_TLS or DRYDOCK_CUSTOM_CERTS %}
   tls:
   - hosts:
     - {{ LMS_HOST }}
-    {%- for item in DRYDOCK_INGRESS_LMS_EXTRA_HOSTS %}
-    - {{ item.host }}
+    {%- for host in DRYDOCK_INGRESS_LMS_EXTRA_HOSTS %}
+    - {{ host }}
     {%- endfor %}
     {%- if DRYDOCK_CUSTOM_CERTS %}
     secretName: {{ DRYDOCK_CUSTOM_CERTS["secret_name"]|default("custom-tls-certs") }}

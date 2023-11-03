@@ -21,7 +21,7 @@ spec:
           service:
             name: {% if DRYDOCK_BYPASS_CADDY -%}mfe{% else -%}caddy{% endif %}
             port:
-              number: {% if DRYDOCK_BYPASS_CADDY -%}{% else -%}80{% endif %}
+              number: {% if DRYDOCK_BYPASS_CADDY -%}8002{% else -%}80{% endif %}
   {%- if DRYDOCK_AUTO_TLS or DRYDOCK_CUSTOM_CERTS %}
   tls:
   - hosts:
