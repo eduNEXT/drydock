@@ -4,12 +4,12 @@ kind: Ingress
 metadata:
   name: ingress-lms
   namespace: {{ K8S_NAMESPACE }}
+  {%- if DRYDOCK_AUTO_TLS and not DRYDOCK_CUSTOM_CERTS %}
   annotations:
-    kubernetes.io/ingress.class: nginx
-    {%- if DRYDOCK_AUTO_TLS and not DRYDOCK_CUSTOM_CERTS %}
     cert-manager.io/issuer: letsencrypt
-    {%- endif %}
+  {%- endif %}
 spec:
+  ingressClassName: nginx
   rules:
   - host: {{ LMS_HOST }}
     http:
@@ -28,11 +28,27 @@ spec:
             name: {% if DRYDOCK_BYPASS_CADDY -%}lms{% else -%}caddy{% endif %}
             port:
               number: {% if DRYDOCK_BYPASS_CADDY -%}8000{% else -%}80{% endif %}
-  {{ patch("drydock-lms-ingress-rules")|indent(2) }}
+  {%- for item in DRYDOCK_INGRESS_LMS_EXTRA_HOSTS %}
+  - host: {{ item.host }}
+    http:
+      paths:
+      {%- for path in item.paths %}
+      - path: {{ path }}
+        pathType: Prefix
+        backend:
+          service:
+            name: {% if DRYDOCK_BYPASS_CADDY -%}lms{% else -%}caddy{% endif %}
+            port:
+              number: {% if DRYDOCK_BYPASS_CADDY -%}8000{% else -%}80{% endif %}
+      {%- endfor %}
+  {%- endfor %}
   {% if DRYDOCK_AUTO_TLS or DRYDOCK_CUSTOM_CERTS -%}
   tls:
   - hosts:
     - {{ LMS_HOST }}
+    {%- for item in DRYDOCK_INGRESS_LMS_EXTRA_HOSTS %}
+    - {{ item.host }}
+    {%- endfor %}
     {%- if DRYDOCK_CUSTOM_CERTS %}
     secretName: {{ DRYDOCK_CUSTOM_CERTS["secret_name"]|default("custom-tls-certs") }}
     {%- else %}
