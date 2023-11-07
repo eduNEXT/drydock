@@ -1,0 +1,116 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-lms
+  namespace: {{ K8S_NAMESPACE }}
+  annotations:
+  {%- if DRYDOCK_AUTO_TLS and not DRYDOCK_CUSTOM_CERTS %}
+    cert-manager.io/issuer: letsencrypt
+  {%- endif %}
+  {%- if DRYDOCK_ENABLE_SCORM and DRYDOCK_BYPASS_CADDY %}
+    nginx.ingress.kubernetes.io/server-snippet: |
+      location /scorm-proxy {
+        proxy_http_version     1.1;
+        proxy_set_header       Connection "";
+        proxy_set_header       Authorization '';
+        proxy_set_header       Host {% if MINIO_HOST is defined %}{{ MINIO_HOST }}{% else %}{{ S3_STORAGE_BUCKET }}.s3.amazonaws.com{%- endif %};
+        proxy_hide_header      x-amz-id-2;
+        proxy_hide_header      x-amz-request-id;
+        proxy_hide_header      x-amz-meta-server-side-encryption;
+        proxy_hide_header      x-amz-server-side-encryption;
+        proxy_hide_header      Set-Cookie;
+        proxy_ignore_headers   Set-Cookie;
+        proxy_intercept_errors on;
+        add_header             Cache-Control max-age=31536000;
+        rewrite /scorm-proxy(.*) $1 break;
+        proxy_pass https://{%- if MINIO_HOST is defined %}{{ MINIO_HOST }}{% else %}{{ S3_STORAGE_BUCKET }}.s3.amazonaws.com{%- endif %};
+      }
+  {%- endif %}
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: {{ LMS_HOST }}
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/learning"
+        backend:
+          service:
+            name: {% if DRYDOCK_BYPASS_CADDY -%}mfe{% else -%}caddy{% endif %}
+            port:
+              number: {% if DRYDOCK_BYPASS_CADDY -%}8002{% else -%}80{% endif %}
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: {% if DRYDOCK_BYPASS_CADDY -%}lms{% else -%}caddy{% endif %}
+            port:
+              number: {% if DRYDOCK_BYPASS_CADDY -%}8000{% else -%}80{% endif %}
+      {{ patch("drydock-lms-extra-paths")|indent(6) }}
+  {%- for host in DRYDOCK_INGRESS_LMS_EXTRA_HOSTS %}
+  - host: {{ host }}
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/learning"
+        backend:
+          service:
+            name: {% if DRYDOCK_BYPASS_CADDY -%}mfe{% else -%}caddy{% endif %}
+            port:
+              number: {% if DRYDOCK_BYPASS_CADDY -%}8002{% else -%}80{% endif %}
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: {% if DRYDOCK_BYPASS_CADDY -%}lms{% else -%}caddy{% endif %}
+            port:
+              number: {% if DRYDOCK_BYPASS_CADDY -%}8000{% else -%}80{% endif %}
+      {{ patch("drydock-lms-extra-paths")|indent(6) }}
+  {%- endfor %}
+  {%- if DRYDOCK_AUTO_TLS or DRYDOCK_CUSTOM_CERTS %}
+  tls:
+  - hosts:
+    - {{ LMS_HOST }}
+    {%- for host in DRYDOCK_INGRESS_LMS_EXTRA_HOSTS %}
+    - {{ host }}
+    {%- endfor %}
+    {%- if DRYDOCK_CUSTOM_CERTS %}
+    secretName: {{ DRYDOCK_CUSTOM_CERTS["secret_name"]|default("custom-tls-certs") }}
+    {%- else %}
+    secretName: lms-host-tls
+    {%- endif %}
+  {%- endif %}
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-lms-preview
+  namespace: {{ K8S_NAMESPACE }}
+  annotations:
+  {%- if DRYDOCK_AUTO_TLS and not DRYDOCK_CUSTOM_CERTS %}
+    cert-manager.io/issuer: letsencrypt
+  {%- endif %}
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: {{ PREVIEW_LMS_HOST }}
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: {% if DRYDOCK_BYPASS_CADDY -%}lms{% else -%}caddy{% endif %}
+            port:
+              number: {% if DRYDOCK_BYPASS_CADDY -%}8000{% else -%}80{% endif %}
+  {%- if DRYDOCK_AUTO_TLS or DRYDOCK_CUSTOM_CERTS %}
+  tls:
+  - hosts:
+    - {{ PREVIEW_LMS_HOST }}
+    {%- if DRYDOCK_CUSTOM_CERTS %}
+    secretName: {{ DRYDOCK_CUSTOM_CERTS["secret_name"]|default("custom-tls-certs") }}
+    {%- else %}
+    secretName: lms-preview-host-tls
+    {%- endif %}
+  {%- endif %}

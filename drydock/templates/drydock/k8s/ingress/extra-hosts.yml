@@ -1,0 +1,35 @@
+{%- for host in DRYDOCK_INGRESS_EXTRA_HOSTS %}
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-{{ host|replace(".", "-") }}-tls
+  namespace: {{ K8S_NAMESPACE }}
+  {%- if DRYDOCK_AUTO_TLS and not DRYDOCK_CUSTOM_CERTS%}
+  annotations:
+    cert-manager.io/issuer: letsencrypt
+  {%- endif %}
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: {{ host }}
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: caddy
+            port:
+              number: 80
+  {%- if DRYDOCK_AUTO_TLS or DRYDOCK_CUSTOM_CERTS %}
+  tls:
+  - hosts:
+    - {{ host }}
+    {%- if DRYDOCK_CUSTOM_CERTS %}
+    secretName: {{ DRYDOCK_CUSTOM_CERTS["secret_name"]|default("custom-tls-certs") }}
+    {%- else %}
+    secretName: {{ host|replace(".", "-") }}-tls
+    {%- endif %}
+  {%- endif %}
+{%- endfor %}
