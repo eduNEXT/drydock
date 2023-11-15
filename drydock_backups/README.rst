@@ -17,7 +17,7 @@ Configuration variables
 
 - **BACKUP_IMAGE**: The image used to run the cronjob. (default: `ednxops/shipyard-utils:v1.0.0`)
 - **BACKUP_CRON_SCHEDULE**: Cron schedule to run the backup. (default: `0 2 * * *`)
-- **BACKUPS_STORAGE_SERVICE**: Storage service to use. (default: `s3`) (options: `s3`, `azure`)
+- **BACKUPS_STORAGE_SERVICE**: Storage service to use. (default: `s3`) (options: `aws-s3`, `azure-blob`)
 - **BACKUP_AWS_ACCESS_KEY**: AWS access key to access the bucket or minIO user.
 - **BACKUP_AWS_SECRET_KEY**: AWS secret key to access the bucket or minIO password.
 - **BACKUP_BUCKET_NAME**: Name of the bucket where the backups will be stored.

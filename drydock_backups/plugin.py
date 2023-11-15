@@ -15,7 +15,7 @@ config = {
         "VERSION": __version__,
         "IMAGE": "ednxops/shipyard-utils:v1.1.0",
         "CRON_SCHEDULE": '0 2 * * *',
-        "BACKUPS_STORAGE_SERVICE": "s3",
+        "BACKUPS_STORAGE_SERVICE": "aws-s3",
         "AWS_ACCESS_KEY": "",
         "AWS_SECRET_KEY": "",
         "BUCKET_NAME": "",
