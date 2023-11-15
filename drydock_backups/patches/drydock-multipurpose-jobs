@@ -33,7 +33,7 @@ spec:
                   value: '{{ BACKUP_MYSQL_USERNAME }}'
                 - name: MYSQL_ROOT_PASSWORD
                   value: '{{ BACKUP_MYSQL_PASSWORD }}'
-                {% if BACKUPS_STORAGE_SERVICE == "s3" %}
+                {% if BACKUPS_STORAGE_SERVICE == "aws-s3" %}
                 - name: AWS_ACCESS_KEY_ID
                   value: '{{ BACKUP_AWS_ACCESS_KEY }}'
                 - name: AWS_SECRET_ACCESS_KEY
@@ -42,7 +42,7 @@ spec:
                   value: '{{ BACKUP_BUCKET_NAME }}'
                 - name: BUCKET_PATH
                   value: '{{ BACKUP_BUCKET_PATH }}'
-                {% elif BACKUPS_STORAGE_SERVICE == "azure" %}
+                {% elif BACKUPS_STORAGE_SERVICE == "azure-blob" %}
                 - name: AZURE_CONTAINER_NAME
                   value: '{{ BACKUP_AZURE_CONTAINER_NAME }}'
                 - name: AZURE_CONTAINER_SAS_TOKEN
