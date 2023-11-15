@@ -44,11 +44,11 @@ spec:
                   value: '{{ BACKUP_BUCKET_PATH }}'
                 {% elif BACKUPS_STORAGE_SERVICE == "azure" %}
                 - name: AZURE_CONTAINER_NAME
-                  value: '{{ AZURE_CONTAINER_NAME }}'
+                  value: '{{ BACKUP_AZURE_CONTAINER_NAME }}'
                 - name: AZURE_CONTAINER_SAS_TOKEN
-                  value: '{{ AZURE_CONTAINER_SAS_TOKEN }}'
+                  value: '{{ BACKUP_AZURE_CONTAINER_SAS_TOKEN }}'
                 - name: AZURE_ACCOUNT_NAME
-                  value: '{{ AZURE_ACCOUNT_NAME }}'
+                  value: '{{ BACKUP_AZURE_ACCOUNT_NAME }}'
                 {% endif %}
                 {% if BACKUP_CUSTOM_STORAGE_ENDPOINT %}
                 - name: BACKUP_CUSTOM_STORAGE_ENDPOINT
@@ -125,11 +125,11 @@ spec:
                   {% endif %}
                 {% elif BACKUPS_STORAGE_SERVICE == "azure" %}
                 - name: AZURE_CONTAINER_NAME
-                  value: '{{ AZURE_CONTAINER_NAME }}'
+                  value: '{{ BACKUP_AZURE_CONTAINER_NAME }}'
                 - name: AZURE_CONTAINER_SAS_TOKEN
-                  value: '{{ AZURE_CONTAINER_SAS_TOKEN }}'
+                  value: '{{ BACKUP_AZURE_CONTAINER_SAS_TOKEN }}'
                 - name: AZURE_ACCOUNT_NAME
-                  value: '{{ AZURE_ACCOUNT_NAME }}'
+                  value: '{{ BACKUP_AZURE_ACCOUNT_NAME }}'
                 {% endif %}
               {% if BACKUP_K8S_USE_EPHEMERAL_VOLUMES %}
               volumeMounts:
