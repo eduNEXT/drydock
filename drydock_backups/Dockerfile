@@ -14,6 +14,7 @@ RUN apt-get update && apt-get install -y \
 RUN wget -O /tmp/azcopy.tar.gz https://aka.ms/downloadazcopy-v10-linux \
     && tar -xvf /tmp/azcopy.tar.gz -C /tmp \
     && cp /tmp/azcopy_linux_amd64*/azcopy /usr/bin/ \
+    && chmod +x /usr/bin/azcopy \
     && rm -rf /tmp/azcopy*
 
 RUN useradd -m backupuser
