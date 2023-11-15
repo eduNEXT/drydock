@@ -110,7 +110,7 @@ spec:
                   value: '{{ BACKUP_MONGO_PASSWORD }}'
                 - name: MONGODB_DATABASES
                   value: '{{ BACKUP_MONGODB_DATABASE }}'
-                {% if BACKUP_STORAGE_SERVICE == "s3" %}
+                {% if BACKUP_STORAGE_SERVICE == "aws-s3" %}
                 - name: AWS_ACCESS_KEY_ID
                   value: '{{ BACKUP_AWS_ACCESS_KEY }}'
                 - name: AWS_SECRET_ACCESS_KEY
@@ -123,7 +123,7 @@ spec:
                 - name: BACKUP_CUSTOM_STORAGE_ENDPOINT
                   value: '{{ BACKUP_CUSTOM_STORAGE_ENDPOINT }}'
                   {% endif %}
-                {% elif BACKUP_STORAGE_SERVICE == "azure" %}
+                {% elif BACKUP_STORAGE_SERVICE == "azure-blob" %}
                 - name: AZURE_CONTAINER_NAME
                   value: '{{ BACKUP_AZURE_CONTAINER_NAME }}'
                 - name: AZURE_CONTAINER_SAS_TOKEN
