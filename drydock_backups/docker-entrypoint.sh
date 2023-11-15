@@ -32,7 +32,7 @@ if [ "$BACKUPS_STORAGE_SERVICE" = 's3' ]; then
             aws --endpoint-url $BACKUP_CUSTOM_STORAGE_ENDPOINT s3 mv $FILENAME s3://$S3_BUCKET_NAME/$BUCKET_PATH/$1/
       fi
 elif [ "$BACKUPS_STORAGE_SERVICE" = 'azure' ]; then
-      azcopy cp $FILENAME "https://${AZURE_STORAGE_ACCOUNT}.blob.core.windows.net/${AZURE_STORAGE_CONTAINER_NAME}/${1}/$FILENAME?${AZURE_STORAGE_SAS_TOKEN}"
+      azcopy cp $FILENAME "https://${AZURE_STORAGE_ACCOUNT}.blob.core.windows.net/${AZURE_STORAGE_CONTAINER_NAME}/$BUCKET_PATH/${1}/$FILENAME?${AZURE_STORAGE_SAS_TOKEN}"
 else
     echo "Unknown storage service"
     exit 1
