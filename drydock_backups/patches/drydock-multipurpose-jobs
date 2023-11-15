@@ -119,6 +119,10 @@ spec:
                   value: '{{ BACKUP_BUCKET_NAME }}'
                 - name: BUCKET_PATH
                   value: '{{ BACKUP_BUCKET_PATH }}'
+                  {% if BACKUP_CUSTOM_STORAGE_ENDPOINT %}
+                - name: BACKUP_CUSTOM_STORAGE_ENDPOINT
+                  value: '{{ BACKUP_CUSTOM_STORAGE_ENDPOINT }}'
+                  {% endif %}
                 {% elif BACKUPS_STORAGE_SERVICE == "azure" %}
                 - name: AZURE_CONTAINER_NAME
                   value: '{{ AZURE_CONTAINER_NAME }}'
@@ -127,10 +131,6 @@ spec:
                 - name: AZURE_ACCOUNT_NAME
                   value: '{{ AZURE_ACCOUNT_NAME }}'
                 {% endif %}
-                  {% if BACKUP_CUSTOM_STORAGE_ENDPOINT %}
-                - name: BACKUP_CUSTOM_STORAGE_ENDPOINT
-                  value: '{{ BACKUP_CUSTOM_STORAGE_ENDPOINT }}'
-                  {% endif %}
               {% if BACKUP_K8S_USE_EPHEMERAL_VOLUMES %}
               volumeMounts:
                 - mountPath: /data/
