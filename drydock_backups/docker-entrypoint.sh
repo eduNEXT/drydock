@@ -25,8 +25,15 @@ else
     exit 1
 fi
 
-if [[ -z "${BACKUP_CUSTOM_STORAGE_ENDPOINT}" ]]; then
-      aws s3 mv $FILENAME s3://$S3_BUCKET_NAME/$BUCKET_PATH/$1/
+if [ "$BACKUP_STORAGE_SERVICE" = 'aws-s3' ]; then
+      if [[ -z "${BACKUP_CUSTOM_STORAGE_ENDPOINT}" ]]; then
+            aws s3 mv $FILENAME s3://$S3_BUCKET_NAME/$BUCKET_PATH/$1/
+      else
+            aws --endpoint-url $BACKUP_CUSTOM_STORAGE_ENDPOINT s3 mv $FILENAME s3://$S3_BUCKET_NAME/$BUCKET_PATH/$1/
+      fi
+elif [ "$BACKUP_STORAGE_SERVICE" = 'azure-blob' ]; then
+      azcopy cp $FILENAME "https://${AZURE_STORAGE_ACCOUNT}.blob.core.windows.net/${AZURE_STORAGE_CONTAINER_NAME}/$BUCKET_PATH/${1}/$FILENAME?${AZURE_STORAGE_SAS_TOKEN}"
 else
-      aws --endpoint-url $BACKUP_CUSTOM_STORAGE_ENDPOINT s3 mv $FILENAME s3://$S3_BUCKET_NAME/$BUCKET_PATH/$1/
+    echo "Unknown storage service"
+    exit 1
 fi

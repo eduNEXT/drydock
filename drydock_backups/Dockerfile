@@ -11,6 +11,12 @@ RUN apt-get update && apt-get install -y \
     awscli \
     && rm -rf /var/lib/apt/lists/*
 
+RUN wget -O /tmp/azcopy.tar.gz https://aka.ms/downloadazcopy-v10-linux \
+    && tar -xvf /tmp/azcopy.tar.gz -C /tmp \
+    && cp /tmp/azcopy_linux_amd64*/azcopy /usr/bin/ \
+    && chmod +x /usr/bin/azcopy \
+    && rm -rf /tmp/azcopy*
+
 RUN useradd -m backupuser
 RUN echo "backupuser ALL=(ALL) NOPASSWD: /usr/bin/mysql, /usr/bin/mongodump" >> /etc/sudoers
 

@@ -33,6 +33,7 @@ spec:
                   value: '{{ BACKUP_MYSQL_USERNAME }}'
                 - name: MYSQL_ROOT_PASSWORD
                   value: '{{ BACKUP_MYSQL_PASSWORD }}'
+                {% if BACKUP_STORAGE_SERVICE == "aws-s3" %}
                 - name: AWS_ACCESS_KEY_ID
                   value: '{{ BACKUP_AWS_ACCESS_KEY }}'
                 - name: AWS_SECRET_ACCESS_KEY
@@ -41,6 +42,14 @@ spec:
                   value: '{{ BACKUP_BUCKET_NAME }}'
                 - name: BUCKET_PATH
                   value: '{{ BACKUP_BUCKET_PATH }}'
+                {% elif BACKUP_STORAGE_SERVICE == "azure-blob" %}
+                - name: AZURE_CONTAINER_NAME
+                  value: '{{ BACKUP_AZURE_CONTAINER_NAME }}'
+                - name: AZURE_CONTAINER_SAS_TOKEN
+                  value: '{{ BACKUP_AZURE_CONTAINER_SAS_TOKEN }}'
+                - name: AZURE_ACCOUNT_NAME
+                  value: '{{ BACKUP_AZURE_ACCOUNT_NAME }}'
+                {% endif %}
                 {% if BACKUP_CUSTOM_STORAGE_ENDPOINT %}
                 - name: BACKUP_CUSTOM_STORAGE_ENDPOINT
                   value: '{{ BACKUP_CUSTOM_STORAGE_ENDPOINT }}'
@@ -101,6 +110,7 @@ spec:
                   value: '{{ BACKUP_MONGO_PASSWORD }}'
                 - name: MONGODB_DATABASES
                   value: '{{ BACKUP_MONGODB_DATABASE }}'
+                {% if BACKUP_STORAGE_SERVICE == "aws-s3" %}
                 - name: AWS_ACCESS_KEY_ID
                   value: '{{ BACKUP_AWS_ACCESS_KEY }}'
                 - name: AWS_SECRET_ACCESS_KEY
@@ -113,6 +123,14 @@ spec:
                 - name: BACKUP_CUSTOM_STORAGE_ENDPOINT
                   value: '{{ BACKUP_CUSTOM_STORAGE_ENDPOINT }}'
                   {% endif %}
+                {% elif BACKUP_STORAGE_SERVICE == "azure-blob" %}
+                - name: AZURE_CONTAINER_NAME
+                  value: '{{ BACKUP_AZURE_CONTAINER_NAME }}'
+                - name: AZURE_CONTAINER_SAS_TOKEN
+                  value: '{{ BACKUP_AZURE_CONTAINER_SAS_TOKEN }}'
+                - name: AZURE_ACCOUNT_NAME
+                  value: '{{ BACKUP_AZURE_ACCOUNT_NAME }}'
+                {% endif %}
               {% if BACKUP_K8S_USE_EPHEMERAL_VOLUMES %}
               volumeMounts:
                 - mountPath: /data/

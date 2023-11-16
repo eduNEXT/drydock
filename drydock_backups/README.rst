@@ -17,11 +17,15 @@ Configuration variables
 
 - **BACKUP_IMAGE**: The image used to run the cronjob. (default: `ednxops/shipyard-utils:v1.0.0`)
 - **BACKUP_CRON_SCHEDULE**: Cron schedule to run the backup. (default: `0 2 * * *`)
+- **BACKUP_STORAGE_SERVICE**: Storage service to use. (default: `aws-s3`) (options: `aws-s3`, `azure-blob`)
 - **BACKUP_AWS_ACCESS_KEY**: AWS access key to access the bucket or minIO user.
 - **BACKUP_AWS_SECRET_KEY**: AWS secret key to access the bucket or minIO password.
 - **BACKUP_BUCKET_NAME**: Name of the bucket where the backups will be stored.
 - **BACKUP_BUCKET_PATH**: Path inside the bucket where the backups will be stored.
 - **BACKUP_CUSTOM_STORAGE_ENDPOINT**: Custom endpoint to access the bucket. (default: `None`)
+- **BACKUP_AZURE_CONTAINER_NAME**: Name of the container where the backups will be stored.
+- **BACKUP_AZURE_ACCOUNT_NAME**: Name of the account to access the container.
+- **BACKUP_AZURE_CONTAINER_SAS_TOKEN**: SAS token to access the container.
 - **BACKUP_K8S_USE_EPHEMERAL_VOLUMES**: Use ephemeral volumes to set up the cronjob. (default: `False`)
 - **BACKUP_K8S_EPHEMERAL_VOLUME_SIZE**: Size of the ephemeral volume. (default: `8Gi`)
 - **BACKUP_MYSQL_USERNAME**: Username to access the mysql database. (default: `{{ MYSQL_ROOT_USERNAME }}`)
