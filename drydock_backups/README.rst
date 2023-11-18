@@ -1,4 +1,4 @@
-Drydock-backuyps
+Drydock-backups
 ================
 
 This is a tutor plugin used to easily store backups of mysql and mongodb databases through k8s cronjobs. It backups the databases and stores them in a bucket.
