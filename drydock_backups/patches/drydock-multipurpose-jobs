@@ -61,7 +61,8 @@ spec:
                 - mountPath: /data/
                   name: backup-volume
               {%- endif %}
-              command: ['mysql']
+              args:
+                - mysql
           {%- if BACKUP_K8S_USE_EPHEMERAL_VOLUMES %}
           volumes:
             - name: backup-volume
@@ -139,7 +140,8 @@ spec:
                 - mountPath: /data/
                   name: backup-volume
               {%- endif %}
-              command: ['mongo']
+              args:
+                - mongo
           {%- if BACKUP_K8S_USE_EPHEMERAL_VOLUMES %}
           volumes:
             - name: backup-volume
