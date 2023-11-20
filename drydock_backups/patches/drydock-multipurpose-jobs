@@ -44,8 +44,6 @@ spec:
                   value: '{{ BACKUP_BUCKET_NAME }}'
                 - name: BUCKET_PATH
                   value: '{{ BACKUP_BUCKET_PATH }}'
-                - name: BACKUP_STORAGE_SERVICE
-                  value: '{{ BACKUP_STORAGE_SERVICE }}'
                 {% elif BACKUP_STORAGE_SERVICE == "azure-blob" %}
                 - name: AZURE_CONTAINER_NAME
                   value: '{{ BACKUP_AZURE_CONTAINER_NAME }}'
