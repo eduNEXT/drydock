@@ -30,7 +30,6 @@ config = {
         "MYSQL_PASSWORD": '{{ MYSQL_ROOT_PASSWORD }}',
         "MONGO_PASSWORD": '{{ MONGODB_PASSWORD }}',
         "MONGO_USERNAME": '{{ MONGODB_USERNAME }}',
-        "MONGODB_DATABASE": ""
     },
 }
 

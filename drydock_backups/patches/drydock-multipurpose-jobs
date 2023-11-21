@@ -110,8 +110,6 @@ spec:
                   value: '{{ BACKUP_MONGO_USERNAME }}'
                 - name: MONGODB_PASSWORD
                   value: '{{ BACKUP_MONGO_PASSWORD }}'
-                - name: MONGODB_DATABASES
-                  value: '{{ MONGODB_DATABASE }}'
                 - name: BACKUP_STORAGE_SERVICE
                   value: '{{ BACKUP_STORAGE_SERVICE }}'
                 - name: BUCKET_PATH
