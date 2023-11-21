@@ -35,6 +35,8 @@ spec:
                   value: '{{ BACKUP_MYSQL_PASSWORD }}'
                 - name: BACKUP_STORAGE_SERVICE
                   value: '{{ BACKUP_STORAGE_SERVICE }}'
+                - name: BUCKET_PATH
+                  value: '{{ BACKUP_BUCKET_PATH }}'
                 {%- if BACKUP_STORAGE_SERVICE == "aws-s3" %}
                 - name: AWS_ACCESS_KEY_ID
                   value: '{{ BACKUP_AWS_ACCESS_KEY }}'
@@ -42,8 +44,6 @@ spec:
                   value: '{{ BACKUP_AWS_SECRET_KEY }}'
                 - name: S3_BUCKET_NAME
                   value: '{{ BACKUP_BUCKET_NAME }}'
-                - name: BUCKET_PATH
-                  value: '{{ BACKUP_BUCKET_PATH }}'
                   {%- if BACKUP_CUSTOM_STORAGE_ENDPOINT %}
                 - name: BACKUP_CUSTOM_STORAGE_ENDPOINT
                   value: '{{ BACKUP_CUSTOM_STORAGE_ENDPOINT }}'
@@ -114,6 +114,8 @@ spec:
                   value: '{{ MONGODB_DATABASE }}'
                 - name: BACKUP_STORAGE_SERVICE
                   value: '{{ BACKUP_STORAGE_SERVICE }}'
+                - name: BUCKET_PATH
+                  value: '{{ BACKUP_BUCKET_PATH }}'
                 {%- if BACKUP_STORAGE_SERVICE == "aws-s3" %}
                 - name: AWS_ACCESS_KEY_ID
                   value: '{{ BACKUP_AWS_ACCESS_KEY }}'
@@ -121,8 +123,6 @@ spec:
                   value: '{{ BACKUP_AWS_SECRET_KEY }}'
                 - name: S3_BUCKET_NAME
                   value: '{{ BACKUP_BUCKET_NAME }}'
-                - name: BUCKET_PATH
-                  value: '{{ BACKUP_BUCKET_PATH }}'
                   {%- if BACKUP_CUSTOM_STORAGE_ENDPOINT %}
                 - name: BACKUP_CUSTOM_STORAGE_ENDPOINT
                   value: '{{ BACKUP_CUSTOM_STORAGE_ENDPOINT }}'
