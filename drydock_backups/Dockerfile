@@ -2,9 +2,9 @@ FROM mysql:5.7-debian as base
 
 RUN apt-get update && apt-get install -y wget gnupg2
 
-RUN wget -qO - https://www.mongodb.org/static/pgp/server-6.0.asc | apt-key add -
+RUN wget -qO - https://www.mongodb.org/static/pgp/server-4.4.asc | apt-key add -
 
-RUN echo "deb http://repo.mongodb.org/apt/debian buster/mongodb-org/6.0 main" | tee /etc/apt/sources.list.d/mongodb-org-6.0.list
+RUN echo "deb http://repo.mongodb.org/apt/debian buster/mongodb-org/4.4 main" | tee /etc/apt/sources.list.d/mongodb-org-4.4.list
 
 RUN apt-get update && apt-get install -y \
     mongodb-org \
