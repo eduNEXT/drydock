@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://github.com/eduNEXT/drydock/compare/v15.3.0...HEAD)
+## [Unreleased](https://github.com/eduNEXT/drydock/compare/v15.4.0...HEAD)
 
 Please do not update the unreleased notes.
 
@@ -19,6 +19,14 @@ Please do not update the unreleased notes.
 - add plugins extra, extracted from namespace template ([#48](https://github.com/eduNEXT/drydock/pull/48)) ([36c033f](https://github.com/eduNEXT/drydock/commit/36c033faecf7c3ebc701a085cb33e55629910d88))
 
 <!-- Content should be placed here -->
+## [v15.4.0](https://github.com/eduNEXT/drydock/compare/v15.3.0...v15.4.0) - 2023-11-23
+
+### [15.4.0](https://github.com/eduNEXT/drydock/compare/v15.3.0...v15.4.0) (2023-11-23)
+
+#### Features
+
+- Mongo DB backups proper implementation ([#52](https://github.com/eduNEXT/drydock/issues/52)) ([16d27ea](https://github.com/eduNEXT/drydock/commit/16d27eaca9063e70d32e4c85653465d673bd9ce1))
+
 ## [v15.3.0](https://github.com/eduNEXT/drydock/compare/v15.2.0...v15.3.0) - 2023-11-16
 
 ### [15.3.0](https://github.com/eduNEXT/drydock/compare/v15.2.0...v15.3.0) (2023-11-16)
