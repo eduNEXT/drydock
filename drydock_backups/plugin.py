@@ -13,9 +13,9 @@ from .__about__ import __version__
 config = {
     "defaults": {
         "VERSION": __version__,
-        "IMAGE": "ednxops/shipyard-utils:v1.1.0",
+        "IMAGE": "ednxops/shipyard-utils:v15.4.0",
         "CRON_SCHEDULE": '0 2 * * *',
-        "BACKUP_STORAGE_SERVICE": "aws-s3",
+        "STORAGE_SERVICE": "aws-s3",
         "AWS_ACCESS_KEY": "",
         "AWS_SECRET_KEY": "",
         "BUCKET_NAME": "",
@@ -30,7 +30,6 @@ config = {
         "MYSQL_PASSWORD": '{{ MYSQL_ROOT_PASSWORD }}',
         "MONGO_PASSWORD": '{{ MONGODB_PASSWORD }}',
         "MONGO_USERNAME": '{{ MONGODB_USERNAME }}',
-        "MONGODB_DATABASE": ""
     },
 }
 
