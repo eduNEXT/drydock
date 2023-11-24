@@ -23,7 +23,7 @@ spec:
           restartPolicy: OnFailure
           containers:
             - name: backup
-              image: {{ BACKUP_IMAGE }}
+              image: {{ BACKUP_DOCKER_IMAGE }}
               env:
                 - name: MYSQL_HOST
                   value: '{{ MYSQL_HOST }}'
@@ -100,7 +100,7 @@ spec:
           restartPolicy: OnFailure
           containers:
             - name: backup
-              image: {{ BACKUP_IMAGE }}
+              image: {{ BACKUP_DOCKER_IMAGE }}
               env:
                 - name: MONGODB_HOST
                   value: '{{ MONGODB_HOST }}'

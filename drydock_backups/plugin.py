@@ -10,11 +10,10 @@ from tutor import hooks
 
 from drydock.__about__ import __version__
 
-DRYDOCK_IMAGE = f"ednxops/shipyard-utils:v{__version__}"
 config = {
     "defaults": {
         "VERSION": __version__,
-        "IMAGE": DRYDOCK_IMAGE,
+        "DOCKER_IMAGE": f"ednxops/shipyard-utils:v{__version__}",
         "CRON_SCHEDULE": '0 2 * * *',
         "STORAGE_SERVICE": "aws-s3",
         "AWS_ACCESS_KEY": "",
@@ -93,7 +92,7 @@ hooks.Filters.IMAGES_BUILD.add_items([
     (
         "backups",
         ("plugins", "drydock-backups", "build", "backups"),
-        DRYDOCK_IMAGE,
+        "{{BACKUP_DOCKER_IMAGE}}",
         (),
     )
 ])
@@ -105,7 +104,7 @@ hooks.Filters.IMAGES_BUILD.add_items([
 hooks.Filters.IMAGES_PULL.add_items([
     (
         "backups",
-        DRYDOCK_IMAGE,
+        "{{BACKUP_DOCKER_IMAGE}}",
     )
 ])
 
@@ -116,7 +115,7 @@ hooks.Filters.IMAGES_PULL.add_items([
 hooks.Filters.IMAGES_PUSH.add_items([
     (
         "backups",
-        DRYDOCK_IMAGE,
+        "{{BACKUP_DOCKER_IMAGE}}",
     )
 ])
 
