@@ -13,7 +13,7 @@ from drydock.__about__ import __version__
 config = {
     "defaults": {
         "VERSION": __version__,
-        "DOCKER_IMAGE": f"ednxops/shipyard-utils:v{__version__}",
+        "DOCKER_IMAGE": "ednxops/shipyard-utils:v{{BACKUP_VERSION}}",
         "CRON_SCHEDULE": '0 2 * * *',
         "STORAGE_SERVICE": "aws-s3",
         "AWS_ACCESS_KEY": "",
