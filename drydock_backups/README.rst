@@ -15,7 +15,7 @@ You can enable it adding `drydock-backups` to the `plugins` section of the `conf
 Configuration variables
 -----------------------
 
-- **BACKUP_IMAGE**: The image used to run the cronjob. (default: `ednxops/shipyard-utils:v1.0.0`)
+- **BACKUP_DOCKER_IMAGE**: The image used to run the cronjob. (default: `ednxops/shipyard-utils:v{{BACKUP_VERSION}}`)
 - **BACKUP_CRON_SCHEDULE**: Cron schedule to run the backup. (default: `0 2 * * *`)
 - **BACKUP_STORAGE_SERVICE**: Storage service to use. (default: `aws-s3`) (options: `aws-s3`, `azure-blob`)
 - **BACKUP_AWS_ACCESS_KEY**: AWS access key to access the bucket or minIO user.

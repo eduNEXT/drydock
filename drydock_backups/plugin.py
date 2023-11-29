@@ -8,12 +8,12 @@ import click
 import pkg_resources
 from tutor import hooks
 
-from .__about__ import __version__
+from drydock.__about__ import __version__
 
 config = {
     "defaults": {
         "VERSION": __version__,
-        "IMAGE": "ednxops/shipyard-utils:v15.4.0",
+        "DOCKER_IMAGE": "ednxops/shipyard-utils:v{{BACKUP_VERSION}}",
         "CRON_SCHEDULE": '0 2 * * *',
         "STORAGE_SERVICE": "aws-s3",
         "AWS_ACCESS_KEY": "",
@@ -88,47 +88,36 @@ for service, template_path in MY_INIT_TASKS:
 # Images to be built by `tutor images build`.
 # Each item is a quadruple in the form:
 #     ("<tutor_image_name>", ("path", "to", "build", "dir"), "<docker_image_tag>", "<build_args>")
-hooks.Filters.IMAGES_BUILD.add_items(
-    [
-        # To build `myimage` with `tutor images build myimage`,
-        # you would add a Dockerfile to templates/drydock-backups/build/myimage,
-        # and then write:
-        ### (
-        ###     "myimage",
-        ###     ("plugins", "drydock-backups", "build", "myimage"),
-        ###     "docker.io/myimage:{{ DRYDOCK_BACKUPS_VERSION }}",
-        ###     (),
-        ### ),
-    ]
-)
+hooks.Filters.IMAGES_BUILD.add_items([
+    (
+        "backups",
+        ("plugins", "drydock-backups", "build", "backups"),
+        "{{BACKUP_DOCKER_IMAGE}}",
+        (),
+    )
+])
 
 
 # Images to be pulled as part of `tutor images pull`.
 # Each item is a pair in the form:
 #     ("<tutor_image_name>", "<docker_image_tag>")
-hooks.Filters.IMAGES_PULL.add_items(
-    [
-        # To pull `myimage` with `tutor images pull myimage`, you would write:
-        ### (
-        ###     "myimage",
-        ###     "docker.io/myimage:{{ DRYDOCK_BACKUPS_VERSION }}",
-        ### ),
-    ]
-)
+hooks.Filters.IMAGES_PULL.add_items([
+    (
+        "backups",
+        "{{BACKUP_DOCKER_IMAGE}}",
+    )
+])
 
 
 # Images to be pushed as part of `tutor images push`.
 # Each item is a pair in the form:
 #     ("<tutor_image_name>", "<docker_image_tag>")
-hooks.Filters.IMAGES_PUSH.add_items(
-    [
-        # To push `myimage` with `tutor images push myimage`, you would write:
-        ### (
-        ###     "myimage",
-        ###     "docker.io/myimage:{{ DRYDOCK_BACKUPS_VERSION }}",
-        ### ),
-    ]
-)
+hooks.Filters.IMAGES_PUSH.add_items([
+    (
+        "backups",
+        "{{BACKUP_DOCKER_IMAGE}}",
+    )
+])
 
 
 ########################################
