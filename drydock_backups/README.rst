@@ -40,12 +40,12 @@ Docker image
 
 The docker image used to run the cronjob is `ednxops/shipyard-utils:v1.0.0` and it is available in `DockerHub <https://hub.docker.com/r/ednxops/shipyard-utils>`_.
 
-The dockerfile used to build the image is the Dockerfile located in the drydock-backups folder of this repository. It is built manually and pushed to DockerHub with the following commands:
+When `drydock-backups` is installed in your manifests, you can build the Docker image using the following commands:
 
 .. code-block:: bash
 
-    docker build -t ednxops/shipyard-utils:{{ TAG }} drydock-backups/
-    docker push ednxops/shipyard-utils:{{ TAG }}
+    tutor images build backups
+    tutor images push backups
 
 Utilities
 ---------
