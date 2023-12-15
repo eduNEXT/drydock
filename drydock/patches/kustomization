@@ -17,7 +17,7 @@ patches:
 # Patch the sync waves
 - target:
     kind: Deployment
-    name:  "lms-worker|cms-worker|forum"
+    name:  "lms|cms|lms-worker|cms-worker|forum"
   path: plugins/drydock/k8s/patches/sync-wave-4.yml
 {%- if DRYDOCK_DEBUG is defined and DRYDOCK_DEBUG %}
 - target:
