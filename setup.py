@@ -39,12 +39,8 @@ setup(
     packages=find_packages(exclude=["tests*"]),
     include_package_data=True,
     python_requires=">=3.8",
-    install_requires=["tutor", "packaging"],
-    entry_points={
-        "tutor.plugin.v1": [
-            "drydock = drydock.plugin",
-            "drydock-backups = drydock_backups.plugin",
-        ]
+    install_requires=["tutor>=16.0.0,<17.0.0"],
+    entry_points={"tutor.plugin.v1": ["drydock = drydock.plugin"]
     },
     classifiers=[
         "Development Status :: 3 - Alpha",
