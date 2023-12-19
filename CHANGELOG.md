@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://github.com/eduNEXT/drydock/compare/v15.5.1...HEAD)
+## [Unreleased](https://github.com/eduNEXT/drydock/compare/v16.0.0...HEAD)
 
 Please do not update the unreleased notes.
 
@@ -19,6 +19,18 @@ Please do not update the unreleased notes.
 - add plugins extra, extracted from namespace template ([#48](https://github.com/eduNEXT/drydock/pull/48)) ([36c033f](https://github.com/eduNEXT/drydock/commit/36c033faecf7c3ebc701a085cb33e55629910d88))
 
 <!-- Content should be placed here -->
+## [v16.0.0](https://github.com/eduNEXT/drydock/compare/v15.5.1...v16.0.0) - 2023-12-19
+
+### [16.0.0](https://github.com/eduNEXT/drydock/compare/v15.5.1...v16.0.0) (2023-12-19)
+
+#### ⚠ BREAKING CHANGES
+
+- Drops support to python 3.7
+
+#### Features
+
+- add support to tutor palm ([#57](https://github.com/eduNEXT/drydock/issues/57)) ([f43fb18](https://github.com/eduNEXT/drydock/commit/f43fb1819d719087d13a2b58437b5b15b30222c8))
+
 ## [v15.5.1](https://github.com/eduNEXT/drydock/compare/v15.5.0...v15.5.1) - 2023-12-18
 
 ### [15.5.1](https://github.com/eduNEXT/drydock/compare/v15.5.0...v15.5.1) (2023-12-18)
