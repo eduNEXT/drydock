@@ -39,7 +39,7 @@ setup(
     packages=find_packages(exclude=["tests*"]),
     include_package_data=True,
     python_requires=">=3.7",
-    install_requires=["tutor", "packaging"],
+    install_requires=["tutor>=15.0.0,<16.0.0"],
     entry_points={
         "tutor.plugin.v1": [
             "drydock = drydock.plugin",
