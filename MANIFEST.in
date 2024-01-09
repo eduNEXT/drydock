@@ -1,0 +1,2 @@
+recursive-include drydock/patches *
+recursive-include drydock/templates *
