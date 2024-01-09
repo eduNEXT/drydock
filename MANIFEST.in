@@ -1,3 +1,2 @@
 recursive-include drydock/patches *
 recursive-include drydock/templates *
-include requirements/constraints.txt
