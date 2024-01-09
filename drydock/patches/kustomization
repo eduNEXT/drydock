@@ -5,7 +5,6 @@ patches:
     name: lms
   path: plugins/drydock/k8s/newrelic.yml
 {% endif -%}
-- path: plugins/drydock/k8s/forum-overrides.yml
 {% if DRYDOCK_POD_LIFECYCLE -%}
 - path: plugins/drydock/k8s/lifecycle/lms.yml
 - path: plugins/drydock/k8s/lifecycle/cms.yml

@@ -1,16 +1,10 @@
 from glob import glob
 import os
 import pkg_resources
-import yaml
-
-from importlib import import_module
 
 from tutor import hooks
 
 from .__about__ import __version__
-
-
-import click
 
 
 ################# Configuration
@@ -49,6 +43,12 @@ config = {
 }
 
 hooks.Filters.CONFIG_DEFAULTS.add_items([("OPENEDX_DEBUG_COOKIE", "ednx_enable_debug")])
+hooks.Filters.CONFIG_OVERRIDES.add_items([
+        # This values are not prefixed with DRYDOCK_
+        ("MONGODB_ROOT_USERNAME", ""),
+        ("MONGODB_ROOT_PASSWORD", ""),
+])
+
 
 ################# You don't really have to bother about what's below this line,
 ################# except maybe for educational purposes :)
