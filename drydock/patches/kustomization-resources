@@ -1,6 +1,7 @@
 - plugins/drydock/k8s/multipurpose-jobs.yml
 {%- if DRYDOCK_INIT_JOBS %}
 - plugins/drydock/k8s/drydock-jobs/mysql.yml
+- plugins/drydock/k8s/drydock-jobs/mongodb.yml
 - plugins/drydock/k8s/drydock-jobs/lms.yml
 - plugins/drydock/k8s/drydock-jobs/cms.yml
 - plugins/drydock/k8s/drydock-jobs/minio.yml
