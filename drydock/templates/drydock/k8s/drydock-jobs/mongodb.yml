@@ -23,12 +23,16 @@ spec:
         args:
         - |
           echo "Initialising MongoDB..."
+          {%- if MONGODB_USERNAME and MONGODB_ROOT_PASSWORD %}
           mongo --host {{MONGODB_HOST }} -u "{{ MONGODB_ROOT_USERNAME }}" -p "{{ MONGODB_ROOT_PASSWORD }}" admin <<EOF
+          {%- else %}
+          mongo --host {{MONGODB_HOST }} admin <<EOF
+          {%- endif %}
             {%- if MONGODB_USERNAME %}
             if (db.getUser("{{ MONGODB_USERNAME }}") == null) {
               db.createUser({
                   user: "{{ MONGODB_USERNAME }}",
-                  pwd:  "{{ MONGODB_PASSWORD }}",   
+                  pwd:  "{{ MONGODB_PASSWORD }}",
                   roles: [
                     { role: "readWrite", db: "{{ MONGODB_DATABASE }}" },
                     {% if FORUM_DOCKER_IMAGE is defined %}{ role: "readWrite", db: "{{ FORUM_MONGODB_DATABASE }}" },{% endif %}
