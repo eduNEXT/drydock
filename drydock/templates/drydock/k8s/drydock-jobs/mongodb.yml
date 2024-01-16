@@ -23,7 +23,7 @@ spec:
         args:
         - |
           echo "Initialising MongoDB..."
-          {%- if MONGODB_USERNAME and MONGODB_ROOT_PASSWORD %}
+          {%- if MONGODB_ROOT_USERNAME and MONGODB_ROOT_PASSWORD %}
           mongo --host {{MONGODB_HOST }} -u "{{ MONGODB_ROOT_USERNAME }}" -p "{{ MONGODB_ROOT_PASSWORD }}" admin <<EOF
           {%- else %}
           mongo --host {{MONGODB_HOST }} admin <<EOF
