@@ -48,6 +48,6 @@ spec:
               })
             }
             {%- endif %}
-            {{ patch("drydock-mongodb-init-job") }}
+            {{ patch("drydock-mongodb-init-job")|indent(12) }}
             exit
           EOF
