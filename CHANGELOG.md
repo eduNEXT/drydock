@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://github.com/eduNEXT/drydock/compare/v16.1.0...HEAD)
+## [Unreleased](https://github.com/eduNEXT/drydock/compare/v16.2.0...HEAD)
 
 Please do not update the unreleased notes.
 
@@ -19,6 +19,14 @@ Please do not update the unreleased notes.
 - add plugins extra, extracted from namespace template ([#48](https://github.com/eduNEXT/drydock/pull/48)) ([36c033f](https://github.com/eduNEXT/drydock/commit/36c033faecf7c3ebc701a085cb33e55629910d88))
 
 <!-- Content should be placed here -->
+## [v16.2.0](https://github.com/eduNEXT/drydock/compare/v16.1.0...v16.2.0) - 2024-01-17
+
+### [16.2.0](https://github.com/eduNEXT/drydock/compare/v16.1.0...v16.2.0) (2024-01-17)
+
+#### Features
+
+- add mysql init job patch and fix command on mongo init job ([#63](https://github.com/eduNEXT/drydock/issues/63)) ([d838e22](https://github.com/eduNEXT/drydock/commit/d838e2211421d9bdb48a16987f1a277146227240))
+
 ## [v16.1.0](https://github.com/eduNEXT/drydock/compare/v16.0.1...v16.1.0) - 2024-01-10
 
 ### [16.1.0](https://github.com/eduNEXT/drydock/compare/v16.0.1...v16.1.0) (2024-01-10)
