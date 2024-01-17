@@ -21,3 +21,16 @@ spec:
         ingress:
           class: nginx
 {% endif -%}
+
+{% if DRYDOCK_CUSTOM_CERTS -%}
+---
+apiVersion: v1
+kind: Secret
+type: kubernetes.io/tls
+metadata:
+  name: {{ DRYDOCK_CUSTOM_CERTS["secret_name"]|default("custom-tls-certs") }}
+  namespace: {{ K8S_NAMESPACE }}
+data:
+  tls.crt: {{ DRYDOCK_CUSTOM_CERTS["crt"] }}
+  tls.key: {{ DRYDOCK_CUSTOM_CERTS["key"] }}
+{% endif -%}
