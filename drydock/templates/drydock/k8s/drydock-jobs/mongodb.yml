@@ -23,12 +23,13 @@ spec:
         args:
         - |
           echo "Initialising MongoDB..."
-          mongo --host {{MONGODB_HOST }} -u "{{ MONGODB_ROOT_USERNAME }}" -p "{{ MONGODB_ROOT_PASSWORD }}" admin <<EOF
+          mongo --host {{MONGODB_HOST }} {% if MONGODB_ROOT_USERNAME and MONGODB_ROOT_PASSWORD %} -u {{ MONGODB_ROOT_USERNAME }} -p {{ MONGODB_ROOT_PASSWORD }} {% endif %} admin <<EOF
+          {%- endif %}
             {%- if MONGODB_USERNAME %}
             if (db.getUser("{{ MONGODB_USERNAME }}") == null) {
               db.createUser({
                   user: "{{ MONGODB_USERNAME }}",
-                  pwd:  "{{ MONGODB_PASSWORD }}",   
+                  pwd:  "{{ MONGODB_PASSWORD }}",
                   roles: [
                     { role: "readWrite", db: "{{ MONGODB_DATABASE }}" },
                     {% if FORUM_DOCKER_IMAGE is defined %}{ role: "readWrite", db: "{{ FORUM_MONGODB_DATABASE }}" },{% endif %}
@@ -44,6 +45,6 @@ spec:
               })
             }
             {%- endif %}
-            {{ patch("drydock-mongodb-init-job") }}
+            {{ patch("drydock-mongodb-init-job")|indent(12) }}
             exit
           EOF
