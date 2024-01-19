@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://github.com/eduNEXT/drydock/compare/v16.2.2...HEAD)
+## [Unreleased](https://github.com/eduNEXT/drydock/compare/v17.0.0...HEAD)
 
 Please do not update the unreleased notes.
 
@@ -19,6 +19,18 @@ Please do not update the unreleased notes.
 - add plugins extra, extracted from namespace template ([#48](https://github.com/eduNEXT/drydock/pull/48)) ([36c033f](https://github.com/eduNEXT/drydock/commit/36c033faecf7c3ebc701a085cb33e55629910d88))
 
 <!-- Content should be placed here -->
+## [v17.0.0](https://github.com/eduNEXT/drydock/compare/v16.2.2...v17.0.0) - 2024-01-19
+
+### [17.0.0](https://github.com/eduNEXT/drydock/compare/v16.2.2...v17.0.0) (2024-01-19)
+
+#### ⚠ BREAKING CHANGES
+
+- Support to tutor v17
+
+#### Features
+
+- add support to quince ([#61](https://github.com/eduNEXT/drydock/issues/61)) ([aeefdca](https://github.com/eduNEXT/drydock/commit/aeefdcaa18302eb1e9fc01191ed91d932db7044a))
+
 ## [v16.2.2](https://github.com/eduNEXT/drydock/compare/v16.2.1...v16.2.2) - 2024-01-18
 
 ### [16.2.2](https://github.com/eduNEXT/drydock/compare/v16.2.1...v16.2.2) (2024-01-18)
