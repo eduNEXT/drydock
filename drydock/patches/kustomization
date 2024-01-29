@@ -31,9 +31,3 @@ patches:
 - path: plugins/drydock/k8s/celery/cms-worker.yml
 - path: plugins/drydock/k8s/celery/lms-worker.yml
 {% endif -%}
-{% if DRYDOCK_ENABLE_PDB %}
-- target:
-    kind: Deployment
-    name:  "caddy|lms|cms|lms-worker|cms-worker|forum|mfe"
-  path: plugins/drydock/k8s/patches/pdb.yml
-{% endif %}
