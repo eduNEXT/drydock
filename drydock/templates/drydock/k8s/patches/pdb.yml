@@ -1,3 +1,27 @@
+{%- if MFE_HOST is defined %}
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: mfe-pdb
+spec:
+  minAvailable: 30%
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: mfe
+{%- endif %}
+{%- if FORUM_DOCKER_IMAGE is defined %}
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: forum-pdb
+spec:
+  minAvailable: 30%
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: forum
+{%- endif %}
 ---
 apiVersion: policy/v1
 kind: PodDisruptionBudget
@@ -48,27 +72,3 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: cms-worker
-{%- if MFE_HOST is defined %}
----
-apiVersion: policy/v1
-kind: PodDisruptionBudget
-metadata:
-  name: mfe-pdb
-spec:
-  minAvailable: 30%
-  selector:
-    matchLabels:
-      app.kubernetes.io/name: mfe
-{%- endif %}
-{%- if FORUM_DOCKER_IMAGE is defined %}
----
-apiVersion: policy/v1
-kind: PodDisruptionBudget
-metadata:
-  name: forum-pdb
-spec:
-  minAvailable: 30%
-  selector:
-    matchLabels:
-      app.kubernetes.io/name: forum
-{%- endif %}
