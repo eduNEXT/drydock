@@ -48,6 +48,7 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: cms-worker
+{%- if MFE_HOST is defined %}
 ---
 apiVersion: policy/v1
 kind: PodDisruptionBudget
@@ -58,6 +59,8 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: mfe
+{%- endif %}
+{%- if FORUM_DOCKER_IMAGE is defined %}
 ---
 apiVersion: policy/v1
 kind: PodDisruptionBudget
@@ -68,3 +71,4 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: forum
+{%- endif %}
