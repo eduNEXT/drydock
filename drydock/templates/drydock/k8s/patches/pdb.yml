@@ -1,3 +1,4 @@
+{% if DRYDOCK_ENABLE_PDB -%}
 ---
 apiVersion: policy/v1
 kind: PodDisruptionBudget
@@ -68,3 +69,4 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: forum
+{% endif -%}
