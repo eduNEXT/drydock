@@ -31,6 +31,7 @@ config = {
         "SENTRY_DSN": "",
         "POD_LIFECYCLE": True,
         "BYPASS_CADDY": False,
+        "ENABLE_PDB": False,
     },
     # Add here settings that don't have a reasonable default for all users. For
     # instance: passwords, secret keys, etc.

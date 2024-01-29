@@ -57,6 +57,7 @@ The following configuration options are available:
 - `DRYDOCK_ENABLE_SENTRY` : Whether to enable sentry. Defaults to `true`.
 - `DRYDOCK_SENTRY_DSN` : The sentry DSN. Defaults to `""`.
 - `DRYDOCK_POD_LIFECYCLE` : Whether to enable pod lifecycle. Defaults to `true`.
+- `DRYDOCK_ENABLE_PDB` : Whether to enable pod disruption budget. Defaults to `false`.
 
 Rationale
 ---------
