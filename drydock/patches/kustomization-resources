@@ -1,4 +1,5 @@
 - plugins/drydock/k8s/multipurpose-jobs.yml
+- plugins/drydock/k8s/pdb/openedx-pdb.yml
 {%- if DRYDOCK_INIT_JOBS %}
 - plugins/drydock/k8s/drydock-jobs/mysql.yml
 - plugins/drydock/k8s/drydock-jobs/mongodb.yml
