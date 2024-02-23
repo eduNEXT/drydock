@@ -32,7 +32,7 @@ kind: Job
 metadata:
   name: drydock-notes-job
   labels:
-    app.kubernetes.io/component: job
+    drydock.io/component: job
     drydock.io/target-service: notes
     drydock.io/runner-service: notes
   annotations:
@@ -66,7 +66,7 @@ kind: Job
 metadata:
   name: drydock-notes-job-lms
   labels:
-    app.kubernetes.io/component: job
+    drydock.io/component: job
     drydock.io/target-service: notes
     drydock.io/runner-service: lms
   annotations:
