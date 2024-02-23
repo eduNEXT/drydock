@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://github.com/eduNEXT/drydock/compare/v17.1.0...HEAD)
+## [Unreleased](https://github.com/eduNEXT/drydock/compare/v17.1.1...HEAD)
 
 Please do not update the unreleased notes.
 
@@ -19,6 +19,14 @@ Please do not update the unreleased notes.
 - add plugins extra, extracted from namespace template ([#48](https://github.com/eduNEXT/drydock/pull/48)) ([36c033f](https://github.com/eduNEXT/drydock/commit/36c033faecf7c3ebc701a085cb33e55629910d88))
 
 <!-- Content should be placed here -->
+## [v17.1.1](https://github.com/eduNEXT/drydock/compare/v17.1.0...v17.1.1) - 2024-02-23
+
+### [17.1.1](https://github.com/eduNEXT/drydock/compare/v17.1.0...v17.1.1) (2024-02-23)
+
+### Bug Fixes
+
+- notes annotations throw job skip from argocd sync ([#69](https://github.com/eduNEXT/drydock/issues/69)) ([d965aa7](https://github.com/eduNEXT/drydock/commit/d965aa7ad459b19b4b99bc450132d3b87c761fcd))
+
 ## [v17.1.0](https://github.com/eduNEXT/drydock/compare/v17.0.0...v17.1.0) - 2024-01-30
 
 ### [17.1.0](https://github.com/eduNEXT/drydock/compare/v17.0.0...v17.1.0) (2024-01-30)
