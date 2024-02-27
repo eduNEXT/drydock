@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://github.com/eduNEXT/drydock/compare/v17.1.1...HEAD)
+## [Unreleased](https://github.com/eduNEXT/drydock/compare/v17.2.0...HEAD)
 
 Please do not update the unreleased notes.
 
@@ -19,6 +19,14 @@ Please do not update the unreleased notes.
 - add plugins extra, extracted from namespace template ([#48](https://github.com/eduNEXT/drydock/pull/48)) ([36c033f](https://github.com/eduNEXT/drydock/commit/36c033faecf7c3ebc701a085cb33e55629910d88))
 
 <!-- Content should be placed here -->
+## [v17.2.0](https://github.com/eduNEXT/drydock/compare/v17.1.1...v17.2.0) - 2024-02-27
+
+### [17.2.0](https://github.com/eduNEXT/drydock/compare/v17.1.1...v17.2.0) (2024-02-27)
+
+#### Features
+
+- iterate over added mfes to add its paths ([#72](https://github.com/eduNEXT/drydock/issues/72)) ([d61991b](https://github.com/eduNEXT/drydock/commit/d61991b133fdb154f5118583809bb813c868aeb5))
+
 ## [v17.1.1](https://github.com/eduNEXT/drydock/compare/v17.1.0...v17.1.1) - 2024-02-23
 
 ### [17.1.1](https://github.com/eduNEXT/drydock/compare/v17.1.0...v17.1.1) (2024-02-23)
