@@ -31,3 +31,6 @@ patches:
 - path: plugins/drydock/k8s/celery/cms-worker.yml
 - path: plugins/drydock/k8s/celery/lms-worker.yml
 {% endif -%}
+{% if FORUM_USERNAME is defined and FORUM_PASSWORD is defined %}
+- path: plugins/drydock/k8s/patches/forum.yml
+{% endif -%}

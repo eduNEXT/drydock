@@ -1,0 +1,14 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: forum
+spec:
+  template:
+    spec:
+      containers:
+        - name: forum
+          env:
+            - name: MONGODB_AUTH
+              value: "{% if FORUM_USERNAME is defined %}{{ FORUM_USERNAME }}:{{ FORUM_PASSWORD }}@{% elif MONGODB_USERNAME and MONGODB_PASSWORD %}{{ MONGODB_USERNAME}}:{{ MONGODB_PASSWORD }}@{% endif %}"
+            - name: MONGOID_AUTH_SOURCE
+              value: "{% if FORUM_MONGODB_DATABASE %}{{ FORUM_MONGODB_DATABASE }}{% else %}{{ MONGODB_AUTH_SOURCE }}{% endif %}"

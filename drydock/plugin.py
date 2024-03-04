@@ -47,6 +47,7 @@ hooks.Filters.CONFIG_OVERRIDES.add_items([
         # This values are not prefixed with DRYDOCK_
         ("MONGODB_ROOT_USERNAME", ""),
         ("MONGODB_ROOT_PASSWORD", ""),
+        ("MONGODB_AUTH_SOURCE", "{{ MONGODB_DATABASE }}"),
 ])
 
 

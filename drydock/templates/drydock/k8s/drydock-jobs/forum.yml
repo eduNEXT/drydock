@@ -30,7 +30,7 @@ spec:
           - name: SEARCH_SERVER
             value: "{{ ELASTICSEARCH_SCHEME }}://{{ ELASTICSEARCH_HOST }}:{{ ELASTICSEARCH_PORT }}"
           - name: MONGODB_AUTH
-            value: "{% if MONGODB_USERNAME and MONGODB_PASSWORD %}{{ MONGODB_USERNAME}}:{{ MONGODB_PASSWORD }}@{% endif %}"
+            value: "{% if FORUM_USERNAME is defined and FORUM_PASSWORD is defined %}{{ FORUM_USERNAME}}:{{ FORUM_PASSWORD }}@{% elif MONGODB_USERNAME and MONGODB_PASSWORD %}{{ MONGODB_USERNAME}}:{{ MONGODB_PASSWORD }}@{% endif %}"
           - name: MONGODB_HOST
             value: "{{ MONGODB_HOST }}"
           - name: MONGODB_PORT
@@ -40,7 +40,7 @@ spec:
           - name: MONGOID_USE_SSL
             value: "{{ 'true' if MONGODB_USE_SSL else 'false' }}"
           - name: MONGOID_AUTH_SOURCE
-            value: "{{ MONGODB_AUTH_SOURCE }}"
+            value: "{% if FORUM_MONGODB_DATABASE %}{{ FORUM_MONGODB_DATABASE }}{% else %}{{ MONGODB_AUTH_SOURCE }}{% endif %}"
           - name: MONGOID_AUTH_MECH
             value: "{{ MONGODB_AUTH_MECHANISM|auth_mech_as_ruby }}"
 {%- endif %}
