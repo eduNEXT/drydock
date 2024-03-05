@@ -19,7 +19,10 @@ spec:
       containers:
       - name: mongodb
         image: {{ DOCKER_IMAGE_MONGODB }}
-        command: ["/bin/sh", "-c"]
+        command:
+          - /bin/sh
+          - -c
+          - -e
         args:
         - |
           echo "Initialising MongoDB..."
