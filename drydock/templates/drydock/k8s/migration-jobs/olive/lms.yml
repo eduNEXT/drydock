@@ -18,7 +18,10 @@ spec:
       containers:
       - name: lms
         image: {{ DOCKER_IMAGE_OPENEDX }}
-        command: ["/bin/sh", "-c"]
+        command:
+          - /bin/sh
+          - -c
+          - -e
         args:
         - |
           if stat '/openedx/data/ora2/SET-ME-PLEASE (ex. bucket-name)' 2> /dev/null; then

@@ -21,11 +21,13 @@ PRIORITY_LIST = [
     ('job', 'migration-olive-lms-job'),
 
     ('job', 'drydock-mysql-job'),
-    ('job', 'drydock-notes-job-mysql'),
     ('job', 'drydock-mongodb-job'),
+    ('job', 'drydock-lms-job'),
+    ('job', 'drydock-notes-job-mysql'),
+    ('job', 'drydock-notes-job-lms'),
+    ('job', 'drydock-notes-job'),
     ('job', 'drydock-minio-job'),
     ('job', 'drydock-mfe-lms-job'),
-    ('job', 'drydock-lms-job'),
     ('job', 'drydock-forum-job'),
     ('job', 'drydock-cms-job'),
 
@@ -93,6 +95,8 @@ def get_migration_list():
     settings.
     """
     migration_list = []
+    if not config["defaults"]["MIGRATE_FROM"]:
+        return migration_list
     migrate_from = config["defaults"]["MIGRATE_FROM"]
     migrate_to = config['defaults']['VERSION'].split('.', maxsplit=1)[0]
     for name, version in VERSION_LIST:

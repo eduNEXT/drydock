@@ -18,13 +18,16 @@ spec:
       containers:
       - name: cms
         image: {{ DOCKER_IMAGE_OPENEDX }}
-        command: ["/bin/sh", "-c"]
+        command:
+          - /bin/sh
+          - -c
+          - -e
         args:
         - |
           ./manage.py cms migrate contentstore
           ./manage.py cms migrate split_modulestore_django
-          ./manage.py cms migrate backfill_course_tabs
           ./manage.py cms migrate course_overviews
+          ./manage.py cms backfill_course_tabs
           ./manage.py cms simulate_publish
         env:
         - name: SERVICE_VARIANT

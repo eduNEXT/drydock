@@ -18,7 +18,10 @@ spec:
       containers:
       - name: lms
         image: {{ DOCKER_IMAGE_OPENEDX }}
-        command: ["/bin/sh", "-c"]
+        command:
+          - /bin/sh
+          - -c
+          - -e
         args:
         - |
           ./manage.py lms compute_grades -v1 --all_courses

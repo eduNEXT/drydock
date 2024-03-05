@@ -18,11 +18,14 @@ spec:
       containers:
       - name: lms
         image: {{ DOCKER_IMAGE_OPENEDX }}
-        command: ["/bin/sh", "-c"]
+        command:
+          - /bin/sh
+          - -c
+          - -e
         args:
         - |
           ./manage.py lms migrate user_tours
-          ./manage.py lms migrate backpopulate_user_tours
+          ./manage.py lms backpopulate_user_tours
         env:
         - name: SERVICE_VARIANT
           value: lms

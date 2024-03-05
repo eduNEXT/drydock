@@ -36,7 +36,7 @@ metadata:
     drydock.io/target-service: notes
     drydock.io/runner-service: notes
   annotations:
-    argocd.argoproj.io/sync-wave: "3"
+    argocd.argoproj.io/sync-wave: "{{ get_priority('job', 'drydock-notes-job') }}"
     argocd.argoproj.io/hook: Sync
     argocd.argoproj.io/hook-delete-policy: HookSucceeded
 spec:
@@ -70,7 +70,7 @@ metadata:
     drydock.io/target-service: notes
     drydock.io/runner-service: lms
   annotations:
-    argocd.argoproj.io/sync-wave: "3"
+    argocd.argoproj.io/sync-wave: "{{ get_priority('job', 'drydock-notes-job-lms') }}"
     argocd.argoproj.io/hook: Sync
     argocd.argoproj.io/hook-delete-policy: HookSucceeded
 spec:
