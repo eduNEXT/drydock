@@ -1,13 +1,13 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: drydock-cms-job
+  name: migration-maple-lms-job
   labels:
     drydock.io/component: job
-    drydock.io/target-service: cms
-    drydock.io/runner-service: cms
+    drydock.io/target-service: lms
+    drydock.io/runner-service: lms
   annotations:
-    argocd.argoproj.io/sync-wave: "{{ get_priority('job', 'drydock-cms-job') }}"
+    argocd.argoproj.io/sync-wave: "{{ get_priority('job', 'migration-maple-lms-job') }}"
     argocd.argoproj.io/hook: Sync
     argocd.argoproj.io/hook-delete-policy: HookSucceeded
 spec:
@@ -16,30 +16,18 @@ spec:
     spec:
       restartPolicy: Never
       containers:
-      - name: cms
+      - name: lms
         image: {{ DOCKER_IMAGE_OPENEDX }}
         command: ["/bin/sh", "-c"]
         args:
         - |
-          dockerize -wait tcp://{{ MYSQL_HOST }}:{{ MYSQL_PORT }} -timeout 20s
-
-          echo "Loading settings $DJANGO_SETTINGS_MODULE"
-
-          ./manage.py cms migrate
-
-          # Fix incorrect uploaded file path
-          if [ -d /openedx/data/uploads/ ]; then
-            if [ -n "$(ls -A /openedx/data/uploads/)" ]; then
-              echo "Migrating CMS uploaded files to shared directory"
-              mv /openedx/data/uploads/* /openedx/media/
-              rm -rf /openedx/data/uploads/
-            fi
-          fi
+          ./manage.py lms migrate user_tours
+          ./manage.py lms migrate backpopulate_user_tours
         env:
         - name: SERVICE_VARIANT
-          value: cms
+          value: lms
         - name: DJANGO_SETTINGS_MODULE
-          value: cms.envs.tutor.production
+          value: lms.envs.tutor.production
         volumeMounts:
           - mountPath: /openedx/edx-platform/lms/envs/tutor/
             name: settings-lms

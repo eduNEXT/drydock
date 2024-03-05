@@ -1,4 +1,14 @@
 - plugins/drydock/k8s/multipurpose-jobs.yml
+{% if 'maple' in get_migration_list() %}
+- plugins/drydock/k8s/migration-jobs/maple/lms.yml
+- plugins/drydock/k8s/migration-jobs/maple/cms.yml
+{% endif %}
+{% if 'nutmeg' in get_migration_list() %}
+- plugins/drydock/k8s/migration-jobs/nutmeg/lms.yml
+{% endif %}
+{% if 'olive' in get_migration_list() %}
+- plugins/drydock/k8s/migration-jobs/olive/lms.yml
+{% endif %}
 {%- if DRYDOCK_INIT_JOBS %}
 - plugins/drydock/k8s/drydock-jobs/mysql.yml
 - plugins/drydock/k8s/drydock-jobs/mongodb.yml

@@ -1,0 +1,6 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lms-worker
+  annotations:
+    argocd.argoproj.io/sync-wave: {{ get_priority('deployment', 'lms-worker') }}

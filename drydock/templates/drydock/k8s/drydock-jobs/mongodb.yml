@@ -8,7 +8,7 @@ metadata:
     drydock.io/target-service: mongodb
     drydock.io/runner-service: mongodb
   annotations:
-    argocd.argoproj.io/sync-wave: "1"
+    argocd.argoproj.io/sync-wave: "{{ get_priority('job', 'drydock-mongodb-job') }}"
     argocd.argoproj.io/hook: Sync
     argocd.argoproj.io/hook-delete-policy: HookSucceeded
 spec:

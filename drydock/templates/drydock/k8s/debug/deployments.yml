@@ -5,6 +5,8 @@ metadata:
   name: cms-debug
   labels:
     app.kubernetes.io/name: cms-debug
+  annotations:
+    argocd.argoproj.io/sync-wave: {{ get_priority('deployment', 'cms-debug') }}
 spec:
   selector:
     matchLabels:
@@ -57,6 +59,8 @@ metadata:
   name: lms-debug
   labels:
     app.kubernetes.io/name: lms-debug
+  annotations:
+    argocd.argoproj.io/sync-wave: {{ get_priority('deployment', 'lms-debug') }}
 spec:
   selector:
     matchLabels:
