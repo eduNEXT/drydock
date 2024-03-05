@@ -19,7 +19,10 @@ spec:
       containers:
         - name: notes
           image: {{ DOCKER_IMAGE_MYSQL }}
-          command: ["/bin/sh", "-c"]
+          command:
+            - /bin/sh
+            - -c
+            - -e
           args:
           - |
             mysql -u {{ MYSQL_ROOT_USERNAME }} --password="{{ MYSQL_ROOT_PASSWORD }}" --host "{{ MYSQL_HOST }}" --port {{ MYSQL_PORT }} -e 'CREATE DATABASE IF NOT EXISTS {{ NOTES_MYSQL_DATABASE }};'
@@ -47,7 +50,10 @@ spec:
       containers:
         - name: notes
           image: {{ NOTES_DOCKER_IMAGE }}
-          command: ["/bin/sh", "-c"]
+          command:
+            - /bin/sh
+            - -c
+            - -e
           args: [./manage.py migrate]
           env:
             - name: DJANGO_SETTINGS_MODULE
@@ -81,7 +87,10 @@ spec:
       containers:
         - name: notes
           image: {{ DOCKER_IMAGE_OPENEDX }}
-          command: ["/bin/sh", "-c"]
+          command:
+            - /bin/sh
+            - -c
+            - -e
           args:
           - |
             # Modify users created an incorrect email and that might clash with the newly created users
