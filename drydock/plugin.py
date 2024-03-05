@@ -6,6 +6,50 @@ from tutor import hooks
 
 from .__about__ import __version__
 
+VERSION_LIST = [
+    ('MAPLE', '13'),
+    ('NUTMEG', '14'),
+    ('OLIVE', '15'),
+    ('PALM', '16'),
+    ('QUINCE', '17'),
+]
+
+PRIORITY_LIST = [
+    ('job', 'migration-maple-lms-job'),
+    ('job', 'migration-maple-cms-job'),
+    ('job', 'migration-nutmeg-lms-job'),
+    ('job', 'migration-olive-lms-job'),
+
+    ('job', 'drydock-mysql-job'),
+    ('job', 'drydock-notes-job-mysql'),
+    ('job', 'drydock-mongodb-job'),
+    ('job', 'drydock-minio-job'),
+    ('job', 'drydock-mfe-lms-job'),
+    ('job', 'drydock-lms-job'),
+    ('job', 'drydock-forum-job'),
+    ('job', 'drydock-cms-job'),
+
+    ('deployment', 'lms'),
+    ('deployment', 'cms'),
+    ('deployment', 'lms-worker'),
+    ('deployment', 'cms-worker'),
+    ('deployment', 'forum'),
+
+    ('deployment', 'cms-debug'),
+    ('deployment', 'lms-debug'),
+    ('ingress', 'ingress-debug'),
+
+    ('deployment', 'lms-debug'),
+    ('deployment', 'cms-debug'),
+    ('ingress', 'ingress-debug'),
+]
+
+def get_priority(kind, name):
+    """ Return the priority of a k8s object."""
+    for i, (k, n) in enumerate(PRIORITY_LIST):
+        if k == kind and n == name:
+            return i + 1
+    return len(PRIORITY_LIST)
 
 ################# Configuration
 config = {
@@ -13,6 +57,7 @@ config = {
     "defaults": {
         "VERSION": __version__,
         "INIT_JOBS": False,
+        "MIGRATE_FROM": "",
         "CMS_SSO_USER": "cms",
         "AUTO_TLS": True,
         "FLOWER": False,
@@ -42,6 +87,22 @@ config = {
     },
 }
 
+def get_migration_list():
+    """
+    Return a list of migration jobs to run based on the MIGRATE_FROM and VERSION
+    settings.
+    """
+    migration_list = []
+    migrate_from = config["defaults"]["MIGRATE_FROM"]
+    migrate_to = config['defaults']['VERSION'].split('.', maxsplit=1)[0]
+    for name, version in VERSION_LIST:
+        if migrate_from.lower() == name.lower():
+            migrate_from = version
+        if migrate_from <= version <= migrate_to:
+            migration_list.append(name.lower())
+    return migration_list
+
+
 hooks.Filters.CONFIG_DEFAULTS.add_items([("OPENEDX_DEBUG_COOKIE", "ednx_enable_debug")])
 hooks.Filters.CONFIG_OVERRIDES.add_items([
         # This values are not prefixed with DRYDOCK_
@@ -64,6 +125,14 @@ hooks.Filters.ENV_TEMPLATE_TARGETS.add_items(
         ("drydock/k8s", "plugins"),
     ],
 )
+
+hooks.Filters.ENV_TEMPLATE_VARIABLES.add_items(
+    [
+        ('get_priority', get_priority),
+        ('get_migration_list', get_migration_list),
+    ]
+)
+
 # Load all patches from the "patches" folder
 for path in glob(
     os.path.join(

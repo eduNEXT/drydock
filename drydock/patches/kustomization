@@ -14,19 +14,14 @@ patches:
     labelSelector: app.kubernetes.io/component=job
   path: plugins/drydock/k8s/patches/tutor-jobs.yml
 # Patch the sync waves
-- target:
-    kind: Deployment
-    name:  "lms|cms|lms-worker|cms-worker|forum"
-  path: plugins/drydock/k8s/patches/sync-wave-4.yml
-{%- if DRYDOCK_DEBUG is defined and DRYDOCK_DEBUG %}
-- target:
-    kind: Deployment|Ingress|Service
-    name:  "cms-debug|lms-debug|ingress-debug"
-  path: plugins/drydock/k8s/patches/sync-wave-5.yml
-{%- endif %}
+- path: plugins/drydock/k8s/sync-waves/lms.yml
+- path: plugins/drydock/k8s/sync-waves/cms.yml
+- path: plugins/drydock/k8s/sync-waves/cms-worker.yml
+- path: plugins/drydock/k8s/sync-waves/lms-worker.yml
+- path: plugins/drydock/k8s/sync-waves/forum.yml
 - target:
     kind: HorizontalPodAutoscaler
-  path: plugins/drydock/k8s/patches/sync-wave-5.yml
+  path: plugins/drydock/k8s/patches/sync-wave-100.yml
 {% if DRYDOCK_ENABLE_CELERY_TUNING %}
 - path: plugins/drydock/k8s/celery/cms-worker.yml
 - path: plugins/drydock/k8s/celery/lms-worker.yml

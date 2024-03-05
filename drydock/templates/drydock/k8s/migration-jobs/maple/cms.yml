@@ -1,13 +1,13 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: drydock-cms-job
+  name: migration-maple-cms-job
   labels:
     drydock.io/component: job
     drydock.io/target-service: cms
     drydock.io/runner-service: cms
   annotations:
-    argocd.argoproj.io/sync-wave: "{{ get_priority('job', 'drydock-cms-job') }}"
+    argocd.argoproj.io/sync-wave: "{{ get_priority('job', 'migration-maple-cms-job') }}"
     argocd.argoproj.io/hook: Sync
     argocd.argoproj.io/hook-delete-policy: HookSucceeded
 spec:
@@ -18,26 +18,14 @@ spec:
       containers:
       - name: cms
         image: {{ DOCKER_IMAGE_OPENEDX }}
-        command:
-          - /bin/sh
-          - -c
-          - -e
+        command: ["/bin/sh", "-c"]
         args:
         - |
-          dockerize -wait tcp://{{ MYSQL_HOST }}:{{ MYSQL_PORT }} -timeout 20s
-
-          echo "Loading settings $DJANGO_SETTINGS_MODULE"
-
-          ./manage.py cms migrate
-
-          # Fix incorrect uploaded file path
-          if [ -d /openedx/data/uploads/ ]; then
-            if [ -n "$(ls -A /openedx/data/uploads/)" ]; then
-              echo "Migrating CMS uploaded files to shared directory"
-              mv /openedx/data/uploads/* /openedx/media/
-              rm -rf /openedx/data/uploads/
-            fi
-          fi
+          ./manage.py cms migrate contentstore
+          ./manage.py cms migrate split_modulestore_django
+          ./manage.py cms migrate backfill_course_tabs
+          ./manage.py cms migrate course_overviews
+          ./manage.py cms simulate_publish
         env:
         - name: SERVICE_VARIANT
           value: cms
