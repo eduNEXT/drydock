@@ -6,20 +6,7 @@ from tutor import hooks
 
 from .__about__ import __version__
 
-VERSION_LIST = [
-    ('MAPLE', '13'),
-    ('NUTMEG', '14'),
-    ('OLIVE', '15'),
-    ('PALM', '16'),
-    ('QUINCE', '17'),
-]
-
 PRIORITY_LIST = [
-    ('job', 'migration-maple-lms-job'),
-    ('job', 'migration-maple-cms-job'),
-    ('job', 'migration-nutmeg-lms-job'),
-    ('job', 'migration-olive-lms-job'),
-
     ('job', 'drydock-mysql-job'),
     ('job', 'drydock-notes-job-mysql'),
     ('job', 'drydock-mongodb-job'),
@@ -57,7 +44,6 @@ config = {
     "defaults": {
         "VERSION": __version__,
         "INIT_JOBS": False,
-        "MIGRATE_FROM": "",
         "CMS_SSO_USER": "cms",
         "AUTO_TLS": True,
         "FLOWER": False,
@@ -87,22 +73,6 @@ config = {
     },
 }
 
-def get_migration_list():
-    """
-    Return a list of migration jobs to run based on the MIGRATE_FROM and VERSION
-    settings.
-    """
-    migration_list = []
-    migrate_from = config["defaults"]["MIGRATE_FROM"]
-    migrate_to = config['defaults']['VERSION'].split('.', maxsplit=1)[0]
-    for name, version in VERSION_LIST:
-        if migrate_from.lower() == name.lower():
-            migrate_from = version
-        if migrate_from <= version <= migrate_to:
-            migration_list.append(name.lower())
-    return migration_list
-
-
 hooks.Filters.CONFIG_DEFAULTS.add_items([("OPENEDX_DEBUG_COOKIE", "ednx_enable_debug")])
 hooks.Filters.CONFIG_OVERRIDES.add_items([
         # This values are not prefixed with DRYDOCK_
@@ -129,7 +99,6 @@ hooks.Filters.ENV_TEMPLATE_TARGETS.add_items(
 hooks.Filters.ENV_TEMPLATE_VARIABLES.add_items(
     [
         ('get_priority', get_priority),
-        ('get_migration_list', get_migration_list),
     ]
 )
 
