@@ -18,7 +18,10 @@ spec:
       containers:
       - name: lms
         image: {{ DOCKER_IMAGE_OPENEDX }}
-        command: ["/bin/sh", "-c"]
+        command:
+          - /bin/sh
+          - -c
+          - -e
         args:
         - |
           dockerize -wait tcp://{{ MYSQL_HOST }}:{{ MYSQL_PORT }} -timeout 20s

@@ -18,7 +18,10 @@ spec:
       containers:
       - name: mysql
         image: {{ DOCKER_IMAGE_MYSQL }}
-        command: ["/bin/sh", "-c"]
+        command:
+          - /bin/sh
+          - -c
+          - -e
         args:
         - |
           echo "Initialising MySQL..."

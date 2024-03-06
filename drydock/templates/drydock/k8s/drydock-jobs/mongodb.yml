@@ -19,7 +19,10 @@ spec:
       containers:
       - name: mongodb
         image: {{ DOCKER_IMAGE_MONGODB }}
-        command: ["/bin/sh", "-c"]
+        command:
+          - /bin/sh
+          - -c
+          - -e
         args:
         - |
           echo "Initialising MongoDB..."
@@ -28,7 +31,7 @@ spec:
             if (db.getUser("{{ MONGODB_USERNAME }}") == null) {
               db.createUser({
                   user: "{{ MONGODB_USERNAME }}",
-                  pwd:  "{{ MONGODB_PASSWORD }}",   
+                  pwd:  "{{ MONGODB_PASSWORD }}",
                   roles: [
                     { role: "readWrite", db: "{{ MONGODB_DATABASE }}" },
                     {% if FORUM_DOCKER_IMAGE is defined %}{ role: "readWrite", db: "{{ FORUM_MONGODB_DATABASE }}" },{% endif %}
