@@ -1,10 +1,41 @@
 from glob import glob
 import os
+import yaml
 import pkg_resources
 
-from tutor import hooks
+from tutor import hooks as tutor_hooks
 
 from .__about__ import __version__
+
+INSTALLATION_PATH = f'{os.getcwd()}/env'
+
+@tutor_hooks.Actions.PLUGINS_LOADED.add()
+def get_init_tasks():
+    """Return the list of init tasks to run."""
+    init_tasks = list(tutor_hooks.Filters.CLI_DO_INIT_TASKS.iterate())
+
+    templates_path = f'{INSTALLATION_PATH}/k8s/jobs.yml'
+
+    jobs = yaml.load_all(open(templates_path, 'r', encoding='utf-8'), Loader=yaml.FullLoader)
+
+    response = []
+    for job in jobs:
+        for service, definition in init_tasks:
+            if job['metadata']['name'] == service + '-job':
+                k8s_data = dict()
+                k8s_data['container'] = job['spec']['template']['spec']['containers'][0]
+                k8s_data['volumes'] = job['spec']['template']['spec']['volumes'] if 'volumes' in job['spec']['template']['spec'] else []
+                k8s_data['name'] = service
+                k8s_data['command'] = definition
+                k8s_data['image'] = job['spec']['template']['spec']['containers'][0]['image']
+                k8s_data['env'] = k8s_data['container']['env'] if 'env' in k8s_data['container'] else []
+                k8s_data['volumeMounts'] = k8s_data['container']['volumeMounts'] if 'volumeMounts' in k8s_data['container']  else []
+
+
+                response.append(k8s_data)
+                break
+
+    return response
 
 
 ################# Configuration
@@ -42,8 +73,8 @@ config = {
     },
 }
 
-hooks.Filters.CONFIG_DEFAULTS.add_items([("OPENEDX_DEBUG_COOKIE", "ednx_enable_debug")])
-hooks.Filters.CONFIG_OVERRIDES.add_items([
+tutor_hooks.Filters.CONFIG_DEFAULTS.add_items([("OPENEDX_DEBUG_COOKIE", "ednx_enable_debug")])
+tutor_hooks.Filters.CONFIG_OVERRIDES.add_items([
         # This values are not prefixed with DRYDOCK_
         ("MONGODB_ROOT_USERNAME", ""),
         ("MONGODB_ROOT_PASSWORD", ""),
@@ -54,10 +85,10 @@ hooks.Filters.CONFIG_OVERRIDES.add_items([
 ################# except maybe for educational purposes :)
 
 # Plugin templates
-hooks.Filters.ENV_TEMPLATE_ROOTS.add_item(
+tutor_hooks.Filters.ENV_TEMPLATE_ROOTS.add_item(
     pkg_resources.resource_filename("drydock", "templates")
 )
-hooks.Filters.ENV_TEMPLATE_TARGETS.add_items(
+tutor_hooks.Filters.ENV_TEMPLATE_TARGETS.add_items(
     [
         ("drydock/build", "plugins"),
         ("drydock/apps", "plugins"),
@@ -72,19 +103,25 @@ for path in glob(
     )
 ):
     with open(path, encoding="utf-8") as patch_file:
-        hooks.Filters.ENV_PATCHES.add_item((os.path.basename(path), patch_file.read()))
+        tutor_hooks.Filters.ENV_PATCHES.add_item((os.path.basename(path), patch_file.read()))
 
 # Load all configuration entries
-hooks.Filters.CONFIG_DEFAULTS.add_items(
+tutor_hooks.Filters.CONFIG_DEFAULTS.add_items(
     [
         (f"DRYDOCK_{key}", value)
         for key, value in config["defaults"].items()
     ]
 )
-hooks.Filters.CONFIG_UNIQUE.add_items(
+tutor_hooks.Filters.CONFIG_UNIQUE.add_items(
     [
         (f"DRYDOCK_{key}", value)
         for key, value in config["unique"].items()
     ]
 )
-hooks.Filters.CONFIG_OVERRIDES.add_items(list(config["overrides"].items()))
+tutor_hooks.Filters.CONFIG_OVERRIDES.add_items(list(config["overrides"].items()))
+
+tutor_hooks.Filters.ENV_TEMPLATE_VARIABLES.add_items(
+    [
+        ('get_init_tasks', get_init_tasks),
+    ]
+)
