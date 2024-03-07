@@ -4,7 +4,7 @@ import yaml
 import pkg_resources
 
 from tutor import env as tutor_env
-from tutor import hooks as tutor_hooks
+from tutor import hooks
 
 from .__about__ import __version__
 
@@ -13,14 +13,14 @@ INSTALLATION_PATH = f'{os.getcwd()}/env'
 INIT_JOBS_SYNC_WAVE = -100
 
 
-@tutor_hooks.Actions.PLUGINS_LOADED.add()
+@hooks.Actions.PLUGINS_LOADED.add()
 def get_init_tasks():
     """Return the list of init tasks to run."""
-    init_tasks = list(tutor_hooks.Filters.CLI_DO_INIT_TASKS.iterate())
+    init_tasks = list(hooks.Filters.CLI_DO_INIT_TASKS.iterate())
 
     # Standarize deprecated COMMANDS_INIT Filter, to be removed in palm or later
     standarized_commands = []
-    for service, init_path in list(tutor_hooks.Filters.COMMANDS_INIT.iterate()):
+    for service, init_path in list(hooks.Filters.COMMANDS_INIT.iterate()):
         standarized_commands.append((service, tutor_env.read_template_file(*init_path)))
 
     init_tasks.extend(standarized_commands)
@@ -83,8 +83,8 @@ config = {
     },
 }
 
-tutor_hooks.Filters.CONFIG_DEFAULTS.add_items([("OPENEDX_DEBUG_COOKIE", "ednx_enable_debug")])
-tutor_hooks.Filters.CONFIG_OVERRIDES.add_items([
+hooks.Filters.CONFIG_DEFAULTS.add_items([("OPENEDX_DEBUG_COOKIE", "ednx_enable_debug")])
+hooks.Filters.CONFIG_OVERRIDES.add_items([
         # This values are not prefixed with DRYDOCK_
         ("MONGODB_ROOT_USERNAME", ""),
         ("MONGODB_ROOT_PASSWORD", ""),
@@ -95,10 +95,10 @@ tutor_hooks.Filters.CONFIG_OVERRIDES.add_items([
 ################# except maybe for educational purposes :)
 
 # Plugin templates
-tutor_hooks.Filters.ENV_TEMPLATE_ROOTS.add_item(
+hooks.Filters.ENV_TEMPLATE_ROOTS.add_item(
     pkg_resources.resource_filename("drydock", "templates")
 )
-tutor_hooks.Filters.ENV_TEMPLATE_TARGETS.add_items(
+hooks.Filters.ENV_TEMPLATE_TARGETS.add_items(
     [
         ("drydock/build", "plugins"),
         ("drydock/apps", "plugins"),
@@ -113,24 +113,24 @@ for path in glob(
     )
 ):
     with open(path, encoding="utf-8") as patch_file:
-        tutor_hooks.Filters.ENV_PATCHES.add_item((os.path.basename(path), patch_file.read()))
+        hooks.Filters.ENV_PATCHES.add_item((os.path.basename(path), patch_file.read()))
 
 # Load all configuration entries
-tutor_hooks.Filters.CONFIG_DEFAULTS.add_items(
+hooks.Filters.CONFIG_DEFAULTS.add_items(
     [
         (f"DRYDOCK_{key}", value)
         for key, value in config["defaults"].items()
     ]
 )
-tutor_hooks.Filters.CONFIG_UNIQUE.add_items(
+hooks.Filters.CONFIG_UNIQUE.add_items(
     [
         (f"DRYDOCK_{key}", value)
         for key, value in config["unique"].items()
     ]
 )
-tutor_hooks.Filters.CONFIG_OVERRIDES.add_items(list(config["overrides"].items()))
+hooks.Filters.CONFIG_OVERRIDES.add_items(list(config["overrides"].items()))
 
-tutor_hooks.Filters.ENV_TEMPLATE_VARIABLES.add_items(
+hooks.Filters.ENV_TEMPLATE_VARIABLES.add_items(
     [
         ('get_init_tasks', get_init_tasks),
     ]

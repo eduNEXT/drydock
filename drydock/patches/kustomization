@@ -17,3 +17,7 @@ patches:
 - path: plugins/drydock/k8s/celery/cms-worker.yml
 - path: plugins/drydock/k8s/celery/lms-worker.yml
 {% endif -%}
+- target:
+    kind: Deployment|Service|PersistentVolumeClaim
+    name: "mysql|mongodb|elasticsearch|redis"
+  path: plugins/drydock/k8s/patches/databases-sync-wave.yml
