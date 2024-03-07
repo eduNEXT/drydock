@@ -2,12 +2,13 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: drydock-{{ job.name }}-job
+  name: drydock-{{ job.name }}-job-{{ job.iteration }}
   labels:
     drydock.io/component: job
     drydock.io/target-service: {{ job.name }}
     drydock.io/runner-service: {{ job.name }}
   annotations:
+    argocd.argoproj.io/sync-wave: {{ job.syncwave }}
     argocd.argoproj.io/hook: Sync
     argocd.argoproj.io/hook-delete-policy: HookSucceeded
 spec:
