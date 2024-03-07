@@ -3,4 +3,4 @@ kind: Deployment
 metadata:
   name: lms
   annotations:
-    argocd.argoproj.io/sync-wave: {{ get_priority('deployment', 'lms') }}
+    argocd.argoproj.io/sync-wave: {{ get_sync_waves_for_resource('lms', 'deployments') }}

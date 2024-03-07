@@ -7,7 +7,7 @@ metadata:
     drydock.io/target-service: cms
     drydock.io/runner-service: cms
   annotations:
-    argocd.argoproj.io/sync-wave: "{{ get_priority('job', 'drydock-cms-job') }}"
+    argocd.argoproj.io/sync-wave: "{{ get_sync_waves_for_resource('drydock-cms-job', 'jobs') }}"
     argocd.argoproj.io/hook: Sync
     argocd.argoproj.io/hook-delete-policy: HookSucceeded
 spec:

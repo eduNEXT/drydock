@@ -3,4 +3,4 @@ kind: Deployment
 metadata:
   name: cms-worker
   annotations:
-    argocd.argoproj.io/sync-wave: {{ get_priority('deployment', 'cms-worker') }}
+    argocd.argoproj.io/sync-wave: {{ get_sync_waves_for_resource('cms-worker', 'deployments') }}
