@@ -1,4 +1,5 @@
 from glob import glob
+from typing import Any, Iterable
 import os
 import click
 import pkg_resources
@@ -6,12 +7,17 @@ import pkg_resources
 from tutor import env as tutor_env
 from tutor import serialize
 from tutor import config as tutor_config
-from tutor import hooks
+from tutor import hooks, types
 
 from .__about__ import __version__
 
 INIT_JOBS_SYNC_WAVE = -100
 
+def _load_jobs(tutor_conf: types.Config) -> Iterable[Any]:
+    jobs = tutor_env.render_file(tutor_conf, "k8s", "jobs.yml").strip()
+    for manifest in serialize.load_all(jobs):
+        if manifest["kind"] == "Job":
+            yield manifest
 
 def get_init_tasks():
     """Return the list of init tasks to run."""
@@ -33,46 +39,45 @@ def get_init_tasks():
 
     init_tasks.extend(standarized_commands)
 
-    templates = tutor_env.render_file(tutor_conf, "k8s", "jobs.yml").strip()
-    templates = list(serialize.load_all(templates))
-
     response = []
     for i, (service, definition) in enumerate(init_tasks):
-        for template in templates:
+        for template in _load_jobs(tutor_conf):
             if template['metadata']['name'] != service + '-job':
                 continue
 
             render_definition = tutor_env.render_str(tutor_conf, definition)
 
-            template['metadata']['name'] = 'drydock-' + template['metadata']['name'] + '-' + str(i)
-            template['metadata']['labels'] = {
+            job = template.copy()
+
+            job['metadata']['name'] = 'drydock-' + job['metadata']['name'] + '-' + str(i)
+            job['metadata']['labels'] = {
                 'drydock.io/component': 'job',
-                'drydock.io/target-service': template['metadata']['name'],
-                'drydock.io/runner-service': template['metadata']['name']
+                'drydock.io/target-service': job['metadata']['name'],
+                'drydock.io/runner-service': job['metadata']['name']
             }
-            template['metadata']['annotations'] = {
+            job['metadata']['annotations'] = {
                 'argocd.argoproj.io/sync-wave': INIT_JOBS_SYNC_WAVE + i,
                 'argocd.argoproj.io/hook': 'Sync',
                 'argocd.argoproj.io/hook-delete-policy': 'HookSucceeded'
             }
 
             shell_command = ["sh", "-e", "-c"]
-            if template["spec"]["template"]["spec"]["containers"][0].get("command") == []:
+            if job["spec"]["template"]["spec"]["containers"][0].get("command") == []:
                 # In some cases, we need to bypass the container entrypoint.
                 # Unfortunately, AFAIK, there is no way to do so in K8s manifests. So we mark
                 # some jobs with "command: []". For these jobs, the entrypoint becomes "sh -e -c".
                 # We do not do this for every job, because some (most) entrypoints are actually useful.
-                template["spec"]["template"]["spec"]["containers"][0]["command"] = shell_command
+                job["spec"]["template"]["spec"]["containers"][0]["command"] = shell_command
                 container_args = [render_definition]
             else:
                 container_args = shell_command + [render_definition]
 
-            template["spec"]["template"]["spec"]["containers"][0]["args"] = container_args
-            template["spec"]["backoffLimit"] = 1
-            template["spec"]["ttlSecondsAfterFinished"] = 3600
+            job["spec"]["template"]["spec"]["containers"][0]["args"] = container_args
+            job["spec"]["backoffLimit"] = 1
+            job["spec"]["ttlSecondsAfterFinished"] = 3600
 
 
-            response.append(serialize.dumps(template))
+            response.append(serialize.dumps(job))
 
     return response
 
