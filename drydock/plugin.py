@@ -1,13 +1,12 @@
 from glob import glob
 import os
 import yaml
+import click
 import pkg_resources
 
 from tutor import env as tutor_env
 from tutor import config as tutor_config
 from tutor import hooks
-
-import logging
 
 from .__about__ import __version__
 
@@ -19,12 +18,20 @@ INIT_JOBS_SYNC_WAVE = -100
 def get_init_tasks():
     """Return the list of init tasks to run."""
     init_tasks = list(hooks.Filters.CLI_DO_INIT_TASKS.iterate())
-    config = tutor_config.load(os.getcwd())
+    context = click.get_current_context().obj
+    tutor_conf = tutor_config.load(context.root)
 
-    # Standarize deprecated COMMANDS_INIT Filter, to be removed in palm or later
+    # Standarize deprecated COMMANDS_INIT and COMMANDS_PRE_INIT Filter
+    pre_init_tasks = []
+    for service, init_path in hooks.Filters.COMMANDS_PRE_INIT.iterate():
+        pre_init_tasks.append((service, tutor_env.read_template_file(*init_path)))
+
+    init_tasks = pre_init_tasks + init_tasks
+
     standarized_commands = []
     for service, init_path in list(hooks.Filters.COMMANDS_INIT.iterate()):
         standarized_commands.append((service, tutor_env.read_template_file(*init_path)))
+
 
     init_tasks.extend(standarized_commands)
 
@@ -35,7 +42,7 @@ def get_init_tasks():
     for i, (service, definition) in enumerate(init_tasks):
         for template in templates:
             if template['metadata']['name'] == service + '-job':
-                render_definition = tutor_env.render_str(config, definition)
+                render_definition = tutor_env.render_str(tutor_conf, definition)
                 data = dict()
                 container = template['spec']['template']['spec']['containers'][0]
                 data['volumes'] = template['spec']['template']['spec']['volumes'] if 'volumes' in template['spec']['template']['spec'] else []
@@ -102,6 +109,7 @@ hooks.Filters.CONFIG_OVERRIDES.add_items([
 hooks.Filters.ENV_TEMPLATE_ROOTS.add_item(
     pkg_resources.resource_filename("drydock", "templates")
 )
+
 hooks.Filters.ENV_TEMPLATE_TARGETS.add_items(
     [
         ("drydock/build", "plugins"),
@@ -109,6 +117,7 @@ hooks.Filters.ENV_TEMPLATE_TARGETS.add_items(
         ("drydock/k8s", "plugins"),
     ],
 )
+
 # Load all patches from the "patches" folder
 for path in glob(
     os.path.join(
@@ -139,3 +148,10 @@ hooks.Filters.ENV_TEMPLATE_VARIABLES.add_items(
         ('get_init_tasks', get_init_tasks),
     ]
 )
+
+# # init script
+with open(
+    pkg_resources.resource_filename("drydock", "templates/drydock/task/mongodb/init"),
+    encoding="utf-8",
+) as fi:
+    hooks.Filters.CLI_DO_INIT_TASKS.add_item(("mongodb", fi.read()), priority=hooks.priorities.HIGH)

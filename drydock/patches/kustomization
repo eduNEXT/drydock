@@ -22,5 +22,5 @@ patches:
     name: "mysql|mongodb|elasticsearch|redis|minio"
   path: plugins/drydock/k8s/patches/databases-sync-wave.yml
 - target:
-    kind: ConfigMap
+    kind: ConfigMap|Ingress|Issuer
   path: plugins/drydock/k8s/patches/databases-sync-wave.yml
