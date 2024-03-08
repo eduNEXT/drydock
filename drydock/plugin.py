@@ -13,6 +13,24 @@ from .__about__ import __version__
 
 INIT_JOBS_SYNC_WAVE = -100
 
+VERSION_LIST = [
+    ('MAPLE', '13'),
+    ('NUTMEG', '14'),
+    ('OLIVE', '15'),
+    ('PALM', '16'),
+    ('QUINCE', '17'),
+]
+
+def _get_upgrade_jobs(tutor_conf: types.Config):
+    upgrade_jobs = []
+    if 'MIGRATE_FROM' in tutor_conf and tutor_conf["MIGRATE_FROM"].lower() in [name.lower() for name, _ in VERSION_LIST]:
+        command_lms = tutor_env.read_template_file('drydock', 'k8s', 'upgrade-scripts', 'lms.sh')
+        command_cms = tutor_env.read_template_file('drydock', 'k8s', 'upgrade-scripts', 'cms.sh')
+        upgrade_jobs.append(('lms', command_lms))
+        upgrade_jobs.append(('cms', command_cms))
+
+    return upgrade_jobs
+
 def _load_jobs(tutor_conf: types.Config) -> Iterable[Any]:
     jobs = tutor_env.render_file(tutor_conf, "k8s", "jobs.yml").strip()
     for manifest in serialize.load_all(jobs):
@@ -34,6 +52,10 @@ def get_init_tasks():
 
     for service, init_path in list(hooks.Filters.COMMANDS_INIT.iterate()):
         init_tasks.append((service, tutor_env.read_template_file(*init_path)))
+
+    upgrade_jobs = _get_upgrade_jobs(tutor_conf)
+    if upgrade_jobs:
+        init_tasks.extend(upgrade_jobs)
 
     response = []
     for i, (service, command) in enumerate(init_tasks):
@@ -76,6 +98,25 @@ def get_init_tasks():
     return response
 
 
+def get_upgrade_list():
+    """
+    Return a list of upgrade target versions based on the MIGRATE_FROM setting.
+    """
+    context = click.get_current_context().obj
+    tutor_conf = tutor_config.load(context.root)
+
+    upgrade_list = []
+    if not 'MIGRATE_FROM' in tutor_conf:
+        return upgrade_list
+    migrate_from = tutor_conf["MIGRATE_FROM"]
+    migrate_to = config['defaults']['VERSION'].split('.', maxsplit=1)[0]
+    for name, version in VERSION_LIST:
+        if migrate_from.lower() == name.lower():
+            migrate_from = version
+        if migrate_from <= version <= migrate_to:
+            upgrade_list.append(name.lower())
+    return upgrade_list
+
 ################# Configuration
 config = {
     # Add here your new settings
@@ -84,6 +125,7 @@ config = {
         "INIT_JOBS": False,
         "CMS_SSO_USER": "cms",
         "AUTO_TLS": True,
+        "MIGRATE_FROM": "",
         "FLOWER": False,
         "INGRESS": False,
         "INGRESS_EXTRA_HOSTS": [],
@@ -163,6 +205,7 @@ hooks.Filters.CONFIG_OVERRIDES.add_items(list(config["overrides"].items()))
 hooks.Filters.ENV_TEMPLATE_VARIABLES.add_items(
     [
         ('get_init_tasks', get_init_tasks),
+        ('get_upgrade_list', get_upgrade_list),
     ]
 )
 
