@@ -19,7 +19,7 @@ patches:
 {% endif -%}
 - target:
     kind: Deployment|Service|PersistentVolumeClaim
-    name: "mysql|mongodb|elasticsearch|redis|minio"
+    name: "mysql|mongodb|elasticsearch|redis|minio|caddy"
   path: plugins/drydock/k8s/patches/databases-sync-wave.yml
 - target:
     kind: ConfigMap|Ingress|Issuer
