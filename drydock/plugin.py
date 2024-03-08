@@ -1,16 +1,14 @@
 from glob import glob
 import os
-import yaml
 import click
 import pkg_resources
 
 from tutor import env as tutor_env
+from tutor import serialize
 from tutor import config as tutor_config
 from tutor import hooks
 
 from .__about__ import __version__
-
-INSTALLATION_PATH = f'{os.getcwd()}/env'
 
 INIT_JOBS_SYNC_WAVE = -100
 
@@ -35,8 +33,8 @@ def get_init_tasks():
 
     init_tasks.extend(standarized_commands)
 
-    templates_path = f'{INSTALLATION_PATH}/k8s/jobs.yml'
-    templates = list(yaml.load_all(open(templates_path, 'r', encoding='utf-8'), Loader=yaml.FullLoader))
+    templates = tutor_env.render_file(tutor_conf, "k8s", "jobs.yml").strip()
+    templates = list(serialize.load_all(templates))
 
     response = []
     for i, (service, definition) in enumerate(init_tasks):
@@ -73,9 +71,8 @@ def get_init_tasks():
             template["spec"]["backoffLimit"] = 1
             template["spec"]["ttlSecondsAfterFinished"] = 3600
 
-            #predefined_job = tutor_env.render_str(tutor_conf, yaml.dump(template))
 
-            response.append(yaml.dump(template))
+            response.append(serialize.dumps(template))
 
     return response
 
