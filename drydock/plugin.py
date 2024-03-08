@@ -41,20 +41,41 @@ def get_init_tasks():
     response = []
     for i, (service, definition) in enumerate(init_tasks):
         for template in templates:
-            if template['metadata']['name'] == service + '-job':
-                render_definition = tutor_env.render_str(tutor_conf, definition)
-                data = dict()
-                container = template['spec']['template']['spec']['containers'][0]
-                data['volumes'] = template['spec']['template']['spec']['volumes'] if 'volumes' in template['spec']['template']['spec'] else []
-                data['name'] = service
-                data['command'] = render_definition
-                data['image'] = template['spec']['template']['spec']['containers'][0]['image']
-                data['env'] = container['env'] if 'env' in container else []
-                data['volumeMounts'] = container['volumeMounts'] if 'volumeMounts' in container  else []
-                data['syncwave'] = INIT_JOBS_SYNC_WAVE + i
-                data['iteration'] = i
+            if template['metadata']['name'] != service + '-job':
+                continue
 
-                response.append(data)
+            render_definition = tutor_env.render_str(tutor_conf, definition)
+
+            template['metadata']['name'] = 'drydock-' + template['metadata']['name'] + '-' + str(i)
+            template['metadata']['labels'] = {
+                'drydock.io/component': 'job',
+                'drydock.io/target-service': template['metadata']['name'],
+                'drydock.io/runner-service': template['metadata']['name']
+            }
+            template['metadata']['annotations'] = {
+                'argocd.argoproj.io/sync-wave': INIT_JOBS_SYNC_WAVE + i,
+                'argocd.argoproj.io/hook': 'Sync',
+                'argocd.argoproj.io/hook-delete-policy': 'HookSucceeded'
+            }
+
+            shell_command = ["sh", "-e", "-c"]
+            if template["spec"]["template"]["spec"]["containers"][0].get("command") == []:
+                # In some cases, we need to bypass the container entrypoint.
+                # Unfortunately, AFAIK, there is no way to do so in K8s manifests. So we mark
+                # some jobs with "command: []". For these jobs, the entrypoint becomes "sh -e -c".
+                # We do not do this for every job, because some (most) entrypoints are actually useful.
+                template["spec"]["template"]["spec"]["containers"][0]["command"] = shell_command
+                container_args = [render_definition]
+            else:
+                container_args = shell_command + [render_definition]
+
+            template["spec"]["template"]["spec"]["containers"][0]["args"] = container_args
+            template["spec"]["backoffLimit"] = 1
+            template["spec"]["ttlSecondsAfterFinished"] = 3600
+
+            #predefined_job = tutor_env.render_str(tutor_conf, yaml.dump(template))
+
+            response.append(yaml.dump(template))
 
     return response
 
