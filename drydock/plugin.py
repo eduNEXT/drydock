@@ -4,7 +4,10 @@ import yaml
 import pkg_resources
 
 from tutor import env as tutor_env
+from tutor import config as tutor_config
 from tutor import hooks
+
+import logging
 
 from .__about__ import __version__
 
@@ -13,10 +16,10 @@ INSTALLATION_PATH = f'{os.getcwd()}/env'
 INIT_JOBS_SYNC_WAVE = -100
 
 
-@hooks.Actions.PLUGINS_LOADED.add()
 def get_init_tasks():
     """Return the list of init tasks to run."""
     init_tasks = list(hooks.Filters.CLI_DO_INIT_TASKS.iterate())
+    config = tutor_config.load(os.getcwd())
 
     # Standarize deprecated COMMANDS_INIT Filter, to be removed in palm or later
     standarized_commands = []
@@ -32,11 +35,12 @@ def get_init_tasks():
     for i, (service, definition) in enumerate(init_tasks):
         for template in templates:
             if template['metadata']['name'] == service + '-job':
+                render_definition = tutor_env.render_str(config, definition)
                 data = dict()
                 container = template['spec']['template']['spec']['containers'][0]
                 data['volumes'] = template['spec']['template']['spec']['volumes'] if 'volumes' in template['spec']['template']['spec'] else []
                 data['name'] = service
-                data['command'] = definition
+                data['command'] = render_definition
                 data['image'] = template['spec']['template']['spec']['containers'][0]['image']
                 data['env'] = container['env'] if 'env' in container else []
                 data['volumeMounts'] = container['volumeMounts'] if 'volumeMounts' in container  else []
