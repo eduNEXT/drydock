@@ -7,8 +7,6 @@ metadata:
     app.kubernetes.io/name: cms-debug
   annotations:
     argocd.argoproj.io/sync-wave: "{{ get_sync_waves_for_resource('cms-debug', 'deployments') }}"
-    argocd.argoproj.io/hook: Sync
-    argocd.argoproj.io/hook-delete-policy: HookSucceeded
 spec:
   selector:
     matchLabels:
@@ -63,8 +61,6 @@ metadata:
     app.kubernetes.io/name: lms-debug
   annotations:
     argocd.argoproj.io/sync-wave: "{{ get_sync_waves_for_resource('lms-debug', 'deployments') }}"
-    argocd.argoproj.io/hook: Sync
-    argocd.argoproj.io/hook-delete-policy: HookSucceeded
 spec:
   selector:
     matchLabels:

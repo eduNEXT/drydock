@@ -4,8 +4,6 @@ metadata:
   name: lms
   annotations:
     argocd.argoproj.io/sync-wave: "{{ get_sync_waves_for_resource('lms-lifecycle-enabled', 'deployments') }}"
-    argocd.argoproj.io/hook: Sync
-    argocd.argoproj.io/hook-delete-policy: HookSucceeded
 spec:
   template:
     spec:
