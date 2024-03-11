@@ -168,7 +168,12 @@ def get_sync_waves_for_resource(resource_name: str, kind: str) -> SYNC_WAVES_ORD
     Returns:
         dict
     """
-    return get_sync_waves_order()[kind][resource_name]
+    order = get_sync_waves_order()
+    if kind not in order:
+        return 0
+    if resource_name not in order[kind]:
+        return 0
+    return order[kind][resource_name]
 
 
 ################# Configuration
