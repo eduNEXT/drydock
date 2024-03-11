@@ -18,9 +18,9 @@ patches:
 - path: plugins/drydock/k8s/celery/lms-worker.yml
 {% endif -%}
 - target:
-    kind: Deployment|Service|PersistentVolumeClaim
-    name: "mysql|mongodb|elasticsearch|redis|minio|caddy"
-  path: plugins/drydock/k8s/patches/databases-sync-wave.yml
+    kind: HorizontalPodAutoscaler
+  path: plugins/drydock/k8s/patches/sync-wave-100.yml
 - target:
-    kind: ConfigMap|Ingress|Issuer
-  path: plugins/drydock/k8s/patches/databases-sync-wave.yml
+    kind: Deployment|Ingress|Service
+    name:  "cms-debug|lms-debug|ingress-debug"
+  path: plugins/drydock/k8s/patches/sync-wave-100.yml

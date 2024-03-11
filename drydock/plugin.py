@@ -11,7 +11,7 @@ from tutor import hooks, types
 
 from .__about__ import __version__
 
-INIT_JOBS_SYNC_WAVE = -100
+INIT_JOBS_SYNC_WAVE = 1
 
 VERSION_LIST = [
     ('MAPLE', '13'),
