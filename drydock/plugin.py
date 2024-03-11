@@ -1,5 +1,4 @@
 from glob import glob
-from typing import Any, Iterable
 import os
 import click
 import pkg_resources
@@ -26,7 +25,7 @@ VERSION_LIST = [
     ('QUINCE', '17'),
 ]
 
-def _load_jobs(tutor_conf: types.Config) -> Iterable[Any]:
+def _load_jobs(tutor_conf: types.Config) -> t.Iterable[t.Any]:
     jobs = tutor_env.render_file(tutor_conf, "k8s", "jobs.yml").strip()
     for manifest in serialize.load_all(jobs):
         if manifest["kind"] == "Job":
