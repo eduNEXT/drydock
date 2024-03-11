@@ -12,7 +12,7 @@ metadata:
     drydock.io/target-service: lms
     drydock.io/runner-service: lms
   annotations:
-    argocd.argoproj.io/sync-wave: "2"
+    argocd.argoproj.io/sync-wave: "{{ get_sync_waves_for_resource('drydock-upgrade-lms-job', 'jobs') }}"
     argocd.argoproj.io/hook: Sync
     argocd.argoproj.io/hook-delete-policy: HookSucceeded
 spec:
@@ -61,13 +61,13 @@ spec:
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: drydock-cms-job
+  name: drydock-upgrade-cms-job
   labels:
     drydock.io/component: job
     drydock.io/target-service: cms
     drydock.io/runner-service: cms
   annotations:
-    argocd.argoproj.io/sync-wave: "3"
+    argocd.argoproj.io/sync-wave: "{{ get_sync_waves_for_resource('drydock-upgrade-cms-job', 'jobs') }}"
     argocd.argoproj.io/hook: Sync
     argocd.argoproj.io/hook-delete-policy: HookSucceeded
 spec:

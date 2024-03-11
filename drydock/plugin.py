@@ -56,7 +56,7 @@ def get_init_tasks():
 
             render_command = tutor_env.render_str(tutor_conf, command)
 
-            template['metadata']['name'] = 'drydock-' + template['metadata']['name']
+            template['metadata']['name'] = 'drydock-' + template['metadata']['name'] + '-' + str(i)
             template['metadata']['labels'] = {
                 'drydock.io/component': 'job',
                 'drydock.io/target-service': template['metadata']['name'],
@@ -110,6 +110,22 @@ def get_upgrade_list():
 
 
 CORE_SYNC_WAVES_ORDER: t.Dict[str, SYNC_WAVES_ORDER_ATTRS_TYPE] = {
+    "jobs": {
+        "drydock-upgrade-lms-job": 50,
+        "drydock-upgrade-cms-job": 51
+    },
+    "deployments": {
+        "lms-lifecycle-enabled": 100,
+        "cms-lifecycle-enabled": 100,
+        "lms-debug": 50,
+        "cms-debug": 50,
+    },
+    "horizontalpodautoscalers": {
+        "all": 150
+    },
+    "ingresses": {
+        "ingress-debug": 200
+    },
 }
 
 # The core sync-waves configs are added with a high priority, such that other users can override or
