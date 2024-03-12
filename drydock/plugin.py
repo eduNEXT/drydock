@@ -17,13 +17,18 @@ from .__about__ import __version__
 
 INIT_JOBS_SYNC_WAVE = 1
 
-
+# This function is taken from
+# https://github.com/overhangio/tutor/blob/v15.3.7/tutor/commands/k8s.py#L180
 def _load_jobs(tutor_conf: types.Config) -> t.Iterable[t.Any]:
     jobs = tutor_env.render_file(tutor_conf, "k8s", "jobs.yml").strip()
     for manifest in serialize.load_all(jobs):
         if manifest["kind"] == "Job":
             yield manifest
 
+
+# The definition of the init tasks is taken and adapted from
+# https://github.com/overhangio/tutor/blob/v15.3.7/tutor/commands/jobs.py#L64
+# and https://github.com/overhangio/tutor/blob/v15.3.7/tutor/commands/k8s.py#L80
 def get_init_tasks():
     """Return the list of init tasks to run."""
     init_tasks = list(tutor_hooks.Filters.CLI_DO_INIT_TASKS.iterate())
@@ -92,8 +97,7 @@ CORE_SYNC_WAVES_ORDER: SYNC_WAVES_ORDER_ATTRS_TYPE = {
     "horizontalpodautoscalers:all": 150
 }
 
-# The core sync-waves configs are added with a high priority, such that other users can override or
-# remove them.
+
 @SYNC_WAVES_ORDER.add()
 def _add_core_sync_waves_order(sync_waves_config: SYNC_WAVES_ORDER_ATTRS_TYPE) -> SYNC_WAVES_ORDER_ATTRS_TYPE:
     sync_waves_config.update(CORE_SYNC_WAVES_ORDER)
