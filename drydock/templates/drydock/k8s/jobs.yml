@@ -2,7 +2,7 @@
 {{ job }}
 ---
 {% endfor %}
-{% if MIGRATE_FROM in range(13,16) %}
+{% if MIGRATE_FROM %}
 apiVersion: batch/v1
 kind: Job
 metadata:
