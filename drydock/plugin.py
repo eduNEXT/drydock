@@ -121,7 +121,7 @@ CORE_SYNC_WAVES_ORDER: SYNC_WAVES_ORDER_ATTRS_TYPE = {
 
 # The core sync-waves configs are added with a high priority, such that other users can override or
 # remove them.
-@SYNC_WAVES_ORDER.add(priority=tutor_hooks.priorities.HIGH)
+@SYNC_WAVES_ORDER.add()
 def _add_core_sync_waves_order(sync_waves_config: SYNC_WAVES_ORDER_ATTRS_TYPE) -> SYNC_WAVES_ORDER_ATTRS_TYPE:
     sync_waves_config.update(CORE_SYNC_WAVES_ORDER)
     return sync_waves_config
