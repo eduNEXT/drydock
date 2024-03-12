@@ -12,4 +12,4 @@ from tutor.core.hooks import Filter, filters
 
 SYNC_WAVES_ORDER_ATTRS_TYPE = t.Dict[str, int]
 
-SYNC_WAVES_ORDER: Filter[dict[str, SYNC_WAVES_ORDER_ATTRS_TYPE], []] = filters.get("sync_waves_order")
+SYNC_WAVES_ORDER: Filter[SYNC_WAVES_ORDER_ATTRS_TYPE, []] = filters.get("sync_waves_order")

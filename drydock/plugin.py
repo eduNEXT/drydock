@@ -108,35 +108,27 @@ def get_upgrade_list():
     return upgrade_list
 
 
-CORE_SYNC_WAVES_ORDER: t.Dict[str, SYNC_WAVES_ORDER_ATTRS_TYPE] = {
-    "jobs": {
-        "drydock-upgrade-lms-job": 50,
-        "drydock-upgrade-cms-job": 51
-    },
-    "deployments": {
-        "lms-lifecycle-enabled": 100,
-        "cms-lifecycle-enabled": 100,
-        "lms-debug": 50,
-        "cms-debug": 50,
-    },
-    "horizontalpodautoscalers": {
-        "all": 150
-    },
-    "ingresses": {
-        "ingress-debug": 200
-    },
+CORE_SYNC_WAVES_ORDER: SYNC_WAVES_ORDER_ATTRS_TYPE = {
+    "drydock-upgrade-lms-job": 50,
+    "drydock-upgrade-cms-job": 51,
+    "lms-lifecycle-enabled": 100,
+    "cms-lifecycle-enabled": 100,
+    "lms-debug": 50,
+    "cms-debug": 50,
+    "horizontalpodautoscalers:all": 150,
+    "ingress-debug": 200
 }
 
 # The core sync-waves configs are added with a high priority, such that other users can override or
 # remove them.
 @SYNC_WAVES_ORDER.add(priority=tutor_hooks.priorities.HIGH)
-def _add_core_sync_waves_order(sync_waves_config: t.Dict[str, SYNC_WAVES_ORDER_ATTRS_TYPE]) -> t.Dict[str, SYNC_WAVES_ORDER_ATTRS_TYPE]:
+def _add_core_sync_waves_order(sync_waves_config: SYNC_WAVES_ORDER_ATTRS_TYPE) -> SYNC_WAVES_ORDER_ATTRS_TYPE:
     sync_waves_config.update(CORE_SYNC_WAVES_ORDER)
     return sync_waves_config
 
 
 @functools.lru_cache(maxsize=None)
-def get_sync_waves_order() -> t.Dict[str, SYNC_WAVES_ORDER_ATTRS_TYPE]:
+def get_sync_waves_order() -> SYNC_WAVES_ORDER_ATTRS_TYPE:
     """
     This function is cached for performance.
     """
@@ -151,7 +143,7 @@ def _clear_sync_waves_order_cache(_name: str) -> None:
     get_sync_waves_order.cache_clear()
 
 
-def iter_sync_waves_order() -> t.Iterable[t.Tuple[str, SYNC_WAVES_ORDER_ATTRS_TYPE]]:
+def iter_sync_waves_order() -> t.Iterable[SYNC_WAVES_ORDER_ATTRS_TYPE]:
     """
     Yield:
         (name, dict)
@@ -159,7 +151,7 @@ def iter_sync_waves_order() -> t.Iterable[t.Tuple[str, SYNC_WAVES_ORDER_ATTRS_TY
     yield from get_sync_waves_order().items()
 
 
-def get_sync_waves_for_resource(resource_name: str, kind: str) -> SYNC_WAVES_ORDER_ATTRS_TYPE:
+def get_sync_waves_for_resource(resource_name: str) -> SYNC_WAVES_ORDER_ATTRS_TYPE:
     """
     Args:
         resource_name: the name of the resource
@@ -167,12 +159,7 @@ def get_sync_waves_for_resource(resource_name: str, kind: str) -> SYNC_WAVES_ORD
     Returns:
         dict
     """
-    order = get_sync_waves_order()
-    if kind not in order:
-        return 0
-    if resource_name not in order[kind]:
-        return 0
-    return order[kind][resource_name]
+    return get_sync_waves_order().get(resource_name, 0)
 
 
 ################# Configuration
