@@ -2,7 +2,7 @@
 {{ job }}
 ---
 {% endfor %}
-{% if MIGRATE_FROM in get_upgrade_list() %}
+{% if MIGRATE_FROM in range(13,16) %}
 apiVersion: batch/v1
 kind: Job
 metadata:
@@ -29,10 +29,10 @@ spec:
           - -e
         args:
         - |
-          {%- if 'maple' in get_upgrade_list() %}
+          {%- if MIGRATE_FROM == 13 %}
           ./manage.py lms backpopulate_user_tours
           {%- endif %}
-          {%- if 'nutmeg' in get_upgrade_list() %}
+          {%- if MIGRATE_FROM <= 14 %}
           ./manage.py lms compute_grades -v1 --all_courses
           {%- endif %}
         env:
@@ -84,7 +84,7 @@ spec:
           - -e
         args:
         - |
-          {%- if 'maple' in get_upgrade_list() %}
+          {%- if MIGRATE_FROM == 13 %}
           ./manage.py cms backfill_course_tabs
           ./manage.py cms simulate_publish
           {%- endif %}

@@ -17,13 +17,6 @@ from .__about__ import __version__
 
 INIT_JOBS_SYNC_WAVE = 1
 
-VERSION_LIST = [
-    ('MAPLE', '13'),
-    ('NUTMEG', '14'),
-    ('OLIVE', '15'),
-    ('PALM', '16'),
-    ('QUINCE', '17'),
-]
 
 def _load_jobs(tutor_conf: types.Config) -> t.Iterable[t.Any]:
     jobs = tutor_env.render_file(tutor_conf, "k8s", "jobs.yml").strip()
@@ -62,7 +55,7 @@ def get_init_tasks():
                 'drydock.io/runner-service': template['metadata']['name']
             }
             template['metadata']['annotations'] = {
-                'argocd.argoproj.io/sync-wave': INIT_JOBS_SYNC_WAVE + i,
+                'argocd.argoproj.io/sync-wave': INIT_JOBS_SYNC_WAVE + i * 2,
                 'argocd.argoproj.io/hook': 'Sync',
                 'argocd.argoproj.io/hook-delete-policy': 'HookSucceeded'
             }
@@ -88,26 +81,6 @@ def get_init_tasks():
     return response
 
 
-def get_upgrade_list():
-    """
-    Return a list of upgrade target versions based on the MIGRATE_FROM setting.
-    """
-    context = click.get_current_context().obj
-    tutor_conf = tutor_config.load(context.root)
-
-    upgrade_list = []
-    if not 'MIGRATE_FROM' in tutor_conf:
-        return upgrade_list
-    migrate_from = tutor_conf["MIGRATE_FROM"]
-    migrate_to = config['defaults']['VERSION'].split('.', maxsplit=1)[0]
-    for name, version in VERSION_LIST:
-        if migrate_from.lower() == name.lower():
-            migrate_from = version
-        if migrate_from <= version <= migrate_to:
-            upgrade_list.append(name.lower())
-    return upgrade_list
-
-
 CORE_SYNC_WAVES_ORDER: SYNC_WAVES_ORDER_ATTRS_TYPE = {
     "drydock-upgrade-lms-job": 50,
     "drydock-upgrade-cms-job": 51,
@@ -115,8 +88,8 @@ CORE_SYNC_WAVES_ORDER: SYNC_WAVES_ORDER_ATTRS_TYPE = {
     "cms-lifecycle-enabled": 100,
     "lms-debug": 50,
     "cms-debug": 50,
-    "horizontalpodautoscalers:all": 150,
-    "ingress-debug": 200
+    "ingress-debug": 200,
+    "horizontalpodautoscalers:all": 150
 }
 
 # The core sync-waves configs are added with a high priority, such that other users can override or
@@ -250,7 +223,6 @@ tutor_hooks.Filters.CONFIG_OVERRIDES.add_items(list(config["overrides"].items())
 tutor_hooks.Filters.ENV_TEMPLATE_VARIABLES.add_items(
     [
         ('get_init_tasks', get_init_tasks),
-        ('get_upgrade_list', get_upgrade_list),
         ('iter_sync_waves_order', iter_sync_waves_order),
         ('get_sync_waves_for_resource', get_sync_waves_for_resource),
     ]
