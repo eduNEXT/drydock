@@ -122,7 +122,6 @@ def get_sync_waves_for_resource(resource_name: str) -> SYNC_WAVES_ORDER_ATTRS_TY
     """
     Args:
         resource_name: the name of the resource
-        kind: the kind of the resource
     Returns:
         dict
     """

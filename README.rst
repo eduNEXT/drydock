@@ -57,28 +57,30 @@ The following configuration options are available:
 - `DRYDOCK_ENABLE_SENTRY` : Whether to enable sentry. Defaults to `true`.
 - `DRYDOCK_SENTRY_DSN` : The sentry DSN. Defaults to `""`.
 - `DRYDOCK_POD_LIFECYCLE` : Whether to enable pod lifecycle. Defaults to `true`.
-
-About Drydock v15.8.0
----------------------
-
-This version of Drydock have some important features and improvements, is **highly** recommended to update to this version.
-
-- We had been using a static definition of the initialization jobs, but now we are using the `Tutor filters <https://docs.tutor.edly.io/reference/api/hooks/filters.html>`_ to generate the kubernetes definition of the initialization jobs. This is a big improvement because now we can add new initialization jobs without modifying the Drydock code. The jobs are taken from `COMMANDS_PRE_INIT`, `COMMANDS_INIT` and `CLI_DO_INIT_TASKS` Filters.
-- A new `Tutor filter <https://docs.tutor.edly.io/reference/api/hooks/filters.html>`_ **SYNC_WAVES_ORDER** was added to allow define `ArgoCD Sync Waves <https://argo-cd.readthedocs.io/en/stable/user-guide/sync-waves/>`_ order and apply to the kubernetes resources through **get_sync_waves_for_resource** function.
-    We are defined by defult the following order:
-    - `All kubernetes resources` (except the ones that are defined in the next waves)
-    - `Initialization Jobs`
-    - `Upgrade Jobs`: When **DRYDOCK_MIGRATE_FROM** is set, over the Sync Wave 50
-    - `CMS and LMS Deployments`: When **DRYDOCK_POD_LIFECYCLE** is active, over the Sync Wave 100
-    - `Debug Resources`: When **DRYDOCK_DEBUG** active, over the Sync Wave 100
-    - `Horizontal Pod Autoscalers`: When active, over the Sync Wave 150
-
-- **DRYDOCK_MIGRATE_FROM** was added to allow define the version of the OpenedX platform that we are migrating from. From major `13`(maple) to `15`(olive).
-    When this variable is set, the `Upgrade Jobs` will be applied over the Sync Wave 50 based on the Tutor Versions between the older and the current version.
+- `DRYDOCK_MIGRATE_FROM`: allow define the version of the OpenedX platform that we are migrating from. From major `13`(maple) to `15`(olive). When this variable is set, the `Upgrade Jobs` will be applied over the Sync Wave 50 based on the Tutor Versions between the older and the current version.
 
 .. note::
     You also need to have DRYDOCK_INIT_JOBS set to `true` to apply migrations in case of platform migration.
 
+Job generation
+--------------
+
+Tutor doesn't generate manifest files for the initialization jobs, in consequence we can't use GitOps tools like ArgoCD to deploy the initialization jobs.
+
+We had been using a static definition of the initialization jobs, but now we are using the `Tutor filters <https://docs.tutor.edly.io/reference/api/hooks/filters.html>`_ to generate the kubernetes definition of the initialization jobs. This is a big improvement because now we can add new initialization jobs without modifying the Drydock code. The jobs are taken from `COMMANDS_PRE_INIT`, `COMMANDS_INIT` and `CLI_DO_INIT_TASKS` Filters.
+
+ArgoCD Sync Waves Support
+-----------------------
+
+`Tutor filter <https://docs.tutor.edly.io/reference/api/hooks/filters.html>`_ **SYNC_WAVES_ORDER** was added to allow define `ArgoCD Sync Waves <https://argo-cd.readthedocs.io/en/stable/user-guide/sync-waves/>`_ order and apply to the kubernetes resources through **get_sync_waves_for_resource** function.
+
+We are defined by defult the following order:
+- `All kubernetes resources` (except the ones that are defined in the next waves)
+- `Initialization Jobs`
+- `Upgrade Jobs`: When **DRYDOCK_MIGRATE_FROM** is set, over the Sync Wave 50
+- `CMS and LMS Deployments`: When **DRYDOCK_POD_LIFECYCLE** is active, over the Sync Wave 100
+- `Debug Resources`: When **DRYDOCK_DEBUG** active, over the Sync Wave 100
+- `Horizontal Pod Autoscalers`: When active, over the Sync Wave 150
 
 Rationale
 ---------
