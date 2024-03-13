@@ -147,7 +147,7 @@ config = {
         "INIT_JOBS": False,
         "CMS_SSO_USER": "cms",
         "AUTO_TLS": True,
-        "MIGRATE_FROM": "",
+        "MIGRATE_FROM": 0,
         "FLOWER": False,
         "INGRESS": False,
         "INGRESS_EXTRA_HOSTS": [],
