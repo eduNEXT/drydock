@@ -1,6 +1,6 @@
 """
 These hooks are stored in a separate module. If they were included in plugin.py, then
-the pod-autoscaling hooks would be created in the context of some other plugin that imports
+the drydock hooks would be created in the context of some other plugin that imports
 them.
 """
 
