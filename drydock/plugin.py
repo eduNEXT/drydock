@@ -45,7 +45,6 @@ def get_init_tasks():
     for service, init_path in list(tutor_hooks.Filters.COMMANDS_INIT.iterate()):
         init_tasks.append((service, tutor_env.read_template_file(*init_path)))
 
-    response = []
     for i, (service, command) in enumerate(init_tasks):
         for template in _load_jobs(tutor_conf):
             if template['metadata']['name'] != service + '-job':
@@ -53,7 +52,7 @@ def get_init_tasks():
 
             render_command = tutor_env.render_str(tutor_conf, command)
 
-            template['metadata']['name'] = 'drydock-' + template['metadata']['name'] + '-' + str(i)
+            template['metadata']['name'] = f"drydock-{template['metadata']['name']}-{i}"
             template['metadata']['labels'] = {
                 'drydock.io/component': 'job',
                 'drydock.io/target-service': template['metadata']['name'],
@@ -82,8 +81,6 @@ def get_init_tasks():
 
 
             yield serialize.dumps(template)
-
-    return response
 
 
 CORE_SYNC_WAVES_ORDER: SYNC_WAVES_ORDER_ATTRS_TYPE = {
