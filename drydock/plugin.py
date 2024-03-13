@@ -31,16 +31,15 @@ def _load_jobs(tutor_conf: types.Config) -> t.Iterable[t.Any]:
 # and https://github.com/overhangio/tutor/blob/v15.3.7/tutor/commands/k8s.py#L80
 def get_init_tasks():
     """Return the list of init tasks to run."""
-    init_tasks = list(tutor_hooks.Filters.CLI_DO_INIT_TASKS.iterate())
     context = click.get_current_context().obj
     tutor_conf = tutor_config.load(context.root)
 
+    init_tasks = []
     # Standarize deprecated COMMANDS_INIT and COMMANDS_PRE_INIT Filter
-    pre_init_tasks = []
     for service, init_path in tutor_hooks.Filters.COMMANDS_PRE_INIT.iterate():
-        pre_init_tasks.append((service, tutor_env.read_template_file(*init_path)))
+        init_tasks.append((service, tutor_env.read_template_file(*init_path)))
 
-    init_tasks = pre_init_tasks + init_tasks
+    init_tasks.extend(tutor_hooks.Filters.CLI_DO_INIT_TASKS.iterate())
 
     for service, init_path in list(tutor_hooks.Filters.COMMANDS_INIT.iterate()):
         init_tasks.append((service, tutor_env.read_template_file(*init_path)))
@@ -53,11 +52,16 @@ def get_init_tasks():
             render_command = tutor_env.render_str(tutor_conf, command)
 
             template['metadata']['name'] = f"drydock-{template['metadata']['name']}-{i}"
-            template['metadata']['labels'] = {
+            labels = {
                 'drydock.io/component': 'job',
                 'drydock.io/target-service': template['metadata']['name'],
                 'drydock.io/runner-service': template['metadata']['name']
             }
+            template['metadata']['labels'].update(labels)
+
+            # We are skipping regular tutor jobs targeting this label
+            del template['metadata']['labels']['app.kubernetes.io/component']
+
             template['metadata']['annotations'] = {
                 'argocd.argoproj.io/sync-wave': INIT_JOBS_SYNC_WAVE + i * 2,
                 'argocd.argoproj.io/hook': 'Sync',
