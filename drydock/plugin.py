@@ -52,12 +52,11 @@ def get_init_tasks():
             render_command = tutor_env.render_str(tutor_conf, command)
 
             template['metadata']['name'] = f"drydock-{template['metadata']['name']}-{i}"
-            labels = {
+            template['metadata']['labels'].update({
                 'drydock.io/component': 'job',
                 'drydock.io/target-service': template['metadata']['name'],
                 'drydock.io/runner-service': template['metadata']['name']
-            }
-            template['metadata']['labels'].update(labels)
+            })
 
             # We are skipping regular tutor jobs targeting this label
             del template['metadata']['labels']['app.kubernetes.io/component']
