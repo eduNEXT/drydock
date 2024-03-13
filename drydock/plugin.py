@@ -5,7 +5,6 @@ import pkg_resources
 
 import typing as t
 
-import functools
 from .hooks import SYNC_WAVES_ORDER_ATTRS_TYPE, SYNC_WAVES_ORDER
 
 from tutor import hooks as tutor_hooks
@@ -104,20 +103,11 @@ def _add_core_sync_waves_order(sync_waves_config: SYNC_WAVES_ORDER_ATTRS_TYPE) -
     return sync_waves_config
 
 
-@functools.lru_cache(maxsize=None)
 def get_sync_waves_order() -> SYNC_WAVES_ORDER_ATTRS_TYPE:
     """
-    This function is cached for performance.
+    Return the sync waves order for the plugin
     """
     return SYNC_WAVES_ORDER.apply({})
-
-
-@tutor_hooks.Actions.PLUGIN_LOADED
-def _clear_sync_waves_order_cache(_name: str) -> None:
-    """
-    Don't forget to clear cache, or we'll have some strange surprises...
-    """
-    get_sync_waves_order.cache_clear()
 
 
 def iter_sync_waves_order() -> t.Iterable[SYNC_WAVES_ORDER_ATTRS_TYPE]:
