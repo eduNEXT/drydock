@@ -60,7 +60,7 @@ The following configuration options are available:
 - `DRYDOCK_MIGRATE_FROM`: it allows defining the version of the OpenedX platform we are migrating from. It accepts the integer value mapping the origin release, for instance, `13`(maple) or `14`(nutmeg). When this variable is set, a group of `release-specific upgrade jobs` are added to the Kubernetes manifests. These jobs are applied to the cluster in a suitable order (thanks to the GitOps implementation with ArgoCD + sync waves) to guarantee the correct behavior of the platform in the new version. The release-specific upgrade jobs are supported from release `13`(maple) 
 
 .. note::
-    You also need to have DRYDOCK_INIT_JOBS set to `true` to apply migrations in case of platform migration.
+    You also need to set `DRYDOCK_INIT_JOBS` to `true` to enable the release-specific upgrade jobs in the case of a platform migration.
 
 Job generation
 --------------
