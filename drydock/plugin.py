@@ -60,7 +60,7 @@ def get_init_tasks():
             template['metadata']['annotations'] = {
                 'argocd.argoproj.io/sync-wave': INIT_JOBS_SYNC_WAVE + i * 2,
                 'argocd.argoproj.io/hook': 'Sync',
-                'argocd.argoproj.io/hook-delete-policy': 'HookSucceeded'
+                'argocd.argoproj.io/hook-delete-policy': 'HookSucceeded,BeforeHookCreation'
             }
 
             shell_command = ["sh", "-e", "-c"]
