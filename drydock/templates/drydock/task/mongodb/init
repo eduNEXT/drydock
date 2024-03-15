@@ -20,6 +20,6 @@ mongo --host {{MONGODB_HOST }} {% if MONGODB_ROOT_USERNAME and MONGODB_ROOT_PASS
     })
   }
   {% endif %}
-  {{ patch("drydock-mongodb-init-job")|indent(12) }}
+  {{ patch("drydock-mongodb-init-job") }}
   exit
 EOF

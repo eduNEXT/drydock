@@ -6,7 +6,7 @@ metadata:
   labels:
     app.kubernetes.io/name: cms-debug
   annotations:
-    argocd.argoproj.io/sync-wave: "{{ get_sync_waves_for_resource('cms-debug', 'deployments') }}"
+    argocd.argoproj.io/sync-wave: "{{ get_sync_waves_for_resource('cms-debug') }}"
 spec:
   selector:
     matchLabels:
@@ -60,7 +60,7 @@ metadata:
   labels:
     app.kubernetes.io/name: lms-debug
   annotations:
-    argocd.argoproj.io/sync-wave: "{{ get_sync_waves_for_resource('lms-debug', 'deployments') }}"
+    argocd.argoproj.io/sync-wave: "{{ get_sync_waves_for_resource('lms-debug') }}"
 spec:
   selector:
     matchLabels:
