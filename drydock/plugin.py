@@ -52,12 +52,10 @@ def get_init_tasks():
 
             template['metadata']['name'] = f"drydock-{template['metadata']['name']}-{i}"
             template['metadata']['labels'].update({
+                'app.kubernetes.io/component': 'drydock-job',
                 'drydock.io/target-service': template['metadata']['name'],
                 'drydock.io/runner-service': template['metadata']['name']
             })
-
-            # We are skipping regular tutor jobs targeting this label
-            template['metadata']['labels']['app.drydock.io/component'] = template['metadata']['labels'].pop('app.kubernetes.io/component', None)
 
             template['metadata']['annotations'] = {
                 'argocd.argoproj.io/sync-wave': INIT_JOBS_SYNC_WAVE + i * 2,
