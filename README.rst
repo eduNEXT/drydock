@@ -64,6 +64,30 @@ The following configuration options are available:
 - `DRYDOCK_PDB_MINAVAILABLE_PERCENTAGE_LMS_WORKER` : The minimum available percentage for the LMS WORKER's PodDisruptionBudget. To disable the PodDisruptionBudget, set `0`. Defaults to `0`.
 - `DRYDOCK_PDB_MINAVAILABLE_PERCENTAGE_CMS` : The minimum available percentage for the CMS's PodDisruptionBudget. To disable the PodDisruptionBudget, set `0`. Defaults to `0`.
 - `DRYDOCK_PDB_MINAVAILABLE_PERCENTAGE_CMS_WORKER` : The minimum available percentage for the worker's PodDisruptionBudget. To disable the PodDisruptionBudget, set `0`. Defaults to `0`.
+- `DRYDOCK_MIGRATE_FROM`: it allows defining the version of the OpenedX platform we are migrating from. It accepts the integer value mapping the origin release, for instance, `13`(maple) or `14`(nutmeg). When this variable is set, a group of `release-specific upgrade jobs` are added to the Kubernetes manifests. These jobs are applied to the cluster in a suitable order (thanks to the GitOps implementation with ArgoCD + sync waves) to guarantee the correct behavior of the platform in the new version. This brings the `tutor k8s upgrade <https://github.com/overhangio/tutor/blob/v15.3.7/tutor/commands/k8s.py#L484>`_ command to the GitOps pattern. The release-specific upgrade jobs are supported from release `13`(maple). Defaults to `0` (which disables release-specific upgrade jobs)
+
+.. note::
+    You also need to set `DRYDOCK_INIT_JOBS` to `true` to enable the release-specific upgrade jobs in the case of a platform migration.
+
+Job generation
+--------------
+
+Tutor doesn't generate manifest files for the initialization jobs, in consequence we can't use GitOps tools like ArgoCD to deploy the initialization jobs.
+
+We had been using a static definition of the initialization jobs, but now we are using the `Tutor filters <https://docs.tutor.edly.io/reference/api/hooks/filters.html>`_ to generate the kubernetes definition of the initialization jobs. This is a big improvement because now we can add new initialization jobs without modifying the Drydock code. The jobs are taken from `COMMANDS_PRE_INIT`, `COMMANDS_INIT` and `CLI_DO_INIT_TASKS` Filters.
+
+ArgoCD Sync Waves Support
+-----------------------
+
+`Tutor filter <https://docs.tutor.edly.io/reference/api/hooks/filters.html>`_ **SYNC_WAVES_ORDER** was added to allow define `ArgoCD Sync Waves <https://argo-cd.readthedocs.io/en/stable/user-guide/sync-waves/>`_ order and apply to the kubernetes resources through **get_sync_waves_for_resource** function.
+
+We are defined by defult the following order:
+- `All kubernetes resources` (except the ones that are defined in the next waves)
+- `Initialization Jobs`
+- `Upgrade Jobs`: When **DRYDOCK_MIGRATE_FROM** is set, over the Sync Wave 50
+- `CMS and LMS Deployments`: When **DRYDOCK_POD_LIFECYCLE** is active, over the Sync Wave 100
+- `Debug Resources`: When **DRYDOCK_DEBUG** active, over the Sync Wave 100
+- `Horizontal Pod Autoscalers`: When active, over the Sync Wave 150
 
 Rationale
 ---------

@@ -2,7 +2,7 @@
 {{ job }}
 ---
 {% endfor %}
-{% if MIGRATE_FROM in get_upgrade_list() %}
+{% if DRYDOCK_MIGRATE_FROM %}
 apiVersion: batch/v1
 kind: Job
 metadata:
@@ -12,7 +12,7 @@ metadata:
     drydock.io/target-service: lms
     drydock.io/runner-service: lms
   annotations:
-    argocd.argoproj.io/sync-wave: "{{ get_sync_waves_for_resource('drydock-upgrade-lms-job', 'jobs') }}"
+    argocd.argoproj.io/sync-wave: "{{ get_sync_waves_for_resource('drydock-upgrade-lms-job') }}"
     argocd.argoproj.io/hook: Sync
     argocd.argoproj.io/hook-delete-policy: HookSucceeded
 spec:
@@ -29,10 +29,10 @@ spec:
           - -e
         args:
         - |
-          {%- if 'maple' in get_upgrade_list() %}
+          {%- if DRYDOCK_MIGRATE_FROM == 13 %}
           ./manage.py lms backpopulate_user_tours
           {%- endif %}
-          {%- if 'nutmeg' in get_upgrade_list() %}
+          {%- if DRYDOCK_MIGRATE_FROM in (13,14) %}
           ./manage.py lms compute_grades -v1 --all_courses
           {%- endif %}
         env:
@@ -67,7 +67,7 @@ metadata:
     drydock.io/target-service: cms
     drydock.io/runner-service: cms
   annotations:
-    argocd.argoproj.io/sync-wave: "{{ get_sync_waves_for_resource('drydock-upgrade-cms-job', 'jobs') }}"
+    argocd.argoproj.io/sync-wave: "{{ get_sync_waves_for_resource('drydock-upgrade-cms-job') }}"
     argocd.argoproj.io/hook: Sync
     argocd.argoproj.io/hook-delete-policy: HookSucceeded
 spec:
@@ -84,7 +84,7 @@ spec:
           - -e
         args:
         - |
-          {%- if 'maple' in get_upgrade_list() %}
+          {%- if DRYDOCK_MIGRATE_FROM == 13 %}
           ./manage.py cms backfill_course_tabs
           ./manage.py cms simulate_publish
           {%- endif %}
