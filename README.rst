@@ -57,7 +57,7 @@ The following configuration options are available:
 - `DRYDOCK_ENABLE_SENTRY` : Whether to enable sentry. Defaults to `true`.
 - `DRYDOCK_SENTRY_DSN` : The sentry DSN. Defaults to `""`.
 - `DRYDOCK_POD_LIFECYCLE` : Whether to enable pod lifecycle. Defaults to `true`.
-- `DRYDOCK_MIGRATE_FROM`: allow define the version of the OpenedX platform that we are migrating from. From major `13`(maple) to `15`(olive). When this variable is set, the `Upgrade Jobs` will be applied over the Sync Wave 50 based on the Tutor Versions between the older and the current version.
+- `DRYDOCK_MIGRATE_FROM`: it allows defining the version of the OpenedX platform we are migrating from. It accepts the integer value mapping the origin release, for instance, `13`(maple) or `14`(nutmeg). When this variable is set, a group of `release-specific upgrade jobs` are added to the Kubernetes manifests. These jobs are applied to the cluster in a suitable order (thanks to the GitOps implementation with ArgoCD + sync waves) to guarantee the correct behavior of the platform in the new version. The release-specific upgrade jobs are supported from release `13`(maple) 
 
 .. note::
     You also need to have DRYDOCK_INIT_JOBS set to `true` to apply migrations in case of platform migration.
