@@ -88,7 +88,7 @@ Workaround to upgrade from Maple to Palm
 The upgrade from Maple to Palm fails because an issue with a squashed migration in `edx-enterprise <https://github.com/openedx/edx-enterprise/blob/3.61.11/integrated_channels/blackboard/migrations/0001_initial_squashed_0014_alter_blackboardlearnerassessmentdatatransmissionaudit_enterprise_course_enrollment_id.py>`_. To go around this issue, we need to apply migrations using an older version of edx-enterprise (3.60.4).
 
 1. Run the sync to Palm without enabling the init jobs or upgrade jobs.
-2. Once with the LMS Deployment in the Palm version, go to one pod and run the following commands:
+2. Once the LMS Deployment is running in the Palm version, go inside a pod and run the following:
 
 .. code: bash
 
