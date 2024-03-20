@@ -2,6 +2,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: lms
+  annotations:
+    argocd.argoproj.io/sync-wave: "{{ get_sync_waves_for_resource('lms-lifecycle-enabled') }}"
 spec:
   template:
     spec:
