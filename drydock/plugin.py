@@ -1,5 +1,4 @@
 from glob import glob
-import functools
 import os
 import click
 import pkg_resources
@@ -69,7 +68,6 @@ def get_init_tasks():
             template["spec"]["backoffLimit"] = 1
             template["spec"]["ttlSecondsAfterFinished"] = 3600
 
-
             yield serialize.dumps(template)
 
 
@@ -91,7 +89,7 @@ def _add_core_sync_waves_order(sync_waves_config: SYNC_WAVES_ORDER_ATTRS_TYPE) -
     return sync_waves_config
 
 
-@functools.lru_cache(maxsize=None)
+@tutor_hooks.lru_cache
 def get_sync_waves_order() -> SYNC_WAVES_ORDER_ATTRS_TYPE:
     """
     This function is cached for performance.
