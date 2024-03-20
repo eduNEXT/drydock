@@ -69,7 +69,6 @@ def get_init_tasks():
             template["spec"]["backoffLimit"] = 1
             template["spec"]["ttlSecondsAfterFinished"] = 3600
 
-
             yield serialize.dumps(template)
 
 
