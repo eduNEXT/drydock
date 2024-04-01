@@ -23,3 +23,6 @@
 - plugins/drydock/k8s/debug/services.yml
 - plugins/drydock/k8s/debug/ingress.yml
 {%- endif %}
+{% if DRYDOCK_HPA -%}
+- plugins/drydock/k8s/hpa/hpa.yml
+{% endif -%}
