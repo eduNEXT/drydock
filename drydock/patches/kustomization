@@ -31,9 +31,3 @@ patches:
 - path: plugins/drydock/k8s/celery/cms-worker.yml
 - path: plugins/drydock/k8s/celery/lms-worker.yml
 {% endif -%}
-{% if DRYDOCK_HPA -%}
-- path: plugins/drydock/k8s/hpa/cms.yml
-- path: plugins/drydock/k8s/hpa/lms.yml
-- path: plugins/drydock/k8s/hpa/cms-worker.yml
-- path: plugins/drydock/k8s/hpa/lms-worker.yml
-{% endif -%}
