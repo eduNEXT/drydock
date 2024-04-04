@@ -51,13 +51,14 @@ The following configuration options are available:
 - `DRYDOCK_CUSTOM_CERTS`: A dictionary of custom certificates to use with cert-manager. Defaults to `{}`.
 - `DRYDOCK_NEWRELIC_LICENSE_KEY`: The New Relic license key. Defaults to `""`.
 - `DRYDOCK_DEBUG`: Whether to deploy debug resources. Defaults to `false`.
-- `DRYDOCK_ENABLE_CELERY_TUNING` : Whether to enable celery tuning. Defaults to `true`.
-- `DRYDOCK_ENABLE_MULTITENANCY` : Whether to enable multitennacy. Defaults to `true`.
-- `DRYDOCK_ENABLE_SCORM` : Whether to enable scorm. Defaults to `true`.
-- `DRYDOCK_ENABLE_SENTRY` : Whether to enable sentry. Defaults to `true`.
-- `DRYDOCK_SENTRY_DSN` : The sentry DSN. Defaults to `""`.
-- `DRYDOCK_POD_LIFECYCLE` : Whether to enable pod lifecycle. Defaults to `true`.
-- `DRYDOCK_MIGRATE_FROM`: it allows defining the version of the OpenedX platform we are migrating from. It accepts the integer value mapping the origin release, for instance, `13`(maple) or `14`(nutmeg). When this variable is set, a group of `release-specific upgrade jobs` are added to the Kubernetes manifests. These jobs are applied to the cluster in a suitable order (thanks to the GitOps implementation with ArgoCD + sync waves) to guarantee the correct behavior of the platform in the new version. This brings the `tutor k8s upgrade <https://github.com/overhangio/tutor/blob/v15.3.7/tutor/commands/k8s.py#L484>`_ command to the GitOps pattern. The release-specific upgrade jobs are supported from release `13`(maple). Defaults to `0` (which disables release-specific upgrade jobs)
+- `DRYDOCK_ENABLE_CELERY_TUNING`: Whether to enable celery tuning. Defaults to `true`.
+- `DRYDOCK_ENABLE_MULTITENANCY`: Whether to enable multitennacy. Defaults to `true`.
+- `DRYDOCK_ENABLE_SCORM`: Whether to enable scorm. Defaults to `true`.
+- `DRYDOCK_ENABLE_SENTRY`: Whether to enable sentry. Defaults to `true`.
+- `DRYDOCK_SENTRY_DSN`: The sentry DSN. Defaults to `""`.
+- `DRYDOCK_POD_LIFECYCLE`: Whether to enable pod lifecycle. Defaults to `true`.
+- `DRYDOCK_MIGRATE_FROM`: it allows defining the version of the OpenedX platform we are migrating from. It accepts the integer value mapping the origin release, for instance, `13`(maple) or `14`(nutmeg). When this variable is set, a group of `release-specific upgrade jobs` are added to the Kubernetes manifests. These jobs are applied to the cluster in a suitable order (thanks to the GitOps implementation with ArgoCD + sync waves) to guarantee the correct behavior of the platform in the new version. This brings the `tutor k8s upgrade <https://github.com/overhangio/tutor/blob/v16.1.8/tutor/commands/k8s.py#L486>`_ command to the GitOps pattern. The release-specific upgrade jobs are supported from release `13`(maple). Defaults to `0` (which disables release-specific upgrade jobs)
+- `DRYDOCK_POST_INIT_DEPLOYMENTS`: A list of Kubernetes deployments to be applied after the initialization jobs. There are specific deployments that won't report a healthy status in ArgoCD unless the initialization requirements are guaranteed (for instance, database users creation). Thanks to the ArgoCD sync waves feature, the deployments defined in this variable can be synchronized in a phase after the execution of the initialization jobs in order to prevent OpenedX environment syncing failures. In most cases this variable should not be changed. Defaults to `["lms", "cms", "lms-worker", "cms-worker", "forum"]`.
 
 .. note::
     You also need to set `DRYDOCK_INIT_JOBS` to `true` to enable the release-specific upgrade jobs in the case of a platform migration.

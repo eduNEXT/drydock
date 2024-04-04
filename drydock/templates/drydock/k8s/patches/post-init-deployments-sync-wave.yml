@@ -1,0 +1,6 @@
+apiVersion: not-used
+kind: not-used
+metadata:
+  name: not-used
+  annotations:
+    argocd.argoproj.io/sync-wave: "{{ get_sync_waves_for_resource('deployments:post-init-apps') }}"
