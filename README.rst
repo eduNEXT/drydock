@@ -51,19 +51,19 @@ The following configuration options are available:
 - `DRYDOCK_CUSTOM_CERTS`: A dictionary of custom certificates to use with cert-manager. Defaults to `{}`.
 - `DRYDOCK_NEWRELIC_LICENSE_KEY`: The New Relic license key. Defaults to `""`.
 - `DRYDOCK_DEBUG`: Whether to deploy debug resources. Defaults to `false`.
-- `DRYDOCK_ENABLE_CELERY_TUNING` : Whether to enable celery tuning. Defaults to `true`.
-- `DRYDOCK_ENABLE_MULTITENANCY` : Whether to enable multitennacy. Defaults to `true`.
-- `DRYDOCK_ENABLE_SCORM` : Whether to enable scorm. Defaults to `true`.
-- `DRYDOCK_ENABLE_SENTRY` : Whether to enable sentry. Defaults to `true`.
-- `DRYDOCK_SENTRY_DSN` : The sentry DSN. Defaults to `""`.
-- `DRYDOCK_POD_LIFECYCLE` : Whether to enable pod lifecycle. Defaults to `true`.
-- `DRYDOCK_PDB_MINAVAILABLE_PERCENTAGE_MFE` : The minimum available percentage for the MFE's PodDisruptionBudget. To disable the PodDisruptionBudget, set `0`. Defaults to `0`.
-- `DRYDOCK_PDB_MINAVAILABLE_PERCENTAGE_FORUM` : The minimum available percentage for the FORUM's PodDisruptionBudget. To disable the PodDisruptionBudget, set `0`. Defaults to `0`.
-- `DRYDOCK_PDB_MINAVAILABLE_PERCENTAGE_CADDY` : The minimum available percentage for the CADDY's PodDisruptionBudget. To disable the PodDisruptionBudget, set `0`. Defaults to `0`.
-- `DRYDOCK_PDB_MINAVAILABLE_PERCENTAGE_LMS` : The minimum available percentage for the LMS's PodDisruptionBudget. To disable the PodDisruptionBudget, set `0`. Defaults to `0`.
-- `DRYDOCK_PDB_MINAVAILABLE_PERCENTAGE_LMS_WORKER` : The minimum available percentage for the LMS WORKER's PodDisruptionBudget. To disable the PodDisruptionBudget, set `0`. Defaults to `0`.
-- `DRYDOCK_PDB_MINAVAILABLE_PERCENTAGE_CMS` : The minimum available percentage for the CMS's PodDisruptionBudget. To disable the PodDisruptionBudget, set `0`. Defaults to `0`.
-- `DRYDOCK_PDB_MINAVAILABLE_PERCENTAGE_CMS_WORKER` : The minimum available percentage for the worker's PodDisruptionBudget. To disable the PodDisruptionBudget, set `0`. Defaults to `0`.
+- `DRYDOCK_ENABLE_CELERY_TUNING`: Whether to enable celery tuning. Defaults to `true`.
+- `DRYDOCK_ENABLE_MULTITENANCY`: Whether to enable multitennacy. Defaults to `true`.
+- `DRYDOCK_ENABLE_SCORM`: Whether to enable scorm. Defaults to `true`.
+- `DRYDOCK_ENABLE_SENTRY`: Whether to enable sentry. Defaults to `true`.
+- `DRYDOCK_SENTRY_DSN`: The sentry DSN. Defaults to `""`.
+- `DRYDOCK_POD_LIFECYCLE`: Whether to enable pod lifecycle. Defaults to `true`.
+- `DRYDOCK_PDB_MINAVAILABLE_PERCENTAGE_MFE`: The minimum available percentage for the MFE's PodDisruptionBudget. To disable the PodDisruptionBudget, set `0`. Defaults to `0`.
+- `DRYDOCK_PDB_MINAVAILABLE_PERCENTAGE_FORUM`: The minimum available percentage for the FORUM's PodDisruptionBudget. To disable the PodDisruptionBudget, set `0`. Defaults to `0`.
+- `DRYDOCK_PDB_MINAVAILABLE_PERCENTAGE_CADDY`: The minimum available percentage for the CADDY's PodDisruptionBudget. To disable the PodDisruptionBudget, set `0`. Defaults to `0`.
+- `DRYDOCK_PDB_MINAVAILABLE_PERCENTAGE_LMS`: The minimum available percentage for the LMS's PodDisruptionBudget. To disable the PodDisruptionBudget, set `0`. Defaults to `0`.
+- `DRYDOCK_PDB_MINAVAILABLE_PERCENTAGE_LMS_WORKER`: The minimum available percentage for the LMS WORKER's PodDisruptionBudget. To disable the PodDisruptionBudget, set `0`. Defaults to `0`.
+- `DRYDOCK_PDB_MINAVAILABLE_PERCENTAGE_CMS`: The minimum available percentage for the CMS's PodDisruptionBudget. To disable the PodDisruptionBudget, set `0`. Defaults to `0`.
+- `DRYDOCK_PDB_MINAVAILABLE_PERCENTAGE_CMS_WORKER`: The minimum available percentage for the worker's PodDisruptionBudget. To disable the PodDisruptionBudget, set `0`. Defaults to `0`.
 - `DRYDOCK_MIGRATE_FROM`: it allows defining the version of the OpenedX platform we are migrating from. It accepts the integer value mapping the origin release, for instance, `13`(maple) or `14`(nutmeg). When this variable is set, a group of `release-specific upgrade jobs` are added to the Kubernetes manifests. These jobs are applied to the cluster in a suitable order (thanks to the GitOps implementation with ArgoCD + sync waves) to guarantee the correct behavior of the platform in the new version. This brings the `tutor k8s upgrade <https://github.com/overhangio/tutor/blob/v15.3.7/tutor/commands/k8s.py#L484>`_ command to the GitOps pattern. The release-specific upgrade jobs are supported from release `13`(maple). Defaults to `0` (which disables release-specific upgrade jobs)
 
 .. note::
@@ -95,13 +95,14 @@ Workaround to upgrade from Maple to Palm
 The upgrade from Maple to Palm fails because an issue with a squashed migration in `edx-enterprise <https://github.com/openedx/edx-enterprise/blob/3.61.11/integrated_channels/blackboard/migrations/0001_initial_squashed_0014_alter_blackboardlearnerassessmentdatatransmissionaudit_enterprise_course_enrollment_id.py>`_. To go around this issue, we need to apply migrations using an older version of edx-enterprise (3.60.4).
 
 1. Run the sync to Palm without enabling the init jobs or upgrade jobs.
+
 2. Once the LMS Deployment is running in the Palm version, go inside a pod and run the following:
 
-.. code: bash
+.. code:: bash
 
-        pip install edx-enterprise==3.60.4
-        ./manage.py lms migrate
-        pip install edx-enterprise==3.61.11
+    pip install edx-enterprise==3.60.4
+    ./manage.py lms migrate
+    pip install edx-enterprise==3.61.11
 
 3. Now, you can enable the init jobs and upgrade jobs and run the sync again.
 

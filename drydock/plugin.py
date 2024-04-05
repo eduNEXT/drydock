@@ -75,11 +75,10 @@ def get_init_tasks():
 CORE_SYNC_WAVES_ORDER: SYNC_WAVES_ORDER_ATTRS_TYPE = {
     "drydock-upgrade-lms-job": 50,
     "drydock-upgrade-cms-job": 51,
-    "lms-lifecycle-enabled": 100,
-    "cms-lifecycle-enabled": 100,
     "lms-debug": 50,
     "cms-debug": 50,
     "ingress-debug": 200,
+    "deployments:post-init-apps": 100,
     "horizontalpodautoscalers:all": 150
 }
 
@@ -156,6 +155,13 @@ config = {
         "PDB_MINAVAILABLE_PERCENTAGE_MFE": 0,
         "PDB_MINAVAILABLE_PERCENTAGE_FORUM": 0,
         "PDB_MINAVAILABLE_PERCENTAGE_CADDY": 0,
+        "POST_INIT_DEPLOYMENTS": [
+            "lms",
+            "cms",
+            "forum",
+            "lms-worker",
+            "cms-worker",
+        ],
     },
     # Add here settings that don't have a reasonable default for all users. For
     # instance: passwords, secret keys, etc.
