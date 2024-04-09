@@ -107,8 +107,7 @@ Steps for migration
 
 In this guide, we'll outline the steps for a successful migration to Palm with Drydock, along with important considerations to ensure a smooth transition.
 
-1. For Palma, it is necessary to update the version of `Drydock <https://github.com/eduNEXT/drydock>`_
-to the latest version 16.x.x in the requirements.txt file of your environment, including:
+1. For Palma, it is necessary to update the version of `Drydock <https://github.com/eduNEXT/drydock>`_ to the latest version 16.x.x in the requirements.txt file of your environment, including:
 
     .. code:: bash
 
@@ -121,14 +120,15 @@ to the latest version 16.x.x in the requirements.txt file of your environment, i
         DRYDOCK_INIT_JOBS: True
         DRYDOCK_MIGRATE_FROM: 13
 
+
     .. note::
 
         `DRYDOCK_MIGRATE_FROM` set 13 for Maple and 14 for Nutmeg
 
-    .. code::
+    .. note::
 
-        About inicialization jobs
-        -------------------------
+        About inicialization jobs:
+
         Starting with DryDock version 16.x.x, a mechanism was introduced that automates the inclusion and execution
         of initialization jobs for both Tutor and plugins, ensuring the correct order of execution.
         This approach eliminates the need to manually define such initialization jobs. Now, jobs are automatically
@@ -141,7 +141,7 @@ to the latest version 16.x.x in the requirements.txt file of your environment, i
         make full
 
 4. In Argo, search for your project and environment, and sync all out-of-sync elements. If an error occurs during synchronization,
-refer to the `troubleshooting section <#Workaround to upgrade from Maple to Palm>`.
+refer to the `troubleshooting section <#workaround-to-upgrade-from-maple-to-palm>`.
 
 5. If everything syncs without any problems, set
 
@@ -149,7 +149,7 @@ refer to the `troubleshooting section <#Workaround to upgrade from Maple to Palm
 
         DRYDOCK_INIT_JOBS: False
 
-    and run
+and run
 
     .. code:: bash
 
