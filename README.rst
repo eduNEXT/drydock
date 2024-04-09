@@ -107,6 +107,10 @@ Steps for migration
 
 In this guide, we'll outline the steps for a successful migration to Palm with Drydock, along with important considerations to ensure a smooth transition.
 
+.. warning::
+
+    When transitioning from maple to palm, it's important to be aware of potential errors referenced `here <https://github.com/eduNEXT/drydock>`_. Consider your migration destination and adhere to the proposed solution provided.
+
 1. For Palma, it is necessary to update the version of `Drydock <https://github.com/eduNEXT/drydock>`_ to the latest version 16.x.x in the requirements.txt file of your environment, including:
 
     .. code:: bash
@@ -123,13 +127,13 @@ In this guide, we'll outline the steps for a successful migration to Palm with D
 
     .. note::
 
-        `DRYDOCK_MIGRATE_FROM` set 13 for Maple and 14 for Nutmeg
+        Set `DRYDOCK_MIGRATE_FROM` to 13 for migrating from **Maple** or 14 for migrating from **Nutmeg**.
 
     .. note::
 
         About inicialization jobs:
 
-        Starting with DryDock version 16.x.x, a mechanism was introduced that automates the inclusion and execution
+        Starting with DryDock version 16.4.0, a mechanism was introduced that automates the inclusion and execution
         of initialization jobs for both Tutor and plugins, ensuring the correct order of execution.
         This approach eliminates the need to manually define such initialization jobs. Now, jobs are automatically
         generated, covering both Tutor jobs and those involving plugins installed on the system.
@@ -140,8 +144,7 @@ In this guide, we'll outline the steps for a successful migration to Palm with D
 
         make full
 
-4. In Argo, search for your project and environment, and sync all out-of-sync elements. If an error occurs during synchronization,
-refer to the `troubleshooting section <#workaround-to-upgrade-from-maple-to-palm>`.
+4. In Argo, search for your project and environment, and sync all out-of-sync elements.
 
 5. If everything syncs without any problems, set
 
@@ -149,7 +152,7 @@ refer to the `troubleshooting section <#workaround-to-upgrade-from-maple-to-palm
 
         DRYDOCK_INIT_JOBS: False
 
-and run
+   and run
 
     .. code:: bash
 
