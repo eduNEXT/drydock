@@ -102,6 +102,55 @@ The upgrade from Maple to Palm fails because an issue with a squashed migration 
 
 This workaround references the `Andrey's comment <https://discuss.openedx.org/t/updating-tutor-lilac-to-palm-now-that-palms-released-fails/10557/23>`_
 
+Steps for migration
+-------------------
+
+In this guide, we'll outline the steps for a successful migration to Palm, along with important considerations to ensure a smooth transition.
+
+1. For Palma, it is necessary to update the version of `Drydock <https://github.com/eduNEXT/drydock>`_
+to the latest version 16.x.x in the requirements.txt file of your environment, including:
+
+.. code:: bash
+    git+https://github.com/edunext/drydock@v16.x.x#egg=drydock==16.x.x
+
+2. In the `config.yml` file, include the variables that activate the initialization jobs and the post-migration jobs:
+
+.. code:: yaml
+    DRYDOCK_INIT_JOBS: True
+    DRYDOCK_MIGRATE_FROM: 13
+
+.. note::
+    `DRYDOCK_MIGRATE_FROM` set 13 for Maple and 14 for Nutmeg
+
+.. code::
+    About inicialization jobs
+    -------------------------
+    Starting with DryDock version 16.x.x, a mechanism was introduced that automates the inclusion and execution
+    of initialization jobs for both Tutor and plugins, ensuring the correct order of execution.
+    This approach eliminates the need to manually define such initialization jobs. Now, jobs are automatically
+    generated, covering both Tutor jobs and those involving plugins installed on the system.
+
+3. Create the manifest configuration run:
+
+.. code:: bash
+    make full
+
+4. In Argo, search for your project and environment, and sync all out-of-sync elements. If an error occurs during synchronization,
+refer to the `troubleshooting section <#Workaround to upgrade from Maple to Palm>`.
+
+5. If everything syncs without any problems, set
+
+.. code:: yaml
+    DRYDOCK_INIT_JOBS: False
+
+and run
+
+.. code:: bash
+    make config
+
+6. Sync again in ArgoCD.
+
+
 Rationale
 ---------
 
