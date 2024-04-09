@@ -83,6 +83,57 @@ We are defined by defult the following order:
 - `Debug Resources`: When **DRYDOCK_DEBUG** active, over the Sync Wave 100
 - `Horizontal Pod Autoscalers`: When active, over the Sync Wave 150
 
+Steps for migration
+-------------------
+
+In this guide, we'll outline the steps for a successful migration to Olive with Drydock, along with important considerations to ensure a smooth transition.
+
+1. For Olive, it is necessary to update the version of `Drydock <https://github.com/eduNEXT/drydock>`_ to the latest version 15.x.x in the requirements.txt file of your environment, including:
+
+    .. code:: bash
+
+        git+https://github.com/edunext/drydock@v15.x.x#egg=drydock==15.x.x
+
+2. In the `config.yml` file, include the variables that activate the initialization jobs and the post-migration jobs:
+
+    .. code:: yaml
+
+        DRYDOCK_INIT_JOBS: True
+        DRYDOCK_MIGRATE_FROM: 13
+
+   Set `DRYDOCK_MIGRATE_FROM` to 13 for migrating from **Maple** or 14 for migrating from **Nutmeg**.
+
+    .. note::
+
+        About inicialization jobs:
+
+        Starting with DryDock version 15.8.0, a mechanism was introduced that automates the inclusion and execution
+        of initialization jobs for both Tutor and plugins, ensuring the correct order of execution.
+        This approach eliminates the need to manually define such initialization jobs. Now, jobs are automatically
+        generated, covering both Tutor jobs and those involving plugins installed on the system.
+
+3. Create the manifest configuration run:
+
+    .. code:: bash
+
+        make full
+
+4. In Argo, search for your project and environment, and sync all out-of-sync elements.
+
+5. If everything syncs without any problems, set
+
+    .. code:: yaml
+
+        DRYDOCK_INIT_JOBS: False
+
+   delete `DRYDOCK_MIGRATE_FROM` and run
+
+    .. code:: bash
+
+        make config
+
+6. Sync again in ArgoCD.
+
 Rationale
 ---------
 
