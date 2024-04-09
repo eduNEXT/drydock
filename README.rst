@@ -111,7 +111,7 @@ In this guide, we'll outline the steps for a successful migration to Palm with D
 
     When transitioning from maple to palm, it's important to be aware of potential errors referenced `here <#workaround-to-upgrade-from-maple-to-palm>`_. Consider your migration destination and adhere to the proposed solution provided.
 
-1. For Palma, it is necessary to update the version of `Drydock <https://github.com/eduNEXT/drydock>`_ to the latest version 16.x.x in the requirements.txt file of your environment, including:
+1. For Palm, it is necessary to update the version of `Drydock <https://github.com/eduNEXT/drydock>`_ to the latest version 16.x.x in the requirements.txt file of your environment, including:
 
     .. code:: bash
 
