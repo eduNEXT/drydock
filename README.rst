@@ -120,13 +120,13 @@ In this guide, we'll outline the steps for a successful migration to Olive with 
 
 4. In Argo, search for your project and environment, and sync all out-of-sync elements.
 
-5. If everything syncs without any problems, set
+5. If everything syncs without any problems, in `config.yml` file set
 
     .. code:: yaml
 
         DRYDOCK_INIT_JOBS: False
 
-   delete `DRYDOCK_MIGRATE_FROM` and run
+   delete `DRYDOCK_MIGRATE_FROM` variable and run
 
     .. code:: bash
 
