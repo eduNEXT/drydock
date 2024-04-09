@@ -111,18 +111,22 @@ In this guide, we'll outline the steps for a successful migration to Palm with D
 to the latest version 16.x.x in the requirements.txt file of your environment, including:
 
     .. code:: bash
+
         git+https://github.com/edunext/drydock@v16.x.x#egg=drydock==16.x.x
 
 2. In the `config.yml` file, include the variables that activate the initialization jobs and the post-migration jobs:
 
     .. code:: yaml
+
         DRYDOCK_INIT_JOBS: True
         DRYDOCK_MIGRATE_FROM: 13
 
     .. note::
+
         `DRYDOCK_MIGRATE_FROM` set 13 for Maple and 14 for Nutmeg
 
     .. code::
+
         About inicialization jobs
         -------------------------
         Starting with DryDock version 16.x.x, a mechanism was introduced that automates the inclusion and execution
@@ -133,6 +137,7 @@ to the latest version 16.x.x in the requirements.txt file of your environment, i
 3. Create the manifest configuration run:
 
     .. code:: bash
+
         make full
 
 4. In Argo, search for your project and environment, and sync all out-of-sync elements. If an error occurs during synchronization,
@@ -141,11 +146,13 @@ refer to the `troubleshooting section <#Workaround to upgrade from Maple to Palm
 5. If everything syncs without any problems, set
 
     .. code:: yaml
+
         DRYDOCK_INIT_JOBS: False
 
     and run
 
     .. code:: bash
+
         make config
 
 6. Sync again in ArgoCD.
