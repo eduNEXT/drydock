@@ -86,7 +86,7 @@ We are defined by defult the following order:
 Steps for migration
 -------------------
 
-In this guide, we'll outline the steps for a successful migration to Olive with Drydock, along with important considerations to ensure a smooth transition.
+This guide delineates the necessary steps for a seamless migration to Olive using Drydock, ensuring a smooth transition with careful consideration of potential challenges.
 
 1. For Olive, it is necessary to update the version of `Drydock <https://github.com/eduNEXT/drydock>`_ to the latest version 15.x.x in the requirements.txt file of your environment, including:
 
@@ -94,23 +94,22 @@ In this guide, we'll outline the steps for a successful migration to Olive with 
 
         git+https://github.com/edunext/drydock@v15.x.x#egg=drydock==15.x.x
 
-2. In the `config.yml` file, include the variables that activate the initialization jobs and the post-migration jobs:
+2. In the `config.yml` file, include variables that activate the initialization jobs and post-migration jobs:
 
     .. code:: yaml
 
         DRYDOCK_INIT_JOBS: True
-        DRYDOCK_MIGRATE_FROM: 13
+        DRYDOCK_MIGRATE_FROM: <MAJOR_OF_TUTOR_VERSION>
 
    Set `DRYDOCK_MIGRATE_FROM` to 13 for migrating from **Maple** or 14 for migrating from **Nutmeg**.
 
     .. note::
 
-        About inicialization jobs:
+        Regarding initialization jobs:
 
-        Starting with DryDock version 15.8.0, a mechanism was introduced that automates the inclusion and execution
-        of initialization jobs for both Tutor and plugins, ensuring the correct order of execution.
-        This approach eliminates the need to manually define such initialization jobs. Now, jobs are automatically
-        generated, covering both Tutor jobs and those involving plugins installed on the system.
+        Since DryDock version 15.8.1, a mechanism was introduced to automate the inclusion of
+        initialization jobs for both Tutor and Tutor Plugins, ensuring correct execution order.
+        This eliminates the need for manual definition of such jobs.
 
 3. Create the manifest configuration run:
 
@@ -118,15 +117,15 @@ In this guide, we'll outline the steps for a successful migration to Olive with 
 
         make full
 
-4. In Argo, search for your project and environment, and sync all out-of-sync elements.
+4. In ArgoCD, locate your cluster and environment, and sync all `Out Of Sync` resources.
 
-5. If everything syncs without any problems, in `config.yml` file set
+5. If all synchronization occurs without issues, set:
 
     .. code:: yaml
 
         DRYDOCK_INIT_JOBS: False
 
-   delete `DRYDOCK_MIGRATE_FROM` variable and run
+   remove `DRYDOCK_MIGRATE_FROM` from you config file and run:
 
     .. code:: bash
 
