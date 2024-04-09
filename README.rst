@@ -150,7 +150,7 @@ In this guide, we'll outline the steps for a successful migration to Palm with D
 
         DRYDOCK_INIT_JOBS: False
 
-   and run
+   delete `DRYDOCK_MIGRATE_FROM` and run
 
     .. code:: bash
 
