@@ -83,7 +83,7 @@ We are defined by defult the following order:
 - `Debug Resources`: When **DRYDOCK_DEBUG** active, over the Sync Wave 100
 - `Horizontal Pod Autoscalers`: When active, over the Sync Wave 150
 
-Steps for migration
+Migration steps
 -------------------
 
 This guide delineates the necessary steps for a seamless migration to Olive using Drydock, ensuring a smooth transition with careful consideration of potential challenges.
@@ -107,17 +107,19 @@ This guide delineates the necessary steps for a seamless migration to Olive usin
 
         Regarding initialization jobs:
 
-        Since DryDock version 15.8.1, a mechanism was introduced to automate the inclusion of
-        initialization jobs for both Tutor and Tutor Plugins, ensuring correct execution order.
-        This eliminates the need for manual definition of such jobs.
+        Since Drydock version 15.8.1, a new mechanism was introduced to automatically generate Kubernetes
+        manifest files for the initialization jobs defined by Tutor and Tutor plugins.
+        The generated files are meant to be used by ArgoCD for deployment.
+        Previously you would need to write the manifest files for the initialization jobs
+        manually if you wanted to use a tool like ArgoCD.
 
 3. Create the manifest configuration run:
 
     .. code:: bash
 
-        make full
+        tutor config save
 
-4. In ArgoCD, locate your cluster and environment, and sync all `Out Of Sync` resources.
+4. In ArgoCD, locate the corresponding application, and sync all resources.
 
 5. If all synchronization occurs without issues, set:
 
