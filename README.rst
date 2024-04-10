@@ -131,7 +131,7 @@ This guide delineates the necessary steps for a seamless migration to Olive usin
 
     .. code:: bash
 
-        make config
+        tutor config save
 
 6. Sync again in ArgoCD.
 
