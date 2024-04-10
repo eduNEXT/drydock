@@ -84,7 +84,7 @@ We are defined by defult the following order:
 - `Horizontal Pod Autoscalers`: When active, over the Sync Wave 150
 
 Migration steps
--------------------
+---------------
 
 This guide delineates the necessary steps for a seamless migration to Olive using Drydock, ensuring a smooth transition with careful consideration of potential challenges.
 
