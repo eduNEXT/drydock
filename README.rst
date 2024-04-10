@@ -102,8 +102,8 @@ The upgrade from Maple to Palm fails because an issue with a squashed migration 
 
 This workaround references the `Andrey's comment <https://discuss.openedx.org/t/updating-tutor-lilac-to-palm-now-that-palms-released-fails/10557/23>`_
 
-Steps for migration
--------------------
+Migration steps
+---------------
 
 This guide delineates the necessary steps for a seamless migration to Palm using Drydock, ensuring a smooth transition with careful consideration of potential challenges.
 
@@ -131,17 +131,19 @@ This guide delineates the necessary steps for a seamless migration to Palm using
 
         Regarding initialization jobs:
 
-        Since DryDock version 16.4.0, a mechanism was introduced to automate the inclusion of
-        initialization jobs for both Tutor and Tutor Plugins, ensuring correct execution order.
-        This eliminates the need for manual definition of such jobs.
+        Since Drydock version 16.4.0, a new mechanism was introduced to automatically generate
+        Kubernetes manifest files for the initialization jobs defined by Tutor and Tutor plugins.
+        The generated files are meant to be used by ArgoCD for deployment. Previously you would
+        need to write the manifest files for the initialization jobs manually
+        if you wanted to use a tool like ArgoCD.
 
 3. Create the manifest configuration run:
 
     .. code:: bash
 
-        make full
+        tutor config save
 
-4. In ArgoCD, locate your cluster and environment, and sync all `Out Of Sync` resources.
+4. In ArgoCD, locate the corresponding application, and sync all resources.
 
 5. If all synchronization occurs without issues, set:
 
@@ -153,7 +155,7 @@ This guide delineates the necessary steps for a seamless migration to Palm using
 
     .. code:: bash
 
-        make config
+        tutor config save
 
 6. Sync again in ArgoCD.
 
