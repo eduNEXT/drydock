@@ -13,8 +13,7 @@ spec:
             - --app=cms.celery
             - worker
             - --loglevel=info
-            - --autoscale=10,1
             - --hostname=edx.cms.core.default.%%h
-            - --max-tasks-per-child=1
+            - --max-tasks-per-child=100
             - --prefetch-multiplier=1
             - --exclude-queues=edx.lms.core.default
