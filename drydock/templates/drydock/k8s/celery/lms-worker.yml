@@ -13,7 +13,7 @@ spec:
             - --app=lms.celery
             - worker
             - --loglevel=info
-            - --concurrency=1
+            - --autoscale=10,1
             - --hostname=edx.lms.core.default.%%h
             - --max-tasks-per-child=1
             - --prefetch-multiplier=1
