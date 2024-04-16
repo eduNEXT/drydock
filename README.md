@@ -1,11 +1,10 @@
 Drydock
 =======
 
-Drydock is an opinionated tool offering a set of Tutor plugins aiming to provide features that enhance the operation of OpenedX installations in Kubernetes. It is developed by `Edunext <https://www.edunext.co/>`_
+Drydock is an opinionated tool offering a set of Tutor plugins aiming to provide features that enhance the operation of OpenedX installations in Kubernetes. It is developed by [Edunext](https://www.edunext.co/).
 
-
-- A set of Kubernetes Jobs that replace the current tutor jobs with `ArgoCD Sync Waves <https://argo-cd.readthedocs.io/en/stable/user-guide/sync-waves/>`_ that allow for a more controlled deployment of openedx.
-- A set of Kustomization overrides adding `ArgoCD Sync Waves <https://argo-cd.readthedocs.io/en/stable/user-guide/sync-waves/>`_ annotations to needed additional resources such as debug, workers or hpa.
+- A set of Kubernetes Jobs that replace the current tutor jobs with [ArgoCD Sync Waves](https://argo-cd.readthedocs.io/en/stable/user-guide/sync-waves/) that allow for a more controlled deployment of openedx.
+- A set of Kustomization overrides adding [ArgoCD Sync Waves](https://argo-cd.readthedocs.io/en/stable/user-guide/sync-waves/) annotations to needed additional resources such as debug, workers or hpa.
 - Backup cronjobs that allow backup of the MySQL and MongoDB databases.
 - Integration of New Relic monitoring
 - Add flower deployment for Celery
@@ -23,19 +22,18 @@ Extra plugins added:
 Installation
 ------------
 
-.. code-block:: bash
-
-    tvm plugins install -e git+https://github.com/edunext/drydock#egg=drydock
-    tutor plugins enable drydock
-    tutor config save
+``` bash
+tvm plugins install -e git+https://github.com/edunext/drydock#egg=drydock
+tutor plugins enable drydock
+tutor config save
+```
 
 Getting started
 ---------------
 
-.. code-block:: bash
-
-    tutor config save
-
+``` bash
+tutor config save
+```
 
 Configuration
 -------------
@@ -66,8 +64,7 @@ The following configuration options are available:
 - `DRYDOCK_PDB_MINAVAILABLE_PERCENTAGE_CMS_WORKER`: The minimum available percentage for the worker's PodDisruptionBudget. To disable the PodDisruptionBudget, set `0`. Defaults to `0`.
 - `DRYDOCK_MIGRATE_FROM`: it allows defining the version of the OpenedX platform we are migrating from. It accepts the integer value mapping the origin release, for instance, `13`(maple) or `14`(nutmeg). When this variable is set, a group of `release-specific upgrade jobs` are added to the Kubernetes manifests. These jobs are applied to the cluster in a suitable order (thanks to the GitOps implementation with ArgoCD + sync waves) to guarantee the correct behavior of the platform in the new version. This brings the `tutor k8s upgrade <https://github.com/overhangio/tutor/blob/v15.3.7/tutor/commands/k8s.py#L484>`_ command to the GitOps pattern. The release-specific upgrade jobs are supported from release `13`(maple). Defaults to `0` (which disables release-specific upgrade jobs)
 
-.. note::
-    You also need to set `DRYDOCK_INIT_JOBS` to `true` to enable the release-specific upgrade jobs in the case of a platform migration.
+> **_NOTE:_** You also need to set `DRYDOCK_INIT_JOBS` to `true` to enable the release-specific upgrade jobs in the case of a platform migration.
 
 Job generation
 --------------
@@ -79,9 +76,10 @@ We had been using a static definition of the initialization jobs, but now we are
 ArgoCD Sync Waves Support
 -----------------------
 
-`Tutor filter <https://docs.tutor.edly.io/reference/api/hooks/filters.html>`_ **SYNC_WAVES_ORDER** was added to allow define `ArgoCD Sync Waves <https://argo-cd.readthedocs.io/en/stable/user-guide/sync-waves/>`_ order and apply to the kubernetes resources through **get_sync_waves_for_resource** function.
+[Tutor filter](https://docs.tutor.edly.io/reference/api/hooks/filters.html) **SYNC_WAVES_ORDER** was added to allow define [ArgoCD Sync Waves](https://argo-cd.readthedocs.io/en/stable/user-guide/sync-waves/) order and apply to the kubernetes resources through **get_sync_waves_for_resource** function.
 
 We are defined by defult the following order:
+
 - `All kubernetes resources` (except the ones that are defined in the next waves)
 - `Initialization Jobs`
 - `Upgrade Jobs`: When **DRYDOCK_MIGRATE_FROM** is set, over the Sync Wave 50
@@ -95,21 +93,21 @@ Workaround to upgrade from Maple to Palm or later
 .. note::
     Quince uses Django 4.2 which only supports MySQL 8 or higher. You must upgrade your version of MySQL prior to performing the upgrade.
 
-The upgrade from Maple to Palm fails because an issue with a squashed migration in `edx-enterprise <https://github.com/openedx/edx-enterprise/blob/3.61.11/integrated_channels/blackboard/migrations/0001_initial_squashed_0014_alter_blackboardlearnerassessmentdatatransmissionaudit_enterprise_course_enrollment_id.py>`_. To go around this issue, we need to apply migrations using an older version of edx-enterprise (3.60.4).
+The upgrade from Maple to Palm fails because an issue with a squashed migration in [edx-enterprise](https://github.com/openedx/edx-enterprise/blob/3.61.11/integrated_channels/blackboard/migrations/0001_initial_squashed_0014_alter_blackboardlearnerassessmentdatatransmissionaudit_enterprise_course_enrollment_id.py). To go around this issue, we need to apply migrations using an older version of edx-enterprise (3.60.4).
 
 1. Run the sync to Palm without enabling the init jobs or upgrade jobs.
 
 2. Once the LMS Deployment is running in the Palm version, go inside a pod and run the following:
 
-.. code:: bash
-
+    ``` bash
     pip install edx-enterprise==3.60.4
     ./manage.py lms migrate
     pip install edx-enterprise==3.61.11
+    ```
 
 3. Now, you can enable the init jobs and upgrade jobs and run the sync again.
 
-This workaround references the `Andrey's comment <https://discuss.openedx.org/t/updating-tutor-lilac-to-palm-now-that-palms-released-fails/10557/23>`_
+This workaround references the [Andrey's comment](https://discuss.openedx.org/t/updating-tutor-lilac-to-palm-now-that-palms-released-fails/10557/23)
 
 Rationale
 ---------
