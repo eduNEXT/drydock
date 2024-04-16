@@ -80,12 +80,12 @@ ArgoCD Sync Waves Support
 
 We are defined by defult the following order:
 
-- `All kubernetes resources` (except the ones that are defined in the next waves)
-- `Initialization Jobs`
-- `Upgrade Jobs`: When **DRYDOCK_MIGRATE_FROM** is set, over the Sync Wave 50
-- `CMS and LMS Deployments`: When **DRYDOCK_POD_LIFECYCLE** is active, over the Sync Wave 100
-- `Debug Resources`: When **DRYDOCK_DEBUG** active, over the Sync Wave 100
-- `Horizontal Pod Autoscalers`: When active, over the Sync Wave 150
+1. `All kubernetes resources` (except the ones that are defined in the next waves)
+2. `Initialization Jobs`
+3. `Upgrade Jobs`: When **DRYDOCK_MIGRATE_FROM** is set, over the Sync Wave 50
+4. `CMS and LMS Deployments`: When **DRYDOCK_POD_LIFECYCLE** is active, over the Sync Wave 100
+5. `Debug Resources`: When **DRYDOCK_DEBUG** active, over the Sync Wave 100
+6. `Horizontal Pod Autoscalers`: When active, over the Sync Wave 150
 
 Workaround to upgrade from Maple to Palm or later
 -------------------------------------------------
