@@ -93,7 +93,7 @@ Workaround to upgrade from Maple to Palm or later
 -------------------------------------------------
 
 .. note::
-    To upgrade to Quince version, you must first upgrade to MySQL 8.0. This is because the Quince version uses Django 3.2, which is not compatible with MySQL 5.7.
+    Quince uses Django 4.2 which only supports MySQL 8 or higher. You must upgrade your version of MySQL prior to performing the upgrade.
 
 The upgrade from Maple to Palm fails because an issue with a squashed migration in `edx-enterprise <https://github.com/openedx/edx-enterprise/blob/3.61.11/integrated_channels/blackboard/migrations/0001_initial_squashed_0014_alter_blackboardlearnerassessmentdatatransmissionaudit_enterprise_course_enrollment_id.py>`_. To go around this issue, we need to apply migrations using an older version of edx-enterprise (3.60.4).
 
