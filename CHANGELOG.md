@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://github.com/eduNEXT/drydock/compare/v17.2.0...HEAD)
+## [Unreleased](https://github.com/eduNEXT/drydock/compare/v17.3.0...HEAD)
 
 Please do not update the unreleased notes.
 
@@ -19,6 +19,18 @@ Please do not update the unreleased notes.
 - add plugins extra, extracted from namespace template ([#48](https://github.com/eduNEXT/drydock/pull/48)) ([36c033f](https://github.com/eduNEXT/drydock/commit/36c033faecf7c3ebc701a085cb33e55629910d88))
 
 <!-- Content should be placed here -->
+## [v17.3.0](https://github.com/eduNEXT/drydock/compare/v17.2.0...v17.3.0) - 2024-04-18
+
+### [17.3.0](https://github.com/eduNEXT/drydock/compare/v17.2.0...v17.3.0) (2024-04-18)
+
+#### Features
+
+- add auto generated jobs ([#87](https://github.com/eduNEXT/drydock/issues/87)) ([8af2745](https://github.com/eduNEXT/drydock/commit/8af27458901cdc2d57b3de4708fec0efd97cc875))
+
+#### Bug Fixes
+
+- run the jobs scripts with '-e' to exit on error ([#74](https://github.com/eduNEXT/drydock/issues/74)) ([cb8bcb2](https://github.com/eduNEXT/drydock/commit/cb8bcb24667eff45e853104248ff253c0dcc046b))
+
 ## [v17.2.0](https://github.com/eduNEXT/drydock/compare/v17.1.1...v17.2.0) - 2024-02-27
 
 ### [17.2.0](https://github.com/eduNEXT/drydock/compare/v17.1.1...v17.2.0) (2024-02-27)
