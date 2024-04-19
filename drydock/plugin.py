@@ -2,7 +2,7 @@ from glob import glob
 import functools
 import os
 import click
-import pkg_resources
+import importlib_resources
 
 import typing as t
 
@@ -186,7 +186,7 @@ tutor_hooks.Filters.CONFIG_OVERRIDES.add_items([
 
 # Plugin templates
 tutor_hooks.Filters.ENV_TEMPLATE_ROOTS.add_item(
-    pkg_resources.resource_filename("drydock", "templates")
+    str(importlib_resources.files("drydock") / "templates")
 )
 tutor_hooks.Filters.ENV_TEMPLATE_TARGETS.add_items(
     [
@@ -196,12 +196,7 @@ tutor_hooks.Filters.ENV_TEMPLATE_TARGETS.add_items(
     ],
 )
 # Load all patches from the "patches" folder
-for path in glob(
-    os.path.join(
-        pkg_resources.resource_filename("drydock", "patches"),
-        "*",
-    )
-):
+for path in glob(str(importlib_resources.files("drydock") / "patches" / "*")):
     with open(path, encoding="utf-8") as patch_file:
         tutor_hooks.Filters.ENV_PATCHES.add_item((os.path.basename(path), patch_file.read()))
 
@@ -230,7 +225,7 @@ tutor_hooks.Filters.ENV_TEMPLATE_VARIABLES.add_items(
 
 # # init script
 with open(
-    pkg_resources.resource_filename("drydock", "templates/drydock/task/mongodb/init"),
+    str(importlib_resources.files("drydock") / "templates" / "drydock" / "task" / "mongodb" / "init"),
     encoding="utf-8",
 ) as fi:
     tutor_hooks.Filters.CLI_DO_INIT_TASKS.add_item(("mongodb", fi.read()), priority=tutor_hooks.priorities.HIGH)
