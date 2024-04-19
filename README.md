@@ -121,7 +121,7 @@ The generated files are meant to be used by ArgoCD for deployment.
 Previously you would need to write the manifest files for the initialization jobs
 manually if you wanted to use a tool like ArgoCD.
 
-1. For Palm, it is necessary to update the version of `Drydock <https://github.com/eduNEXT/drydock>`_ to the latest version 17.x.x in the requirements.txt file of your environment, including:
+1. For Palm, it is necessary to update the version of [Drydock](https://github.com/eduNEXT/drydock) to the latest version 17.x.x in the requirements.txt file of your environment, including:
 
     ``` bash
     git+https://github.com/edunext/drydock@v16.x.x#egg=drydock==16.x.x
