@@ -110,7 +110,7 @@ This guide delineates the necessary steps for a seamless migration to Palm using
 Regarding initialization jobs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Since Drydock version 15.8.1, a new mechanism was introduced to automatically generate Kubernetes
+Since Drydock version 16.4.0, a new mechanism was introduced to automatically generate Kubernetes
 manifest files for the initialization jobs defined by Tutor and Tutor plugins.
 The generated files are meant to be used by ArgoCD for deployment.
 Previously you would need to write the manifest files for the initialization jobs
