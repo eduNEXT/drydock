@@ -6,7 +6,7 @@ HERE = os.path.abspath(os.path.dirname(__file__))
 
 
 def load_readme():
-    with io.open(os.path.join(HERE, "README.rst"), "rt", encoding="utf8") as f:
+    with io.open(os.path.join(HERE, "README.md"), "rt", encoding="utf8") as f:
         return f.read()
 
 
@@ -39,7 +39,7 @@ setup(
     packages=find_packages(exclude=["tests*"]),
     include_package_data=True,
     python_requires=">=3.8",
-    install_requires=["tutor>=17.0.0,<18.0.0"],
+    install_requires=["tutor>=17.0.2,<18.0.0"],
     entry_points={"tutor.plugin.v1": ["drydock = drydock.plugin"]
     },
     classifiers=[
@@ -51,5 +51,7 @@ setup(
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
+        "Programming Language :: Python :: 3.11",
+        "Programming Language :: Python :: 3.12",
     ],
 )
