@@ -111,7 +111,7 @@ manually if you wanted to use a tool like ArgoCD.
         DRYDOCK_INIT_JOBS: True
         DRYDOCK_MIGRATE_FROM: <MAJOR_OF_TUTOR_VERSION>
 
-   Set `DRYDOCK_MIGRATE_FROM` to 13 for migrating from **Maple** or 14 for migrating from **Nutmeg**.
+   Set `DRYDOCK_MIGRATE_FROM` to the integer value mapping the origin release, for instance, `13`(Maple) or `14`(Nutmeg). Please refer to the Drydock configuration reference for a full description.
 
 3. Re-generate the configuration by running:
 
