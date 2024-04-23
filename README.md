@@ -124,7 +124,7 @@ manually if you wanted to use a tool like ArgoCD.
 1. For Quince, it is necessary to update the version of [Drydock](https://github.com/eduNEXT/drydock) to the latest version 17.x.x in the requirements.txt file of your environment, including:
 
     ``` bash
-    git+https://github.com/edunext/drydock@v16.x.x#egg=drydock==17.x.x
+    git+https://github.com/edunext/drydock@v17.x.x#egg=drydock==17.x.x
     ```
 
 2. In the `config.yml` file, include variables that activate the initialization jobs and post-migration jobs:
@@ -134,7 +134,7 @@ manually if you wanted to use a tool like ArgoCD.
     DRYDOCK_MIGRATE_FROM: <MAJOR_OF_TUTOR_VERSION>
     ```
 
-   Set `DRYDOCK_MIGRATE_FROM` to 13 for migrating from **Maple** or 14 for migrating from **Nutmeg**.
+   Set `DRYDOCK_MIGRATE_FROM` to the integer value mapping the origin release, for instance, `13`(Maple) or `14`(Nutmeg). Please refer to the Drydock configuration reference for a full description.
 
 3. Re-generate the configuration by running:
 
