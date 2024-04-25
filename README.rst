@@ -48,6 +48,7 @@ The following configuration options are available:
 - `DRYDOCK_FLOWER`: Whether to deploy a flower deployment for celery. Defaults to `false`.
 - `DRYDOCK_INGRESS`: Whether to deploy an ingress for the LMS and CMS. Defaults to `false`.
 - `DRYDOCK_INGRESS_EXTRA_HOSTS`: A list of extra hosts to add to the ingress. Defaults to `[]`.
+- `DRYDOCK_INGRESS_LMS_EXTRA_HOSTS`: A list of extra hosts to add to the LMS ingress. Defaults to `[]`.
 - `DRYDOCK_CUSTOM_CERTS`: A dictionary of custom certificates to use with cert-manager. Defaults to `{}`.
 - `DRYDOCK_NEWRELIC_LICENSE_KEY`: The New Relic license key. Defaults to `""`.
 - `DRYDOCK_DEBUG`: Whether to deploy debug resources. Defaults to `false`.
