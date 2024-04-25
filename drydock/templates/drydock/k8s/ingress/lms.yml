@@ -8,7 +8,7 @@ metadata:
   {%- if DRYDOCK_AUTO_TLS and not DRYDOCK_CUSTOM_CERTS %}
     cert-manager.io/issuer: letsencrypt
   {%- endif %}
-  {%- if DRYDOCK_ENABLE_SCORM and DRYDOCK_BYPASS_CADDY %}
+  {%- if DRYDOCK_ENABLE_SCORM and DRYDOCK_BYPASS_CADDY and (S3_STORAGE_BUCKET is defined or MINIO_HOST is defined) %}
     nginx.ingress.kubernetes.io/server-snippet: |
       location /scorm-proxy {
         proxy_http_version     1.1;
