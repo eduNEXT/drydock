@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://github.com/eduNEXT/drydock/compare/v17.3.1...HEAD)
+## [Unreleased](https://github.com/eduNEXT/drydock/compare/v17.3.2...HEAD)
 
 Please do not update the unreleased notes.
 
@@ -19,6 +19,14 @@ Please do not update the unreleased notes.
 - add plugins extra, extracted from namespace template ([#48](https://github.com/eduNEXT/drydock/pull/48)) ([36c033f](https://github.com/eduNEXT/drydock/commit/36c033faecf7c3ebc701a085cb33e55629910d88))
 
 <!-- Content should be placed here -->
+## [v17.3.2](https://github.com/eduNEXT/drydock/compare/v17.3.1...v17.3.2) - 2024-04-26
+
+### [17.3.2](https://github.com/eduNEXT/drydock/compare/v17.3.1...v17.3.2) (2024-04-26)
+
+### Bug Fixes
+
+- verify minio host is defined on scorm proxy ([#96](https://github.com/eduNEXT/drydock/issues/96)) ([503ab92](https://github.com/eduNEXT/drydock/commit/503ab928499937fee45718c544ff02e35e6c7a38))
+
 ## [v17.3.1](https://github.com/eduNEXT/drydock/compare/v17.3.0...v17.3.1) - 2024-04-26
 
 ### [17.3.1](https://github.com/eduNEXT/drydock/compare/v17.3.0...v17.3.1) (2024-04-26)
