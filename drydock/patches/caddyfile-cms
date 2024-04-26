@@ -18,3 +18,4 @@ route @scorm_matcher {
         header_up Host {{ S3_STORAGE_BUCKET }}.s3.amazonaws.com
     }
 }
+{% endif %}
