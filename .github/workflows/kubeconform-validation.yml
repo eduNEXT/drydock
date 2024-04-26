@@ -1,0 +1,47 @@
+name: Kubeconform Validation
+
+on:
+  pull_request:
+
+jobs:
+  load-environments:
+    name: Load environments
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v2
+      - id: set-matrix
+        run: echo "::set-output name=matrix::$(ls .github/environments/ | jq -R -s -c 'split("\n")[:-1]')"
+  validation:
+    needs: load-environments
+    strategy:
+      matrix:
+        environment: ${{fromJson(needs.load-environments.outputs.matrix)}}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: setup python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.12
+      - name: Setup Tutor environment
+        run: |
+          echo "TUTOR_ROOT=$GITHUB_WORKSPACE/.github/environments/${{ matrix.environment }}" >> $GITHUB_ENV
+          echo "TUTOR_PLUGINS_ROOT=$TUTOR_ROOT/plugins" >> $GITHUB_ENV
+      - name: Install python reqs
+        run: |
+          pip install -r .github/requirements.txt
+          pip install -e .
+      - name: Tutor config save
+        run: tutor config save
+      - name: Install Kubernetes tools
+        uses: alexellis/arkade-get@master
+        with:
+          kubectl: latest
+          kustomize: latest
+          kubeconform: latest
+      - name: Check k8s manifests
+        run: |
+          kustomize build $TUTOR_ROOT/env | kubeconform -strict -ignore-missing-schemas -kubernetes-version latest
