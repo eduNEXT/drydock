@@ -1,35 +1,43 @@
 {% if DRYDOCK_ENABLE_MULTITENANCY -%}
 {$default_site_port} {
-@favicon_matcher {
-    path_regexp ^/favicon.ico$
-}
-rewrite @favicon_matcher /theming/asset/images/favicon.ico
-
-{{ patch("caddyfile-mfe-by-path") }}
-
-# Limit profile image upload size
-request_body /api/profile_images/*/*/upload {
-    max_size 1MB
-}
-request_body {
-    max_size 4MB
-}
-import proxy "lms:8000"
-{% if DRYDOCK_ENABLE_SCORM and (MINIO_HOST is defined or S3_STORAGE_BUCKET is defined) -%}
-@scorm_matcher {
-    path /scorm-proxy/*
-}
-route @scorm_matcher {
-    uri /scorm-proxy/* strip_prefix /scorm-proxy
-{% if MINIO_HOST is defined %}
-    reverse_proxy minio:9000 {
-        header_up Host {{ MINIO_HOST }}
-{% elif S3_STORAGE_BUCKET is defined %}
-    reverse_proxy https://{{ S3_STORAGE_BUCKET }}.s3.amazonaws.com {
-        header_up Host {{ S3_STORAGE_BUCKET }}.s3.amazonaws.com
-{% endif %}
+    @favicon_matcher {
+        path_regexp ^/favicon.ico$
     }
+    rewrite @favicon_matcher /theming/asset/images/favicon.ico
+
+    {{ patch("caddyfile-mfe-by-path") }}
+
+    # Limit profile image upload size
+    request_body /api/profile_images/*/*/upload {
+        max_size 1MB
+    }
+    request_body {
+        max_size 4MB
+    }
+    import proxy "lms:8000"
+
+    {% if DRYDOCK_ENABLE_SCORM and MINIO_HOST is defined %}
+    @scorm_matcher {
+        path /scorm-proxy/*
+    }
+    route @scorm_matcher {
+        uri /scorm-proxy/* strip_prefix /scorm-proxy
+        reverse_proxy minio:9000 {
+            header_up Host {{ MINIO_HOST }}
+        }
+    }
+    {% elif DRYDOCK_ENABLE_SCORM and S3_STORAGE_BUCKET is defined %}
+    @scorm_matcher {
+        path /scorm-proxy/*
+    }
+    route @scorm_matcher {
+        uri /scorm-proxy/* strip_prefix /scorm-proxy
+        reverse_proxy https://{{ S3_STORAGE_BUCKET }}.s3.amazonaws.com {
+            header_up Host {{ S3_STORAGE_BUCKET }}.s3.amazonaws.com
+        }
+    }
+    {% endif %}
+
 }
-{% endif %}
-}
+
 {% endif %}
