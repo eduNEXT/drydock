@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://github.com/eduNEXT/drydock/compare/v17.3.0...HEAD)
+## [Unreleased](https://github.com/eduNEXT/drydock/compare/v17.3.1...HEAD)
 
 Please do not update the unreleased notes.
 
@@ -19,6 +19,18 @@ Please do not update the unreleased notes.
 - add plugins extra, extracted from namespace template ([#48](https://github.com/eduNEXT/drydock/pull/48)) ([36c033f](https://github.com/eduNEXT/drydock/commit/36c033faecf7c3ebc701a085cb33e55629910d88))
 
 <!-- Content should be placed here -->
+## [v17.3.1](https://github.com/eduNEXT/drydock/compare/v17.3.0...v17.3.1) - 2024-04-26
+
+### [17.3.1](https://github.com/eduNEXT/drydock/compare/v17.3.0...v17.3.1) (2024-04-26)
+
+### Bug Fixes
+
+- enable scorm proxy if s3 plugin is installed ([#92](https://github.com/eduNEXT/drydock/issues/92)) ([c1ee060](https://github.com/eduNEXT/drydock/commit/c1ee060e1ca4975119aa8a651597664b428d8c18))
+
+### Documentation
+
+- include steps for migrate to quince ([#90](https://github.com/eduNEXT/drydock/issues/90)) ([d0eb742](https://github.com/eduNEXT/drydock/commit/d0eb74292d37d706c4d92506266913a7d3ec69bb))
+
 ## [v17.3.0](https://github.com/eduNEXT/drydock/compare/v17.2.0...v17.3.0) - 2024-04-18
 
 ### [17.3.0](https://github.com/eduNEXT/drydock/compare/v17.2.0...v17.3.0) (2024-04-18)
