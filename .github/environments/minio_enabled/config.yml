@@ -1,0 +1,15 @@
+DRYDOCK_INIT_JOBS: true
+K8S_NAMESPACE: testing-openedx
+PLUGINS:
+- mfe
+- drydock
+- minio
+DRYDOCK_BYPASS_CADDY: true
+DRYDOCK_INGRESS: true
+DRYDOCK_ENABLE_SCORM: true
+DRYDOCK_INGRESS_LMS_EXTRA_HOSTS:
+- "lms1.testing.example.com"
+- "lms2.testing.example.com"
+DRYDOCK_INGRESS_EXTRA_HOSTS:
+- "superset.testing.example.com"
+- "forum.testing.example.com"
