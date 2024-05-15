@@ -1,0 +1,84 @@
+{%- if MFE_HOST is defined and DRYDOCK_PDB_MINAVAILABLE_PERCENTAGE_MFE > 0 %}
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: mfe-pdb
+spec:
+  minAvailable: {{DRYDOCK_PDB_MINAVAILABLE_PERCENTAGE_MFE}}%
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: mfe
+{%- endif %}
+{%- if FORUM_DOCKER_IMAGE is defined and DRYDOCK_PDB_MINAVAILABLE_PERCENTAGE_FORUM > 0 %}
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: forum-pdb
+spec:
+  minAvailable: {{DRYDOCK_PDB_MINAVAILABLE_PERCENTAGE_FORUM}}%
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: forum
+{%- endif %}
+{%- if DRYDOCK_PDB_MINAVAILABLE_PERCENTAGE_CADDY > 0 %}
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: caddy-pdb
+spec:
+  minAvailable: {{DRYDOCK_PDB_MINAVAILABLE_PERCENTAGE_CADDY}}%
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: caddy
+{%- endif %}
+{%- if DRYDOCK_PDB_MINAVAILABLE_PERCENTAGE_LMS > 0 %}
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: lms-pdb
+spec:
+  minAvailable: {{DRYDOCK_PDB_MINAVAILABLE_PERCENTAGE_LMS}}%
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: lms
+{%- endif %}
+{%- if DRYDOCK_PDB_MINAVAILABLE_PERCENTAGE_LMS_WORKER > 0 %}
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: lms-worker-pdb
+spec:
+  minAvailable: {{DRYDOCK_PDB_MINAVAILABLE_PERCENTAGE_LMS_WORKER}}%
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: lms-worker
+{%- endif %}
+{%- if DRYDOCK_PDB_MINAVAILABLE_PERCENTAGE_CMS > 0 %}
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: cms-pdb
+spec:
+  minAvailable: {{DRYDOCK_PDB_MINAVAILABLE_PERCENTAGE_CMS}}%
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: cms
+{%- endif %}
+{%- if DRYDOCK_PDB_MINAVAILABLE_PERCENTAGE_CMS_WORKER > 0 %}
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: cms-worker-pdb
+spec:
+  minAvailable: {{DRYDOCK_PDB_MINAVAILABLE_PERCENTAGE_CMS_WORKER}}%
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: cms-worker
+{%- endif %}
