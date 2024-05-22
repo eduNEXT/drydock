@@ -2,6 +2,8 @@ name: Kubeconform Validation
 
 on:
   pull_request:
+  push:
+    branches: olive
 
 jobs:
   load-environments:
@@ -41,7 +43,15 @@ jobs:
         with:
           kubectl: latest
           kustomize: latest
-          kubeconform: latest
+          kubeconform: v0.6.6
+      - name: Print versions
+        run: |
+          echo "Kubectl version installed:"
+          kubectl version --client
+          echo "Kustomize version installed:"
+          kustomize version
+          echo "Kubeconform version installed:"
+          kubeconform -v
       - name: Check k8s manifests
         run: |
           kustomize build $TUTOR_ROOT/env | kubeconform -strict -ignore-missing-schemas -kubernetes-version master
