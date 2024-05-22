@@ -18,7 +18,12 @@ Please do not update the unreleased notes.
 - drydock refactor to work without reference logic and enable tutor cli via skipping tutor jobs instead of delete them. ([#47](https://github.com/eduNEXT/drydock/pull/47)) ([5b09240](https://github.com/eduNEXT/drydock/commit/5b0924017f474d364bb4b919e703b89955a713a2))
 - add plugins extra, extracted from namespace template ([#48](https://github.com/eduNEXT/drydock/pull/48)) ([36c033f](https://github.com/eduNEXT/drydock/commit/36c033faecf7c3ebc701a085cb33e55629910d88))
 
-<!-- Content should be placed here -->
+### [17.3.3](https://github.com/eduNEXT/drydock/compare/v17.3.3...v17.3.2) (2024-05-22)
+
+### Bug Fixes
+
+* correct template tags ([#96](https://github.com/eduNEXT/drydock/issues/91)) ([acbfec8](https://github.com/eduNEXT/drydock/commit/acbfec87538eee0092b5a04b979550d5bdca43cc))
+
 ## [v17.3.2](https://github.com/eduNEXT/drydock/compare/v17.3.1...v17.3.2) - 2024-04-26
 
 ### [17.3.2](https://github.com/eduNEXT/drydock/compare/v17.3.1...v17.3.2) (2024-04-26)
