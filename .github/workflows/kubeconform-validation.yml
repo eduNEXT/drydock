@@ -55,8 +55,10 @@ jobs:
       - name: Extract Kubernetes client version
         id: extract_version
         run: |
-          KUBECTL_VERSION=$(kubectl version --client --output=json | jq -r '.clientVersion.gitVersion')
+          KUBECTL_VERSION=$(kubectl version --client --output=json | jq -r '.clientVersion.gitVersion' | sed 's/^v//')
           echo "Extracted KUBECTL_VERSION=${KUBECTL_VERSION}"
+          echo "k8s_version=${KUBECTL_VERSION}" >> $GITHUB_OUTPUT
       - name: Check k8s manifests
         run: |
+          K8S_VERSION=${{ steps.extract_version.outputs.k8s_version }}
           kustomize build $TUTOR_ROOT/env | kubeconform -strict -ignore-missing-schemas -kubernetes-version ${K8S_VERSION}
