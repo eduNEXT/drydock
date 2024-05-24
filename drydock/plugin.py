@@ -155,6 +155,13 @@ config = {
             "lms-worker",
             "cms-worker",
         ],
+        "PDB_MINAVAILABLE_PERCENTAGE_LMS": 0,
+        "PDB_MINAVAILABLE_PERCENTAGE_LMS_WORKER": 0,
+        "PDB_MINAVAILABLE_PERCENTAGE_CMS": 0,
+        "PDB_MINAVAILABLE_PERCENTAGE_CMS_WORKER": 0,
+        "PDB_MINAVAILABLE_PERCENTAGE_MFE": 0,
+        "PDB_MINAVAILABLE_PERCENTAGE_FORUM": 0,
+        "PDB_MINAVAILABLE_PERCENTAGE_CADDY": 0,
     },
     # Add here settings that don't have a reasonable default for all users. For
     # instance: passwords, secret keys, etc.
