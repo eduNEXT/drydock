@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://github.com/eduNEXT/drydock/compare/v17.3.2...HEAD)
+## [Unreleased](https://github.com/eduNEXT/drydock/compare/v17.3.4...HEAD)
 
 Please do not update the unreleased notes.
 
@@ -22,7 +22,15 @@ Please do not update the unreleased notes.
 
 ### Bug Fixes
 
-* correct template tags ([#96](https://github.com/eduNEXT/drydock/issues/91)) ([acbfec8](https://github.com/eduNEXT/drydock/commit/acbfec87538eee0092b5a04b979550d5bdca43cc))
+- correct template tags ([#96](https://github.com/eduNEXT/drydock/issues/91)) ([acbfec8](https://github.com/eduNEXT/drydock/commit/acbfec87538eee0092b5a04b979550d5bdca43cc))
+
+## [v17.3.4](https://github.com/eduNEXT/drydock/compare/v17.3.2...v17.3.4) - 2024-05-27
+
+### [17.3.4](https://github.com/eduNEXT/drydock/compare/v17.3.3...v17.3.4) (2024-05-27)
+
+### Bug Fixes
+
+- solve error check k8s workflow main ([#102](https://github.com/eduNEXT/drydock/issues/102)) ([e6a4e91](https://github.com/eduNEXT/drydock/commit/e6a4e913524638025b90095edbe8904e4de11258))
 
 ## [v17.3.2](https://github.com/eduNEXT/drydock/compare/v17.3.1...v17.3.2) - 2024-04-26
 
