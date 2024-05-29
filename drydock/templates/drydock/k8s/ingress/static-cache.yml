@@ -1,0 +1,33 @@
+{%- for service, config in DRYDOCK_NGINX_STATIC_CACHE_CONFIG.items() %}
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-static-{{ service }}
+  namespace: {{ K8S_NAMESPACE }}
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-body-size: 8m
+    nginx.ingress.kubernetes.io/proxy-buffering: "on"
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      # Cache settings
+      proxy_cache_valid 404 10m;
+      proxy_cache_use_stale error timeout updating http_404 http_500 http_502 http_503 http_504;
+      proxy_cache static-cache;
+      proxy_cache_valid any 120m;
+      proxy_cache_bypass $http_x_purge;
+      add_header X-Cache-Status $upstream_cache_status;
+      {{ patch("static-cache-config") | indent(6)}}
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: {{ config["host"] }}
+    http:
+      paths:
+        - pathType: Prefix
+          path: {{ config["path"]}}
+          backend:
+            service:
+              name: {% if DRYDOCK_BYPASS_CADDY -%}{{ service }}{% else -%}caddy{% endif %}
+              port:
+                number: {% if DRYDOCK_BYPASS_CADDY -%}{{ config["port"] }}{% else -%}80{% endif %}
+{%- endfor %}

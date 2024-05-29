@@ -67,6 +67,15 @@ The following configuration options are available:
 - `DRYDOCK_PDB_MINAVAILABLE_PERCENTAGE_LMS_WORKER` : The minimum available percentage for the LMS WORKER's PodDisruptionBudget. To disable the PodDisruptionBudget, set `0`. Defaults to `0`.
 - `DRYDOCK_PDB_MINAVAILABLE_PERCENTAGE_CMS` : The minimum available percentage for the CMS's PodDisruptionBudget. To disable the PodDisruptionBudget, set `0`. Defaults to `0`.
 - `DRYDOCK_PDB_MINAVAILABLE_PERCENTAGE_CMS_WORKER` : The minimum available percentage for the worker's PodDisruptionBudget. To disable the PodDisruptionBudget, set `0`. Defaults to `0`.
+- `NGINX_STATIC_CACHE_CONFIG`: A list of dictionaries with settings for different services to cache their assets in NGINX.
+  The following is an example of the expected values:
+  ```yaml
+  NGINX_STATIC_CACHE_CONFIG:
+    {{service_name}}:
+        host: {{service_host}} # e.g: {{LMS_HOST}}
+        path: /static/ # you can specify a different path
+        port: {{service_port}} # only needed if you have DRYDOCK_BYPASS_CADDY enabled
+  ```
 
 .. note::
     You also need to set `DRYDOCK_INIT_JOBS` to `true` to enable the release-specific upgrade jobs in the case of a platform migration.
