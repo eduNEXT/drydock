@@ -8,7 +8,7 @@ def scorm_xblock_storage(xblock):
     else:
         domain = settings.CMS_BASE
     return S3Boto3Storage(
-        bucket=AWS_STORAGE_BUCKET_NAME,
+        bucket_name=AWS_STORAGE_BUCKET_NAME,
         access_key=AWS_ACCESS_KEY_ID,
         secret_key=AWS_SECRET_ACCESS_KEY,
         querystring_expire=86400,
