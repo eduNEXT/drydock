@@ -16,12 +16,15 @@ jobs:
         fetch-depth: 0
 
     - name: Python Semantic Release
-      uses: python-semantic-release/python-semantic-release@master
+      uses: actions/setup-python@v2
       with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        git_committer_name: 'Automatic Release Bot'
-        git_committer_email: 'support@edunext.co'
-        commit: true
-        tag: true
-        changelog: true
-        push: true
+        python-version: 3.8
+
+    - name: Install dependencies
+      run: |
+        pip install -e .[dev]
+
+    - name: Run Semantic Release
+      run: make release
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

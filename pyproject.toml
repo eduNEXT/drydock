@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "drydock"
-version = "16.5.0"
+dynamic = ["version"]
 description = "A Tutor plugin to manage our opinionated Open edX operations"
 readme = "README.md"
 requires-python = ">=3.8"
@@ -25,7 +25,12 @@ classifiers = [
     "Programming Language :: Python :: 3.12",
 ]
 dependencies = [
-    "tutor>=17.0.2,<18.0.0"
+    "tutor>=16.0.0,<17.0.0"
+]
+
+[project.optional-dependencies]
+dev = [
+    "python-semantic-release",
 ]
 
 [project.urls]
@@ -40,20 +45,14 @@ exclude = ["tests*"]
 [project.entry-points."tutor.plugin.v1"]
 drydock = "drydock.plugin"
 
-[tool.isort]
-include_trailing_comma = true
-indent = "    "
-line_length = 120
-multi_line_output = 3
+[tool.setuptools.dynamic]
+version = {attr = "drydock.__about__.__version__"}
 
 [tool.wheel]
 universal = true
 
 [tool.semantic_release]
 commit_message = "chore(release): preparing {version}"
-version_toml = [
-    "pyproject.toml:project.version",
-]
 version_variables = [
     "drydock/__about__.py:__version__",
 ]
@@ -63,9 +62,3 @@ match = "palm"
 
 [tool.semantic_release.changelog.environment]
 keep_trailing_newline = true
-
-[tool.semantic_release.remote]
-name = "origin"
-type = "github"
-ignore_token_for_push = false
-insecure = false
