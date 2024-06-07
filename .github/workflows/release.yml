@@ -20,8 +20,9 @@ jobs:
       with:
         python-version: 3.8
 
-    - name: Install Semantic Release
-      run: make install-semantic-release
+    - name: Install dependencies
+      run: |
+        pip install -e .[dev]
 
     - name: Run Semantic Release
       run: make release

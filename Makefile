@@ -1,12 +1,15 @@
 .DEFAULT_GOAL := help
 
-install-semantic-release: ## install semantic-release
-	@echo "Installing semantic-release."
-	pip install python-semantic-release
-
 release: ## release a new version
 	@echo "Releasing a new version."
+	@echo "This is a remote release, it will push to the remote repository."
 	semantic-release -vv version --changelog --push --tag --commit
+
+local-release:
+	@echo "Releasing a new version."
+	@echo "This is a local release, it will not push to the remote repository."
+	@echo "You can push the changes and release manually."
+	semantic-release -vv version --changelog --commit --no-push
 
 selfcheck: ## check that the Makefile is well-formed
 	@echo "The Makefile is well-formed."
