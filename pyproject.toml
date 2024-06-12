@@ -1,0 +1,64 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "drydock"
+dynamic = ["version"]
+description = "A Tutor plugin to manage our opinionated Open edX operations"
+readme = "README.md"
+requires-python = ">=3.8"
+license = { text = "AGPLv3" }
+authors = [
+    { name = "eduNEXT" }
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: GNU Affero General Public License v3",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+dependencies = [
+    "tutor>=17.0.2,<18.0.0"
+]
+
+[project.optional-dependencies]
+dev = [
+    "python-semantic-release",
+]
+
+[project.urls]
+Homepage = "https://github.com/edunext/drydock"
+Code = "https://github.com/edunext/drydock"
+"Issue tracker" = "https://github.com/edunext/drydock/issues"
+
+[tool.setuptools.packages.find]
+where = ["."]
+exclude = ["tests*"]
+
+[project.entry-points."tutor.plugin.v1"]
+drydock = "drydock.plugin"
+
+[tool.setuptools.dynamic]
+version = {attr = "drydock.__about__.__version__"}
+
+[tool.wheel]
+universal = true
+
+[tool.semantic_release]
+commit_message = "chore(release): preparing {version}"
+version_variables = [
+    "drydock/__about__.py:__version__",
+]
+
+[tool.semantic_release.branches.olive]
+match = "olive"
+
+[tool.semantic_release.changelog.environment]
+keep_trailing_newline = true
