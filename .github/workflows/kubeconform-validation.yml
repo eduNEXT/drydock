@@ -3,7 +3,7 @@ name: Kubeconform Validation
 on:
   pull_request:
   push:
-    branches: main
+    branches: quince
 
 jobs:
   load-environments:
