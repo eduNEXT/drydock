@@ -30,3 +30,19 @@ DRYDOCK_PDB_MINAVAILABLE_PERCENTAGE_LMS_WORKER: 50
 DRYDOCK_PDB_MINAVAILABLE_PERCENTAGE_CMS: 50
 DRYDOCK_PDB_MINAVAILABLE_PERCENTAGE_CMS_WORKER: 50
 DRYDOCK_MIGRATE_FROM: 13
+LMS_HOST: local.edly.io
+CMS_HOST: studio.local.edly.io
+MFE_HOST: apps.local.edly.io
+NGINX_STATIC_CACHE_CONFIG:
+  lms:
+    host: "{{LMS_HOST}}"
+    path: /static/
+    port: 8000
+  cms:
+    host: "{{CMS_HOST}}"
+    path: /static/
+    port: 8000
+  mfe:
+    host: "{{MFE_HOST}}"
+    path: /
+    port: 8002
