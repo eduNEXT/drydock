@@ -1,8 +1,46 @@
 # CHANGELOG
 
+## v17.4.0 (2024-07-02)
 
+### Ci
+
+* ci: ignore commits in changelog and release notes (#113) ([`693c91b`](https://github.com/eduNEXT/drydock/commit/693c91bed3772e3fa59d45eff85c8a0b8593677d))
+
+### Feature
+
+* feat: add support for static cache config (#116)
+
+fix: address PR suggestions
+
+fix: address PR suggestions
+
+fix: address PR suggestions
+
+fix: address PR suggestions
+
+build: correct port and path for mfe tests
+(cherry picked from commit e331e29ba769551bc7472261001408b83dfb9616) ([`52b6e9d`](https://github.com/eduNEXT/drydock/commit/52b6e9d9a345f7ae7f08cce16851e30b27d6853b))
+
+### Fix
+
+* fix: quince no longer in the same branch as main ([`6b6de53`](https://github.com/eduNEXT/drydock/commit/6b6de535d921b790cfc04a331310c7cd9af76f6c))
+
+* fix: remove unnecesary annotations from the hpa sync wave (#118)
+
+The HPA sync-wave patch includes annotations to indicate argocd
+in which order should the HPA resources be applied in relation
+to the other resources. The `argocd.argoproj.io/hook: Sync`
+and `argocd.argoproj.io/hook-delete-policy: HookSucceeded`
+annotations are used for ephemeral resources (like jobs) and
+should not be used for the HPA resources.
+
+Co-authored-by: Moisés González &lt;moises.gonzalez@edunext.co&gt; ([`31ea2d6`](https://github.com/eduNEXT/drydock/commit/31ea2d69caeb8fda18e9417df248aeafdfbd0d83))
 
 ## v17.3.5 (2024-06-12)
+
+### Chore
+
+* chore(release): preparing 17.3.5 ([`6ed209b`](https://github.com/eduNEXT/drydock/commit/6ed209b00822a7ccef48082b146c96c8e217e022))
 
 ### Ci
 
@@ -15,7 +53,6 @@
 The S3Boto3Storage backend no longer accepts the argument bucket. Use
 bucket_name or the setting AWS_STORAGE_BUCKET_NAME instead:
 https://github.com/jschneier/django-storages/pull/636 ([`f21d338`](https://github.com/eduNEXT/drydock/commit/f21d3384c76dba6d3042ada7725797f1ea97673b))
-
 
 ## v17.3.4 (2024-05-27)
 
@@ -33,23 +70,11 @@ https://github.com/jschneier/django-storages/pull/636 ([`f21d338`](https://githu
 
 * fix: extract and set kubernetes version from kubectl ([`e6a4e91`](https://github.com/eduNEXT/drydock/commit/e6a4e913524638025b90095edbe8904e4de11258))
 
-
 ## v17.3.3 (2024-05-22)
-
-### Build
-
-* build: add k8s validation workflow (#91)
-
-* fix: correct template tags
-
-* build: add k8s validation workflow
-
-* chore: add minio test case ([`acbfec8`](https://github.com/eduNEXT/drydock/commit/acbfec87538eee0092b5a04b979550d5bdca43cc))
 
 ### Chore
 
 * chore(release): preparing 17.3.3 ([`c01f238`](https://github.com/eduNEXT/drydock/commit/c01f238bbff75d9aa4c73319a7bdf7a441817d65))
-
 
 ## v17.3.2 (2024-04-26)
 
@@ -65,39 +90,17 @@ https://github.com/jschneier/django-storages/pull/636 ([`f21d338`](https://githu
 
 * chore: refactor scorm template ([`503ab92`](https://github.com/eduNEXT/drydock/commit/503ab928499937fee45718c544ff02e35e6c7a38))
 
-
 ## v17.3.1 (2024-04-26)
 
 ### Chore
 
 * chore(release): preparing 17.3.1 ([`eb47084`](https://github.com/eduNEXT/drydock/commit/eb47084434d2905544ea44f5938138f4ca31da86))
 
-* chore: add python 3.12 support (#89) ([`f412f3a`](https://github.com/eduNEXT/drydock/commit/f412f3ac2e58a9e50b539bca6a40d0a602c68e59))
-
-### Documentation
-
-* docs: include steps for migrate to quince (#90)
-
-* docs: add drydock quince docs
-
-docs: add drydock documentation
-
-docs: fix markdown format
-
-docs: update format
-
-* docs: update format
-
-* docs: update drydock version
-
-* docs: fix drydock version ([`d0eb742`](https://github.com/eduNEXT/drydock/commit/d0eb74292d37d706c4d92506266913a7d3ec69bb))
-
 ### Fix
 
 * fix: enable scorm proxy if s3 plugin is installed (#92)
 
 docs: add documentation for ingress lm extra hosts ([`c1ee060`](https://github.com/eduNEXT/drydock/commit/c1ee060e1ca4975119aa8a651597664b428d8c18))
-
 
 ## v17.3.0 (2024-04-18)
 
@@ -113,7 +116,6 @@ docs: add documentation for ingress lm extra hosts ([`c1ee060`](https://github.c
 
 * fix: run the jobs scripts with &#39;-e&#39; to exit on error (#74) ([`cb8bcb2`](https://github.com/eduNEXT/drydock/commit/cb8bcb24667eff45e853104248ff253c0dcc046b))
 
-
 ## v17.2.0 (2024-02-27)
 
 ### Chore
@@ -124,7 +126,6 @@ docs: add documentation for ingress lm extra hosts ([`c1ee060`](https://github.c
 
 * feat: iterate over added mfes to add its paths (#72) ([`d61991b`](https://github.com/eduNEXT/drydock/commit/d61991b133fdb154f5118583809bb813c868aeb5))
 
-
 ## v17.1.1 (2024-02-23)
 
 ### Chore
@@ -134,7 +135,6 @@ docs: add documentation for ingress lm extra hosts ([`c1ee060`](https://github.c
 ### Fix
 
 * fix: notes annotations throw job skip from argocd sync (#69) ([`d965aa7`](https://github.com/eduNEXT/drydock/commit/d965aa7ad459b19b4b99bc450132d3b87c761fcd))
-
 
 ## v17.1.0 (2024-01-30)
 
@@ -168,7 +168,6 @@ docs: add documentation for ingress lm extra hosts ([`c1ee060`](https://github.c
 
 * fix: change comparison operator and pdb path ([`9266f98`](https://github.com/eduNEXT/drydock/commit/9266f985dc4adc8da4366cb1420fa731f47cd4df))
 
-
 ## v17.0.0 (2024-01-19)
 
 ### Breaking
@@ -181,7 +180,6 @@ BREAKING CHANGE: Support to tutor v17 ([`aeefdca`](https://github.com/eduNEXT/dr
 
 * chore(release): preparing 17.0.0 ([`5e41bf9`](https://github.com/eduNEXT/drydock/commit/5e41bf9441b922f0db30a8b728e5c17d95a07ef3))
 
-
 ## v16.2.2 (2024-01-18)
 
 ### Chore
@@ -191,7 +189,6 @@ BREAKING CHANGE: Support to tutor v17 ([`aeefdca`](https://github.com/eduNEXT/dr
 ### Fix
 
 * fix: remove dash from endif (#65) ([`3794a2f`](https://github.com/eduNEXT/drydock/commit/3794a2fd278a77e276af2f2dafdec6870a3b7078))
-
 
 ## v16.2.1 (2024-01-18)
 
@@ -205,7 +202,6 @@ BREAKING CHANGE: Support to tutor v17 ([`aeefdca`](https://github.com/eduNEXT/dr
 
 (cherry picked from commit ed8b57a0600913ea77de02bd995f6adc134f1446) ([`7812911`](https://github.com/eduNEXT/drydock/commit/7812911a09d227428157876e64ede9b1274ff1ec))
 
-
 ## v16.2.0 (2024-01-17)
 
 ### Chore
@@ -215,7 +211,6 @@ BREAKING CHANGE: Support to tutor v17 ([`aeefdca`](https://github.com/eduNEXT/dr
 ### Feature
 
 * feat: add mysql init job patch and fix command on mongo init job (#63) ([`d838e22`](https://github.com/eduNEXT/drydock/commit/d838e2211421d9bdb48a16987f1a277146227240))
-
 
 ## v16.1.0 (2024-01-10)
 
@@ -232,7 +227,6 @@ mongodb user with the necessary permissions. To simplify things a bit we
 use the same user for edxapp and forum and remove the need for the
 forum-overrides patch. ([`c19ae63`](https://github.com/eduNEXT/drydock/commit/c19ae634ec0c8c3183f63e13ee6d03dcd8309134))
 
-
 ## v16.0.1 (2024-01-09)
 
 ### Chore
@@ -242,7 +236,6 @@ forum-overrides patch. ([`c19ae63`](https://github.com/eduNEXT/drydock/commit/c1
 ### Fix
 
 * fix: add manifests file to allow install drydock non editable (#59) ([`b150a41`](https://github.com/eduNEXT/drydock/commit/b150a4136cf07e9865bcd5b740100fb9740531dc))
-
 
 ## v16.0.0 (2023-12-19)
 
@@ -255,7 +248,6 @@ BREAKING CHANGE: Drops support to python 3.7 ([`f43fb18`](https://github.com/edu
 ### Chore
 
 * chore(release): preparing 16.0.0 ([`af7e3a6`](https://github.com/eduNEXT/drydock/commit/af7e3a6619fb80144ffd59235f1939267d306e73))
-
 
 ## v15.5.1 (2023-12-18)
 
@@ -272,7 +264,6 @@ BREAKING CHANGE: Drops support to python 3.7 ([`f43fb18`](https://github.com/edu
 ### Unknown
 
 * doc: update instructions for build docker image (#54) ([`705a748`](https://github.com/eduNEXT/drydock/commit/705a748e05a8179cc82243575a3393a12d03cb44))
-
 
 ## v15.5.0 (2023-11-29)
 
@@ -295,7 +286,6 @@ BREAKING CHANGE: Drops support to python 3.7 ([`f43fb18`](https://github.com/edu
 * fix: update readme
 
 * fix: update gitignore for /build/ folder ([`07d0371`](https://github.com/eduNEXT/drydock/commit/07d03719acbb7b7fadf700eb174ebb0de20ae245))
-
 
 ## v15.4.0 (2023-11-23)
 
@@ -326,7 +316,6 @@ BREAKING CHANGE: Drops support to python 3.7 ([`f43fb18`](https://github.com/edu
 * fix: update .sh
 
 * fix: update default shipyard-utils image ([`16d27ea`](https://github.com/eduNEXT/drydock/commit/16d27eaca9063e70d32e4c85653465d673bd9ce1))
-
 
 ## v15.3.0 (2023-11-16)
 
@@ -360,7 +349,6 @@ BREAKING CHANGE: Drops support to python 3.7 ([`f43fb18`](https://github.com/edu
 
 * fix: azure-blob conditional ([`03881f2`](https://github.com/eduNEXT/drydock/commit/03881f2ca3c76f725a28ec71d6c233d4e8b734c3))
 
-
 ## v15.2.0 (2023-11-07)
 
 ### Chore
@@ -370,7 +358,6 @@ BREAKING CHANGE: Drops support to python 3.7 ([`f43fb18`](https://github.com/edu
 ### Feature
 
 * feat: split ingress per host, add patch to add lms extra hosts (#50) ([`0401123`](https://github.com/eduNEXT/drydock/commit/0401123b2ebf95e766312c3465bb2a9956d477bf))
-
 
 ## v15.1.0 (2023-11-01)
 
@@ -389,19 +376,13 @@ These patches prevent resource fields replacement ([`65a4b70`](https://github.co
 
 * fix: removing inexistent folder from github actions release flow ([`81f3a06`](https://github.com/eduNEXT/drydock/commit/81f3a0699f6043d7fccb140dd97db1c98ad08286))
 
-
 ## v15.0.0 (2023-10-09)
-
-### Chore
-
-* chore: release v15.0.0 ([`1f80b22`](https://github.com/eduNEXT/drydock/commit/1f80b22d17f5d2d54c948eb06795ee6571d7f81b))
 
 ### Feature
 
 * feat: add extra plugin (#48) ([`36c033f`](https://github.com/eduNEXT/drydock/commit/36c033faecf7c3ebc701a085cb33e55629910d88))
 
 * feat: drydock 1.0 (#47) ([`5b09240`](https://github.com/eduNEXT/drydock/commit/5b0924017f474d364bb4b919e703b89955a713a2))
-
 
 ## v0.7.3 (2023-08-08)
 
@@ -413,7 +394,6 @@ These patches prevent resource fields replacement ([`65a4b70`](https://github.co
 
 * fix: set the correct path to use pvc volume (#45) ([`6f9189c`](https://github.com/eduNEXT/drydock/commit/6f9189c64699f9bbedbcc03d2ee2152ed58bdb2e))
 
-
 ## v0.7.2 (2023-07-14)
 
 ### Chore
@@ -423,7 +403,6 @@ These patches prevent resource fields replacement ([`65a4b70`](https://github.co
 ### Fix
 
 * fix: conditional error when tutor version is up to 15.0.0 (#44) ([`8360e3f`](https://github.com/eduNEXT/drydock/commit/8360e3f3a042e85431975ff61d003433cb8b5f24))
-
 
 ## v0.7.1 (2023-07-10)
 
@@ -435,7 +414,6 @@ These patches prevent resource fields replacement ([`65a4b70`](https://github.co
 
 * fix: drydock fails in older versions to tutor palm (#43) ([`c3c5e0a`](https://github.com/eduNEXT/drydock/commit/c3c5e0a30f3d5f672a170f567568c59e4d16f0d3))
 
-
 ## v0.7.0 (2023-07-07)
 
 ### Chore
@@ -446,7 +424,6 @@ These patches prevent resource fields replacement ([`65a4b70`](https://github.co
 
 * feat: add support to palm version (#42) ([`f3c8448`](https://github.com/eduNEXT/drydock/commit/f3c84484b0c9165108e153ca2a2f4d1b61af3429))
 
-
 ## v0.6.1 (2023-05-12)
 
 ### Chore
@@ -456,7 +433,6 @@ These patches prevent resource fields replacement ([`65a4b70`](https://github.co
 ### Fix
 
 * fix: mysqldump faild due mysql version (#41) ([`62d0839`](https://github.com/eduNEXT/drydock/commit/62d083959e1abd8b49f8dd44c4af58c44c3f1a9c))
-
 
 ## v0.6.0 (2023-04-05)
 
@@ -471,7 +447,6 @@ These patches prevent resource fields replacement ([`65a4b70`](https://github.co
 Co-authored-by: Cristhian Garcia &lt;cristhian.garcia@edunext.co&gt;
 Co-authored-by: Jhony Avella &lt;jhony.avella@edunext.co&gt; ([`33df210`](https://github.com/eduNEXT/drydock/commit/33df2109f854aa159c431dc96250f73ed123ae72))
 
-
 ## v0.5.1 (2023-03-20)
 
 ### Chore
@@ -482,28 +457,11 @@ Co-authored-by: Jhony Avella &lt;jhony.avella@edunext.co&gt; ([`33df210`](https:
 
 * fix: rendering NewRelic overrides properly in tutor14 Drydock templates (#38) ([`423bac3`](https://github.com/eduNEXT/drydock/commit/423bac33216385d02566fbef90c8918e0cba8f50))
 
-
 ## v0.5.0 (2023-02-28)
-
-### Build
-
-* build: add release GitHub workflow (#32)
-
-This PR adds a github workflow triggered manually by shipyard maintainers:
-
-1. Executes a dryrun to obtain the next tag version
-2. Based on the next tag version, generates the new changelog entry
-3. Uses bumpversion library to update strings in the library
-4. Executes again the action that generates the tag, this time it pushes the tag to the main branch
-5. Generates a release ([`1e9a559`](https://github.com/eduNEXT/drydock/commit/1e9a5598562b3a45d3077adf5bf5a42354a749e1))
 
 ### Chore
 
 * chore(release): preparing 0.5.0 ([`a5abacd`](https://github.com/eduNEXT/drydock/commit/a5abacdf60aca67527af1cd46b338137d9308285))
-
-* chore: update tutor14 to tutor 14.2.3 version. (#34) ([`dd44f29`](https://github.com/eduNEXT/drydock/commit/dd44f29619d2395362ccfa3210d77df5ea3a0523))
-
-* chore: adding backstage catalog and owners ([`b402454`](https://github.com/eduNEXT/drydock/commit/b402454461a76261ab00c23755dbf62b5d2b02d9))
 
 ### Feature
 
@@ -534,12 +492,7 @@ This PR adds a github workflow triggered manually by shipyard maintainers:
 
 chore: adding backstage catalog and owners ([`30108f9`](https://github.com/eduNEXT/drydock/commit/30108f9a1a4ee2097a860f99457218d804233f86))
 
-
 ## v0.4.1 (2022-12-07)
-
-### Documentation
-
-* docs: update plugin version for incoming release ([`1ac58a0`](https://github.com/eduNEXT/drydock/commit/1ac58a083793b161612a9a09589f79b2245b003d))
 
 ### Feature
 
@@ -549,12 +502,7 @@ chore: adding backstage catalog and owners ([`30108f9`](https://github.com/eduNE
 
 * refactor: increase default debug replicas to at least one (#30) ([`7de9fbf`](https://github.com/eduNEXT/drydock/commit/7de9fbffd3cfb9b2d283b7c007d2eb0e34ca3941))
 
-
 ## v0.4.0 (2022-12-01)
-
-### Documentation
-
-* docs: update version in about file ([`5f5343b`](https://github.com/eduNEXT/drydock/commit/5f5343b8fb98bd9457d2f21d38958252614bfeab))
 
 ### Feature
 
@@ -572,13 +520,11 @@ This PR adds k8s templates for debug pods, i.e pods running with non-production 
 
 * refactor: check if forum is defined before adding resources (#28) ([`1ee0ad1`](https://github.com/eduNEXT/drydock/commit/1ee0ad15283d186cfd2a425146c9b32af73f8fff))
 
-
 ## v0.3.4 (2022-11-09)
 
 ### Feature
 
 * feat: adding patch to enable multipurpose jobs in an OpenedX installation V14 (#23) ([`75e35a1`](https://github.com/eduNEXT/drydock/commit/75e35a158af5611a7f45d1b9a12e16e609ebe5c4))
-
 
 ## v0.3.3 (2022-11-09)
 
@@ -586,13 +532,11 @@ This PR adds k8s templates for debug pods, i.e pods running with non-production 
 
 * feat: adding patch to enable multipurpose jobs in an OpenedX installation (#22) ([`44d336d`](https://github.com/eduNEXT/drydock/commit/44d336d12d89a32e37e6ac3867e651a2c957551c))
 
-
 ## v0.3.2 (2022-11-01)
 
 ### Fix
 
 * fix: add missing labels for notes jobs (#21) ([`0428575`](https://github.com/eduNEXT/drydock/commit/04285754bbb76086801ef3f5b68d432cd7031b20))
-
 
 ## v0.3.1 (2022-10-21)
 
@@ -600,12 +544,7 @@ This PR adds k8s templates for debug pods, i.e pods running with non-production 
 
 * feat: refactor hpa with latest practices (#19) ([`3009617`](https://github.com/eduNEXT/drydock/commit/3009617687d50847d59a4fcfd584d5c4b3509994))
 
-
 ## v0.3.0 (2022-10-18)
-
-### Documentation
-
-* docs: update version in about file ([`4b63bb5`](https://github.com/eduNEXT/drydock/commit/4b63bb5300f8912705e029455cbb483c423504fb))
 
 ### Feature
 
@@ -613,12 +552,7 @@ This PR adds k8s templates for debug pods, i.e pods running with non-production 
 
 * feat: make manifests template root configurable through reference (#17) ([`0382752`](https://github.com/eduNEXT/drydock/commit/0382752725f980ebf84f8f2bccaaf61b768e4645))
 
-
 ## v0.2.0 (2022-10-13)
-
-### Chore
-
-* chore: update to version 0.2.0 ([`e511b68`](https://github.com/eduNEXT/drydock/commit/e511b68e85bfc0cd353d9a03bd6bdda75d7b097b))
 
 ### Feature
 
@@ -646,12 +580,7 @@ This PR adds a list of jobs for the most used services. This list can be configu
 
 * fix: go back to production ingress (#11) ([`3be0bd2`](https://github.com/eduNEXT/drydock/commit/3be0bd2ab4ebca961387df66b04714944df0f0f0))
 
-
 ## v0.1.0 (2022-08-16)
-
-### Documentation
-
-* docs: explaining the example situation of the tutor_v12 reference ([`c5d1d6a`](https://github.com/eduNEXT/drydock/commit/c5d1d6a5e3757b7d051047cac4e060bacca38f8b))
 
 ### Feature
 
