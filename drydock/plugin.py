@@ -162,6 +162,7 @@ config = {
         "PDB_MINAVAILABLE_PERCENTAGE_MFE": 0,
         "PDB_MINAVAILABLE_PERCENTAGE_FORUM": 0,
         "PDB_MINAVAILABLE_PERCENTAGE_CADDY": 0,
+        "NGINX_STATIC_CACHE_CONFIG": {},
     },
     # Add here settings that don't have a reasonable default for all users. For
     # instance: passwords, secret keys, etc.
