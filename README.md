@@ -19,6 +19,23 @@ Extra plugins added:
 - A patch that allows for the use of sentry via `DRYDOCK_ENABLE_SENTRY` and `DRYDOCK_SENTRY_DSN`
 - Patch for cms and lms worker pods to allow pod probes and lifecycle to work properly. Enabled via `DRYDOCK_POD_LIFECYCLE`
 
+Version compatibility matrix
+----------------------------
+
+You must install a supported release of this plugin to match the Open
+edX and Tutor version you are deploying. If you are installing this
+plugin from a branch in this Git repository, you must select the
+appropriate one:
+
+| Open edX release | Tutor version     | Plugin branch | Plugin release |
+|------------------|-------------------|---------------|----------------|
+| Maple            | `>=13.2, <14`     | Not supported | 0.7.x          |
+| Nutmeg           | `>=14.0, <15`     | Not supported | 0.7.x          |
+| Olive            | `>=15.0, <16`     | Not supported | 15.x.x         |
+| Palm             | `>=16.0, <17`     | `palm`        | 16.x.x         |
+| Quince           | `>=17.0, <18`     | `quince`      | 17.x.x         |
+| Redwood          | `>=18.0, <19`     | `main`        | >=18.0.0       |
+
 Installation
 ------------
 
