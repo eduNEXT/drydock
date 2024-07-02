@@ -73,6 +73,15 @@ The following configuration options are available:
 - `DRYDOCK_ENABLE_SENTRY`: Whether to enable sentry. Defaults to `true`.
 - `DRYDOCK_SENTRY_DSN`: The sentry DSN. Defaults to `""`.
 - `DRYDOCK_POD_LIFECYCLE`: Whether to enable pod lifecycle. Defaults to `true`.
+- `NGINX_STATIC_CACHE_CONFIG`: A list of dictionaries with settings for different services to cache their assets in NGINX.
+  The following is an example of the expected values:
+  ```yaml
+  NGINX_STATIC_CACHE_CONFIG:
+    {{service_name}}:
+        host: {{service_host}} # e.g: {{LMS_HOST}}
+        path: /static/ # you can specify a different path
+        port: {{service_port}} # only needed if you have DRYDOCK_BYPASS_CADDY enabled
+  ```
 - `DRYDOCK_PDB_MINAVAILABLE_PERCENTAGE_MFE`: The minimum available percentage for the MFE's PodDisruptionBudget. To disable the PodDisruptionBudget, set `0`. Defaults to `0`.
 - `DRYDOCK_PDB_MINAVAILABLE_PERCENTAGE_FORUM`: The minimum available percentage for the FORUM's PodDisruptionBudget. To disable the PodDisruptionBudget, set `0`. Defaults to `0`.
 - `DRYDOCK_PDB_MINAVAILABLE_PERCENTAGE_CADDY`: The minimum available percentage for the CADDY's PodDisruptionBudget. To disable the PodDisruptionBudget, set `0`. Defaults to `0`.
