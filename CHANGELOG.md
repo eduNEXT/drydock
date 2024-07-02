@@ -1,5 +1,32 @@
 # CHANGELOG
 
+## v18.1.0 (2024-07-02)
+
+### Feature
+
+* feat: add support for static cache config (#106)
+
+fix: address PR suggestions
+
+fix: address PR suggestions
+
+fix: address PR suggestions
+
+fix: address PR suggestions
+
+build: correct port and path for mfe tests ([`01d05ec`](https://github.com/eduNEXT/drydock/commit/01d05ec8c80e4a8dc96a9f25adf39ca62c0507ef))
+
+### Fix
+
+* fix: remove unnecesary annotations from the hpa sync wave (#117)
+
+The HPA sync-wave patch includes annotations to indicate argocd
+in which order should the HPA resources be applied in relation
+to the other resources. The `argocd.argoproj.io/hook: Sync`
+and `argocd.argoproj.io/hook-delete-policy: HookSucceeded`
+annotations are used for ephemeral resources (like jobs) and
+should not be used for the HPA resources. ([`18c99e3`](https://github.com/eduNEXT/drydock/commit/18c99e335751c4007a6d0d8f9488ba1361b57c6e))
+
 ## v18.0.0 (2024-07-02)
 
 ### Breaking
@@ -7,6 +34,10 @@
 * feat: redwood upgrade
 
 BREAKING CHANGE: version 18 ([`fd100ad`](https://github.com/eduNEXT/drydock/commit/fd100ad44fb475a56ebf9e9a6ce154372a38f8fb))
+
+### Chore
+
+* chore(release): preparing 18.0.0 ([`30a4cc0`](https://github.com/eduNEXT/drydock/commit/30a4cc00848bb745a91fb70f1d5a9da09d76aa8a))
 
 ### Ci
 
