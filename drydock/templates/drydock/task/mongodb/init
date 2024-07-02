@@ -1,5 +1,5 @@
 echo "Initialising MongoDB..."
-mongo --host {{MONGODB_HOST }} {% if MONGODB_ROOT_USERNAME and MONGODB_ROOT_PASSWORD %} -u {{ MONGODB_ROOT_USERNAME }} -p {{ MONGODB_ROOT_PASSWORD }} {% endif %} admin <<EOF
+mongosh --host {{MONGODB_HOST }} {% if MONGODB_ROOT_USERNAME and MONGODB_ROOT_PASSWORD %} -u {{ MONGODB_ROOT_USERNAME }} -p {{ MONGODB_ROOT_PASSWORD }} {% endif %} admin <<EOF
   {% if MONGODB_USERNAME %}
   if (db.getUser("{{ MONGODB_USERNAME }}") == null) {
     db.createUser({
