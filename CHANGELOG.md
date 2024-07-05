@@ -1,6 +1,18 @@
 # CHANGELOG
 
+## v17.4.1 (2024-07-05)
+
+### Fix
+
+* fix: S3_HOST for alternative S3-compatible services (#121)
+
+* fix: when using SCORM, S3_HOST must be used for alternative S3-compatible services ([`191aaef`](https://github.com/eduNEXT/drydock/commit/191aaef5fb26ed0fbead0b5b9bf16fe1bd8cd652))
+
 ## v17.4.0 (2024-07-02)
+
+### Chore
+
+* chore(release): preparing 17.4.0 ([`e9b14e7`](https://github.com/eduNEXT/drydock/commit/e9b14e7ce41da427138a0c0889b0c68c2b023e76))
 
 ### Ci
 
