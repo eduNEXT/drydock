@@ -14,8 +14,8 @@ route @scorm_matcher {
 }
 route @scorm_matcher {
     uri /scorm-proxy/* strip_prefix /scorm-proxy
-    reverse_proxy https://{{ S3_STORAGE_BUCKET }}.s3.amazonaws.com {
-        header_up Host {{ S3_STORAGE_BUCKET }}.s3.amazonaws.com
+    reverse_proxy https://{{ S3_STORAGE_BUCKET }}.{{ S3_HOST|default('s3.amazonaws.com', true) }} {
+        header_up Host {{ S3_STORAGE_BUCKET }}.{{ S3_HOST|default('s3.amazonaws.com', true) }}
     }
 }
 {% endif %}
