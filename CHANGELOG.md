@@ -1,6 +1,18 @@
 # CHANGELOG
 
+## v17.5.0 (2024-07-15)
+
+### Feature
+
+* feat: add aspects deployments to post init deployments (#124)
+
+(cherry picked from commit 4fb13dfdffad35f7df0bf1d0bdf583a88f4de0f7) ([`ba8e566`](https://github.com/eduNEXT/drydock/commit/ba8e566f5808f7a9e41511143c9d8ea9e3215780))
+
 ## v17.4.1 (2024-07-05)
+
+### Chore
+
+* chore(release): preparing 17.4.1 ([`cbe7056`](https://github.com/eduNEXT/drydock/commit/cbe7056c996eab1da76f4f102c123a9d7cf630c4))
 
 ### Fix
 
