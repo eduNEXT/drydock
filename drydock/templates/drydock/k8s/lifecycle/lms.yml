@@ -13,16 +13,15 @@ spec:
                 command:
                 - "sleep"
                 - "30"
-          readinessProbe: # Make sure the pod can answer traffic before handling any requests
-          # Only route traffic if the pod is alive, and has passed two succesful checks (max 10s)
-            successThreshold: 2
-            failureThreshold: 2
-            periodSeconds: 10
-            timeoutSeconds: 5
+          startupProbe:
             httpGet:
-              path: /heartbeat
-              port: 8000
               httpHeaders:
                 - name: Host
                   value: {{ LMS_HOST }}
+              path: /heartbeat
+              port: 8000
+            initialDelaySeconds: 5
+            timeoutSeconds: 3
+            periodSeconds: 5
+            failureThreshold: 5
       terminationGracePeriodSeconds: 60
