@@ -1,25 +1,3 @@
 {% if DRYDOCK_ENABLE_CELERY_TUNING -%}
 CELERY_ACKS_LATE: true
 {% endif %}
-{% if DRYDOCK_ENABLE_SENTRY -%}
-# eox plugin settings must be defined in the ENV patches. If defined in python settings patches, they won't
-# take effect since plugins settings are loaded before Tutor loads its settings.
-EOX_CORE_SENTRY_INTEGRATION_DSN: "{{ DRYDOCK_SENTRY_DSN }}"
-EOX_CORE_SENTRY_IGNORED_ERRORS: [
-    {
-      "exc_class": "xmodule.exceptions.NotFoundError"
-    },
-    {
-    "exc_class": "openedx.core.djangoapps.user_authn.exceptions.AuthFailedError",
-    "exc_text": [".*Email or password is incorrect"]
-    },
-    {
-    "exc_class": "opaque_keys.InvalidKeyError",
-    "exc_text": [".*No enrollment found for user.*"]
-    },
-    {
-    "exc_class": "opaque_keys.NotFoundError",
-    "exc_text": [".*No course found by course id.*"]
-    },
-]
-{% endif %}

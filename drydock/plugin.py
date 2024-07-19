@@ -144,8 +144,6 @@ config = {
         "ENABLE_CELERY_TUNING": True,
         "ENABLE_MULTITENANCY": True,
         "ENABLE_SCORM": True,
-        "ENABLE_SENTRY": True,
-        "SENTRY_DSN": "",
         "POD_LIFECYCLE": True,
         "BYPASS_CADDY": False,
         "PDB_MINAVAILABLE_PERCENTAGE_LMS": 0,
