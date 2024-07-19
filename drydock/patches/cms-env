@@ -1,6 +1,3 @@
-{% if DRYDOCK_ENABLE_CELERY_TUNING -%}
-CELERY_ACKS_LATE: true
-{% endif %}
 {% if DRYDOCK_ENABLE_SENTRY -%}
 # eox plugin settings must be defined in the ENV patches. If defined in python settings patches, they won't
 # take effect since plugins settings are loaded before Tutor loads its settings.
