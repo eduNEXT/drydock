@@ -13,10 +13,6 @@ patches:
     kind: Job
     labelSelector: app.kubernetes.io/component=job
   path: plugins/drydock/k8s/patches/tutor-jobs.yml
-{% if DRYDOCK_ENABLE_CELERY_TUNING %}
-- path: plugins/drydock/k8s/celery/cms-worker.yml
-- path: plugins/drydock/k8s/celery/lms-worker.yml
-{% endif -%}
 - target:
     kind: HorizontalPodAutoscaler
   path: plugins/drydock/k8s/patches/hpa-sync-wave.yml
