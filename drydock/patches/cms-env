@@ -23,3 +23,4 @@ EOX_CORE_SENTRY_IGNORED_ERRORS: [
     },
 ]
 {% endif %}
+
