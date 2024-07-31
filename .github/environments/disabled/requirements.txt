@@ -1,0 +1,2 @@
+tutor[full]<19,>18
+setuptools

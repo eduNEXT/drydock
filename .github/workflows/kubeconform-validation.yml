@@ -34,7 +34,7 @@ jobs:
           echo "TUTOR_PLUGINS_ROOT=$TUTOR_ROOT/plugins" >> $GITHUB_ENV
       - name: Install python reqs
         run: |
-          pip install -r .github/requirements.txt
+          pip install -r .github/environments/${{ matrix.environment }}/requirements.txt
           pip install -e .
       - name: Tutor config save
         run: tutor config save
