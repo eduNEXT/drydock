@@ -1,0 +1,3 @@
+tutor[full]<19,>18
+setuptools
+git+https://github.com/hastexo/tutor-contrib-s3@v1.4.0
