@@ -1,6 +1,16 @@
 # CHANGELOG
 
+## v18.2.1 (2024-08-06)
+
+### Fix
+
+* fix: drop sentry support (#128) ([`89392b5`](https://github.com/eduNEXT/drydock/commit/89392b5109e63164ae2a8bac8723f2061a0e8680))
+
 ## v18.2.0 (2024-07-15)
+
+### Chore
+
+* chore(release): preparing 18.2.0 ([`3a734e2`](https://github.com/eduNEXT/drydock/commit/3a734e2207887aaf48ff0655092ae21b10fe2dfe))
 
 ### Feature
 
