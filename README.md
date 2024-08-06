@@ -16,7 +16,6 @@ Extra plugins added:
 - A patch that allows for the tuning of celery workers via `DRYDOCK_ENABLE_CELERY_TUNING`
 - Allows caddy to catch requests for multiple domains through `DRYDOCK_ENABLE_MULTITENANCY`
 - Add scorm matcher to caddy through `DRYDOCK_ENABLE_SCORM`
-- A patch that allows for the use of sentry via `DRYDOCK_ENABLE_SENTRY` and `DRYDOCK_SENTRY_DSN`
 - Patch for cms and lms worker pods to allow pod probes and lifecycle to work properly. Enabled via `DRYDOCK_POD_LIFECYCLE`
 
 Version compatibility matrix
@@ -70,8 +69,6 @@ The following configuration options are available:
 - `DRYDOCK_ENABLE_CELERY_TUNING`: Whether to enable celery tuning. Defaults to `true`.
 - `DRYDOCK_ENABLE_MULTITENANCY`: Whether to enable multitennacy. Defaults to `true`.
 - `DRYDOCK_ENABLE_SCORM`: Whether to enable scorm. Defaults to `true`.
-- `DRYDOCK_ENABLE_SENTRY`: Whether to enable sentry. Defaults to `true`.
-- `DRYDOCK_SENTRY_DSN`: The sentry DSN. Defaults to `""`.
 - `DRYDOCK_POD_LIFECYCLE`: Whether to enable pod lifecycle. Defaults to `true`.
 - `NGINX_STATIC_CACHE_CONFIG`: A list of dictionaries with settings for different services to cache their assets in NGINX.
   The following is an example of the expected values:
