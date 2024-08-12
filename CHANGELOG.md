@@ -1,6 +1,22 @@
 # CHANGELOG
 
+## v18.2.2 (2024-08-12)
+
+### Fix
+
+* fix: add uwsgi tweaks for closed connection (#126)
+
+fix: add readiness probe for lms
+
+chore: remove startup probe and increase timeout of readiness probe
+
+chore: restore startup probe ([`a8cbf65`](https://github.com/eduNEXT/drydock/commit/a8cbf65857fa2cdbd47e74b26f03323128d76a5e))
+
 ## v18.2.1 (2024-08-06)
+
+### Chore
+
+* chore(release): preparing 18.2.1 ([`773a814`](https://github.com/eduNEXT/drydock/commit/773a81434b300f700d6f8ae8ccaccc099861c1cd))
 
 ### Fix
 
