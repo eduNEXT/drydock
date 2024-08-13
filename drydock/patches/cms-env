@@ -1,3 +1,0 @@
-{% if DRYDOCK_ENABLE_CELERY_TUNING -%}
-CELERY_ACKS_LATE: true
-{% endif %}

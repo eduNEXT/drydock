@@ -7,13 +7,11 @@ Drydock is an opinionated tool offering a set of Tutor plugins aiming to provide
 - A set of Kustomization overrides adding [ArgoCD Sync Waves](https://argo-cd.readthedocs.io/en/stable/user-guide/sync-waves/) annotations to needed additional resources such as debug, workers or hpa.
 - Backup cronjobs that allow backup of the MySQL and MongoDB databases.
 - Integration of New Relic monitoring
-- Add flower deployment for Celery
 - Add a custom nginx and cert-manager configuration
 - Add a set of debug resources to help diagnose issues
 
 Extra plugins added:
 
-- A patch that allows for the tuning of celery workers via `DRYDOCK_ENABLE_CELERY_TUNING`
 - Allows caddy to catch requests for multiple domains through `DRYDOCK_ENABLE_MULTITENANCY`
 - Add scorm matcher to caddy through `DRYDOCK_ENABLE_SCORM`
 - Patch for cms and lms worker pods to allow pod probes and lifecycle to work properly. Enabled via `DRYDOCK_POD_LIFECYCLE`
@@ -59,14 +57,12 @@ The following configuration options are available:
 - `DRYDOCK_INIT_JOBS`: Whether run the initialization jobs or not. Defaults to `false`.
 - `DRYDOCK_CMS_SSO_USER`: The username of the CMS SSO user. Defaults to `cms`.
 - `DRYDOCK_AUTO_TLS`: Whether to use cert-manager to automatically generate TLS certificates. Defaults to `false`.
-- `DRYDOCK_FLOWER`: Whether to deploy a flower deployment for celery. Defaults to `false`.
 - `DRYDOCK_INGRESS`: Whether to deploy an ingress for the LMS and CMS. Defaults to `false`.
 - `DRYDOCK_INGRESS_EXTRA_HOSTS`: A list of extra hosts to add to the ingress. Defaults to `[]`.
 - `DRYDOCK_INGRESS_LMS_EXTRA_HOSTS`: A list of extra hosts to add to the LMS ingress. Defaults to `[]`.
 - `DRYDOCK_CUSTOM_CERTS`: A dictionary of custom certificates to use with cert-manager. Defaults to `{}`.
 - `DRYDOCK_NEWRELIC_LICENSE_KEY`: The New Relic license key. Defaults to `""`.
 - `DRYDOCK_DEBUG`: Whether to deploy debug resources. Defaults to `false`.
-- `DRYDOCK_ENABLE_CELERY_TUNING`: Whether to enable celery tuning. Defaults to `true`.
 - `DRYDOCK_ENABLE_MULTITENANCY`: Whether to enable multitennacy. Defaults to `true`.
 - `DRYDOCK_ENABLE_SCORM`: Whether to enable scorm. Defaults to `true`.
 - `DRYDOCK_POD_LIFECYCLE`: Whether to enable pod lifecycle. Defaults to `true`.

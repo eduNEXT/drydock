@@ -3,9 +3,6 @@
 {%- if DRYDOCK_INIT_JOBS %}
 - plugins/drydock/k8s/jobs.yml
 {%- endif %}
-{% if DRYDOCK_FLOWER -%}
-- plugins/drydock/k8s/flower.yml
-{%- endif %}
 {% if DRYDOCK_INGRESS -%}
 - plugins/drydock/k8s/ingress/issuer.yml
 - plugins/drydock/k8s/ingress/lms.yml
