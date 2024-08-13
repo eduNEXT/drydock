@@ -1,6 +1,16 @@
 # CHANGELOG
 
+## v18.2.3 (2024-08-13)
+
+### Fix
+
+* fix: drop celery support (#129) ([`86f2639`](https://github.com/eduNEXT/drydock/commit/86f26393d3ef54428a0011f1b24ac6c41853ce09))
+
 ## v18.2.2 (2024-08-12)
+
+### Chore
+
+* chore(release): preparing 18.2.2 ([`6235a74`](https://github.com/eduNEXT/drydock/commit/6235a74da31640e2f32a777f9a8086e429ed5d73))
 
 ### Fix
 
