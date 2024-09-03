@@ -24,19 +24,10 @@ spec:
             timeoutSeconds: 3
             periodSeconds: 5
             failureThreshold: 5
-          readinessProbe:
-            httpGet:
-              httpHeaders:
-                - name: Host
-                  value: {{ LMS_HOST }}
-              path: /heartbeat
-              port: 8000
-            periodSeconds: 10
-            failureThreshold: 3
       terminationGracePeriodSeconds: 60
       affinity:
         podAntiAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
+          preferredDuringSchedulingIgnoredDuringExecution:
           - labelSelector:
               matchLabels:
                 app.kubernetes.io/name: lms
