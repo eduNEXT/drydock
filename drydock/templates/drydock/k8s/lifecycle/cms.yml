@@ -34,3 +34,10 @@ spec:
             periodSeconds: 10
             failureThreshold: 3
       terminationGracePeriodSeconds: 60
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchLabels:
+                app.kubernetes.io/name: cms
+            topologyKey: "kubernetes.io/hostname"

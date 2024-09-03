@@ -28,9 +28,16 @@ spec:
             httpGet:
               httpHeaders:
                 - name: Host
-                  value: {{ CMS_HOST }}
+                  value: {{ LMS_HOST }}
               path: /heartbeat
               port: 8000
             periodSeconds: 10
             failureThreshold: 3
       terminationGracePeriodSeconds: 60
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchLabels:
+                app.kubernetes.io/name: lms
+            topologyKey: "kubernetes.io/hostname"
