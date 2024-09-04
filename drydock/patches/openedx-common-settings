@@ -18,3 +18,6 @@ XBLOCK_SETTINGS["ScormXBlock"] = {
     "STORAGE_FUNC": scorm_xblock_storage,
 }
 {% endif %}
+
+LOGGING.get("loggers", {}).pop("tracking")
+LOGGING.get("loggers", {}).pop("local")
