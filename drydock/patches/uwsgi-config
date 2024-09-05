@@ -13,3 +13,4 @@ master = true
 py-call-osafterfork = true
 vacuum = true
 hook-master-start = unix_signal:1 gracefully_kill_them_all
+disable-logging = true

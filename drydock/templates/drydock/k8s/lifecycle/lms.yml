@@ -18,6 +18,18 @@ spec:
             timeoutSeconds: 3
             periodSeconds: 1
             failureThreshold: 30
+          livenessProbe:
+            httpGet:
+              httpHeaders:
+                - name: Host
+                  value: {{ LMS_HOST }}
+              path: /heartbeat
+              port: 8000
+            initialDelaySeconds: 3
+            timeoutSeconds: 30
+            periodSeconds: 60
+            failureThreshold: 2
+            successThreshold: 1
       terminationGracePeriodSeconds: 60
       affinity:
         podAntiAffinity:
