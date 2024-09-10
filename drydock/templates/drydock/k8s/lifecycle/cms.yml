@@ -17,7 +17,7 @@ spec:
             httpGet:
               httpHeaders:
                 - name: Host
-                  value: {{ CMS_HOST }}
+                  value: cms
               path: /heartbeat
               port: 8000
             initialDelaySeconds: 1
@@ -28,7 +28,7 @@ spec:
             httpGet:
               httpHeaders:
                 - name: Host
-                  value: {{ CMS_HOST }}
+                  value: lms
               path: /heartbeat
               port: 8000
             initialDelaySeconds: 3
