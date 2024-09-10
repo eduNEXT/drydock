@@ -7,6 +7,12 @@ spec:
     spec:
       containers:
         - name: cms
+          lifecycle:
+            preStop:
+              exec:
+                command:
+                - "sleep"
+                - "15"
           startupProbe:
             httpGet:
               httpHeaders:

@@ -7,6 +7,12 @@ spec:
     spec:
       containers:
         - name: lms
+          lifecycle:
+            preStop:
+              exec:
+                command:
+                - "sleep"
+                - "15"
           startupProbe:
             httpGet:
               httpHeaders:
