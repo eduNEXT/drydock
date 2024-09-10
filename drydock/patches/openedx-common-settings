@@ -19,5 +19,5 @@ XBLOCK_SETTINGS["ScormXBlock"] = {
 }
 {% endif %}
 
-LOGGING.get("loggers", {}).pop("tracking")
+LOGGING["loggers"].pop("tracking")
 LOGGING["loggers"][""]["handlers"] = ["console"]
