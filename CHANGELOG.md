@@ -1,6 +1,50 @@
 # CHANGELOG
 
+## v16.7.2 (2024-09-11)
+
+### Fix
+
+* fix: add readiness probe for lms/cms (#133) (#136)
+
+* fix: add readiness probe for lms/cms
+
+* fix: add readiness probe for lms/cms
+
+* fix: add affinity to spread lms/cms to multiple nodes
+
+* chore: remove readiness probe
+
+* fix: reduce startup probe period seconds
+
+* fix: gracefully kill uwsgi workers
+
+* fix: disable local file loggers
+
+* fix: disable logging
+
+* fix: reduce max unavailable to 0
+
+* fix: add liveness probe for cms and lms
+
+* fix: fail early on tracking logger removal
+
+* chore: remove rolling update options
+
+* fix: restore preStop hook
+
+* fix: use right host for cms livenessProbe
+
+* fix: use lms/cms host only
+
+* chore: restore prestopHook
+
+(cherry picked from commit f970e0102f36c3064201ff7be317d1a908557a87) ([`07883e4`](https://github.com/eduNEXT/drydock/commit/07883e42d8aa31214601f69c8aa62132b7875e7b))
+
 ## v16.7.1 (2024-08-12)
+
+### Chore
+
+* chore(release): preparing 16.7.1 ([`7b1c6ba`](https://github.com/eduNEXT/drydock/commit/7b1c6badea75d738e3ab449fccdb66489950fcb6))
 
 ### Fix
 
