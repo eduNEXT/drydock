@@ -12,16 +12,37 @@ spec:
               exec:
                 command:
                 - "sleep"
-                - "30"
+                - "15"
           startupProbe:
             httpGet:
               httpHeaders:
                 - name: Host
-                  value: {{ LMS_HOST }}
+                  value: lms
               path: /heartbeat
               port: 8000
-            initialDelaySeconds: 5
+            initialDelaySeconds: 1
             timeoutSeconds: 3
-            periodSeconds: 5
-            failureThreshold: 5
+            periodSeconds: 1
+            failureThreshold: 30
+          livenessProbe:
+            httpGet:
+              httpHeaders:
+                - name: Host
+                  value: lms
+              path: /heartbeat
+              port: 8000
+            initialDelaySeconds: 3
+            timeoutSeconds: 30
+            periodSeconds: 60
+            failureThreshold: 2
+            successThreshold: 1
       terminationGracePeriodSeconds: 60
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchLabels:
+                  app.kubernetes.io/name: lms
+              topologyKey: kubernetes.io/hostname
