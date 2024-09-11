@@ -1,6 +1,48 @@
 # CHANGELOG
 
+## v18.2.4 (2024-09-11)
+
+### Fix
+
+* fix: add readiness probe for lms/cms (#133)
+
+* fix: add readiness probe for lms/cms
+
+* fix: add readiness probe for lms/cms
+
+* fix: add affinity to spread lms/cms to multiple nodes
+
+* chore: remove readiness probe
+
+* fix: reduce startup probe period seconds
+
+* fix: gracefully kill uwsgi workers
+
+* fix: disable local file loggers
+
+* fix: disable logging
+
+* fix: reduce max unavailable to 0
+
+* fix: add liveness probe for cms and lms
+
+* fix: fail early on tracking logger removal
+
+* chore: remove rolling update options
+
+* fix: restore preStop hook
+
+* fix: use right host for cms livenessProbe
+
+* fix: use lms/cms host only
+
+* chore: restore prestopHook ([`f970e01`](https://github.com/eduNEXT/drydock/commit/f970e0102f36c3064201ff7be317d1a908557a87))
+
 ## v18.2.3 (2024-08-13)
+
+### Chore
+
+* chore(release): preparing 18.2.3 ([`7f6001b`](https://github.com/eduNEXT/drydock/commit/7f6001b74ee6ff7f1b4a7098ae8d4324051ad6be))
 
 ### Fix
 
@@ -97,19 +139,11 @@ BREAKING CHANGE: version 18 ([`fd100ad`](https://github.com/eduNEXT/drydock/comm
 
 * chore(release): preparing 18.0.0 ([`30a4cc0`](https://github.com/eduNEXT/drydock/commit/30a4cc00848bb745a91fb70f1d5a9da09d76aa8a))
 
-### Ci
-
-* ci: ignore commits in changelog and release notes (#113) ([`693c91b`](https://github.com/eduNEXT/drydock/commit/693c91bed3772e3fa59d45eff85c8a0b8593677d))
-
 ## v17.3.5 (2024-06-12)
 
 ### Chore
 
 * chore(release): preparing 17.3.5 ([`6ed209b`](https://github.com/eduNEXT/drydock/commit/6ed209b00822a7ccef48082b146c96c8e217e022))
-
-### Ci
-
-* ci: change release workflow (#108) ([`2ecac04`](https://github.com/eduNEXT/drydock/commit/2ecac04c21ba58fcbbf5a4f5b32c57087fcb36fd))
 
 ### Fix
 
@@ -547,10 +581,6 @@ Co-authored-by: Jhony Avella &lt;jhony.avella@edunext.co&gt; ([`33df210`](https:
 
 * fix: use the DRYDOCK_CMS_SSO_USER variable on the init jobs ([`fb36c65`](https://github.com/eduNEXT/drydock/commit/fb36c657e998a5f7bb68f94ad3695089e601c24b))
 
-### Refactor
-
-* refactor: rename CMS SSO user to avoid conflicts with existent data (#24) ([`6842da5`](https://github.com/eduNEXT/drydock/commit/6842da52c2878c23abe45075eb29a6bbc0533eed))
-
 ### Unknown
 
 * Merge pull request #33 from eduNEXT/catalog-info
@@ -562,10 +592,6 @@ chore: adding backstage catalog and owners ([`30108f9`](https://github.com/eduNE
 ### Feature
 
 * feat: add configuration for container interactivity (#29) ([`fbc4489`](https://github.com/eduNEXT/drydock/commit/fbc4489f0aa48a1b07c9e900fa7d9c9506f680fb))
-
-### Refactor
-
-* refactor: increase default debug replicas to at least one (#30) ([`7de9fbf`](https://github.com/eduNEXT/drydock/commit/7de9fbffd3cfb9b2d283b7c007d2eb0e34ca3941))
 
 ## v0.4.0 (2022-12-01)
 
@@ -580,10 +606,6 @@ This PR adds k8s templates for debug pods, i.e pods running with non-production 
 * fix: add missing patch in V14 templates (#27) ([`bda221b`](https://github.com/eduNEXT/drydock/commit/bda221bff1460a0cf47ce1280332f594ef4898c1))
 
 * fix: use the right target for the forum hpa (#26) ([`49df7d4`](https://github.com/eduNEXT/drydock/commit/49df7d4127aa314bf0b906de688b47ed95a01542))
-
-### Refactor
-
-* refactor: check if forum is defined before adding resources (#28) ([`1ee0ad1`](https://github.com/eduNEXT/drydock/commit/1ee0ad15283d186cfd2a425146c9b32af73f8fff))
 
 ## v0.3.4 (2022-11-09)
 
