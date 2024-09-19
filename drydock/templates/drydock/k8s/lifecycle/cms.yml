@@ -28,7 +28,7 @@ spec:
             httpGet:
               httpHeaders:
                 - name: Host
-                  value: lms
+                  value: cms
               path: /heartbeat
               port: 8000
             initialDelaySeconds: 3
