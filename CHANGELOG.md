@@ -1,6 +1,16 @@
 # CHANGELOG
 
+## v16.7.3 (2024-09-19)
+
+### Fix
+
+* fix: use correct host for the CMS probes (#140) ([`d87ba35`](https://github.com/eduNEXT/drydock/commit/d87ba35cb96c531c77778917ef31a15d2a7ed776))
+
 ## v16.7.2 (2024-09-11)
+
+### Chore
+
+* chore(release): preparing 16.7.2 ([`8f90e0d`](https://github.com/eduNEXT/drydock/commit/8f90e0d1ce92ab97fd65eb095ad9bf2ddb292ecb))
 
 ### Fix
 
