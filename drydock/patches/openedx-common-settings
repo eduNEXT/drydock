@@ -3,10 +3,16 @@
 def scorm_xblock_storage(xblock):
     from django.conf import settings
     from storages.backends.s3boto3 import S3Boto3Storage
-    if SERVICE_VARIANT == "lms":
-        domain = settings.LMS_BASE
-    else:
-        domain = settings.CMS_BASE
+    from xmodule.util.xmodule_django import get_current_request_hostname
+
+    domain = get_current_request_hostname()
+
+    if not domain:
+        if SERVICE_VARIANT == "lms":
+            domain = settings.LMS_BASE
+        else:
+            domain = settings.CMS_BASE
+
     return S3Boto3Storage(
         bucket_name=AWS_STORAGE_BUCKET_NAME,
         access_key=AWS_ACCESS_KEY_ID,
