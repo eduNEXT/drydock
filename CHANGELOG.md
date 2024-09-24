@@ -1,6 +1,18 @@
 # CHANGELOG
 
+## v16.7.4 (2024-09-24)
+
+### Fix
+
+* fix(scorm): use request host for scorm custom domain (#142)
+
+(cherry picked from commit 1a8cf5bde09482fb1237ceb78f79e6ce41feb63c) ([`b0a6ffa`](https://github.com/eduNEXT/drydock/commit/b0a6ffa022bd8927dffc5d88e58980ab0fa1044e))
+
 ## v16.7.3 (2024-09-19)
+
+### Chore
+
+* chore(release): preparing 16.7.3 ([`1cc0abb`](https://github.com/eduNEXT/drydock/commit/1cc0abb0b6e50d5979feb416f8c9f7dc8404f197))
 
 ### Fix
 
