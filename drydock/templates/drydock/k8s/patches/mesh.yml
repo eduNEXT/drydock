@@ -1,0 +1,9 @@
+apiVersion: not-used
+kind: not-used
+metadata:
+  name: not-used
+spec:
+  template:
+    metadata:
+      annotations:
+        linkerd.io/inject: enabled
