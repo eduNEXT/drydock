@@ -20,3 +20,4 @@ patches:
     kind: Deployment
     name: '{% for name in DRYDOCK_POST_INIT_DEPLOYMENTS %}{{ name }}{% if not loop.last %}|{% endif %}{% endfor %}'
   path: plugins/drydock/k8s/patches/post-init-deployments-sync-wave.yml
+{{ patch("drydock-kustomization-patches") }}
