@@ -135,7 +135,6 @@ config = {
         "INGRESS": False,
         "INGRESS_EXTRA_HOSTS": [],
         "INGRESS_LMS_EXTRA_HOSTS": [],
-        "NEWRELIC": False,
         "NEWRELIC_LICENSE_KEY": "",
         "CUSTOM_CERTS": {},
         "DEBUG": False,
