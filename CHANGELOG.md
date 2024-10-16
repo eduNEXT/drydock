@@ -1,7 +1,21 @@
 # CHANGELOG
 
 
+## v18.2.8 (2024-10-16)
+
+### Fixes
+
+* fix: adding replicaset info to mongosh connection command. Adding mongodb port variable (#145)
+
+- Include the MongoDB port in the mongosh command (useful when running MongoDB in a different port)
+- Include the replica set info in the mongosh command. It could be the case you aren't connected to a replica set primary but to a secondary one. If the replica set name is not specified, the mongosh command will fail since it is not possible to write to a secondary ([`8855736`](https://github.com/eduNEXT/drydock/commit/88557360081f053bfc8b3e1b2dade6be395bc8a9))
+
+
 ## v18.2.7 (2024-10-15)
+
+### Chores
+
+* chore(release): preparing 18.2.7 ([`29e31dd`](https://github.com/eduNEXT/drydock/commit/29e31dd5c9caac7d783c0c1d1378db5ceb096f71))
 
 ### Fixes
 
