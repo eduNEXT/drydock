@@ -29,9 +29,10 @@ appropriate one:
 | Maple            | `>=13.2, <14`     | Not supported | 0.7.x          |
 | Nutmeg           | `>=14.0, <15`     | Not supported | 0.7.x          |
 | Olive            | `>=15.0, <16`     | Not supported | 15.x.x         |
-| Palm             | `>=16.0, <17`     | `palm`        | 16.x.x         |
+| Palm             | `>=16.0, <17`     | Not supported | 16.x.x         |
 | Quince           | `>=17.0, <18`     | `quince`      | 17.x.x         |
-| Redwood          | `>=18.0, <19`     | `main`        | >=18.0.0       |
+| Redwood          | `>=18.0, <19`     | `redwood`     | 18.x.x         |
+| Sumac          | `>=19.0, <20`     | `main`        | >=19.0.0       |
 
 Installation
 ------------
