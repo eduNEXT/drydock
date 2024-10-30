@@ -44,7 +44,7 @@ The following configuration options are available:
 
 - `DRYDOCK_INIT_JOBS`: Whether run the initialization jobs or not. Defaults to `false`.
 - `DRYDOCK_CMS_SSO_USER`: The username of the CMS SSO user. Defaults to `cms`.
-- `DRYDOCK_AUTO_TLS`: Whether to use cert-manager to automatically generate TLS certificates. Defaults to `false`.
+- `DRYDOCK_AUTO_TLS`: Whether to use cert-manager to automatically generate TLS certificates. Defaults to `true`.
 - `DRYDOCK_FLOWER`: Whether to deploy a flower deployment for celery. Defaults to `false`.
 - `DRYDOCK_INGRESS`: Whether to deploy an ingress for the LMS and CMS. Defaults to `false`.
 - `DRYDOCK_INGRESS_EXTRA_HOSTS`: A list of extra hosts to add to the ingress. Defaults to `[]`.
