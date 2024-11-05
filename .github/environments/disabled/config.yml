@@ -1,7 +1,6 @@
 DRYDOCK_INIT_JOBS: true
 K8S_NAMESPACE: testing-openedx
 PLUGINS:
-- forum
 - mfe
 - drydock
 DRYDOCK_BYPASS_CADDY: false
