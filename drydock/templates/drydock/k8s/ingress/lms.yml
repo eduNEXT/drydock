@@ -40,7 +40,8 @@ spec:
             name: {% if DRYDOCK_BYPASS_CADDY -%}mfe{% else -%}caddy{% endif %}
             port:
               number: {% if DRYDOCK_BYPASS_CADDY -%}8002{% else -%}80{% endif %}
-{% for app_name in iter_mfes_per_service("lms") %}
+{% for app_name, app in iter_mfes() %}
+{%- if app_name != "authoring" %}
       - pathType: Prefix
         path: "/{{app_name}}"
         backend:
@@ -48,6 +49,7 @@ spec:
             name: {% if DRYDOCK_BYPASS_CADDY -%}mfe{% else -%}caddy{% endif %}
             port:
               number: {% if DRYDOCK_BYPASS_CADDY -%}8002{% else -%}80{% endif %}
+{%- endif %}
 {%- endfor %}
       - pathType: Prefix
         path: "/"
