@@ -7,7 +7,7 @@ mongosh --host {% if MONGODB_REPLICA_SET %}{{ MONGODB_REPLICA_SET }}/{% endif %}
         pwd:  "{{ MONGODB_PASSWORD }}",
         roles: [
           { role: "readWrite", db: "{{ MONGODB_DATABASE }}" },
-          {% if FORUM_DOCKER_IMAGE is defined %}{ role: "readWrite", db: "{{ FORUM_MONGODB_DATABASE }}" },{% endif %}
+          {% if 'drydock' in PLUGINS %}{ role: "readWrite", db: "{{ FORUM_MONGODB_DATABASE }}" },{% endif %}
         ]
     })
   } else {
@@ -15,7 +15,7 @@ mongosh --host {% if MONGODB_REPLICA_SET %}{{ MONGODB_REPLICA_SET }}/{% endif %}
       pwd: "{{ MONGODB_PASSWORD }}",
       roles: [
         { role: "readWrite", db: "{{ MONGODB_DATABASE }}" },
-        {% if FORUM_DOCKER_IMAGE is defined %}{ role: "readWrite", db: "{{ FORUM_MONGODB_DATABASE }}" },{% endif %}
+        {% if 'drydock' in PLUGINS %}{ role: "readWrite", db: "{{ FORUM_MONGODB_DATABASE }}" },{% endif %}
       ]
     })
   }
