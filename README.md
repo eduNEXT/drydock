@@ -29,9 +29,10 @@ appropriate one:
 | Maple            | `>=13.2, <14`     | Not supported | 0.7.x          |
 | Nutmeg           | `>=14.0, <15`     | Not supported | 0.7.x          |
 | Olive            | `>=15.0, <16`     | Not supported | 15.x.x         |
-| Palm             | `>=16.0, <17`     | `palm`        | 16.x.x         |
+| Palm             | `>=16.0, <17`     | Not supported | 16.x.x         |
 | Quince           | `>=17.0, <18`     | `quince`      | 17.x.x         |
-| Redwood          | `>=18.0, <19`     | `main`        | >=18.0.0       |
+| Redwood          | `>=18.0, <19`     | `redwood`     | 18.x.x         |
+| Sumac          | `>=19.0, <20`     | `main`        | >=19.0.0       |
 
 Installation
 ------------
@@ -57,7 +58,7 @@ The following configuration options are available:
 - `DRYDOCK_INIT_JOBS`: Whether run the initialization jobs or not. Defaults to `false`.
 - `DRYDOCK_CMS_SSO_USER`: The username of the CMS SSO user. Defaults to `cms`.
 - `DRYDOCK_AUTO_TLS`: Whether to use cert-manager to automatically generate TLS certificates. Defaults to `true`.
-- `DRYDOCK_INGRESS`: Whether to deploy an ingress for the LMS and CMS. Defaults to `false`.
+- `DRYDOCK_INGRESS`: Whether to deploy an ingress for the LMS and CMS. Defaults to `true`.
 - `DRYDOCK_INGRESS_EXTRA_HOSTS`: A list of extra hosts to add to the ingress. Defaults to `[]`.
 - `DRYDOCK_INGRESS_LMS_EXTRA_HOSTS`: A list of extra hosts to add to the LMS ingress. Defaults to `[]`.
 - `DRYDOCK_CUSTOM_CERTS`: A dictionary of custom certificates to use with cert-manager. Defaults to `{}`.

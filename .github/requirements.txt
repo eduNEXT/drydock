@@ -1,3 +1,5 @@
-tutor[full]<18
+git+https://github.com/overhangio/tutor@sumac
+git+https://github.com/overhangio/tutor-mfe@sumac
+git+https://github.com/overhangio/tutor-minio@sumac
 setuptools
-git+https://github.com/hastexo/tutor-contrib-s3@v1.4.0
+git+https://github.com/edunext/tutor-contrib-s3@sumac
