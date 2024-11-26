@@ -37,7 +37,7 @@ Installation
 ------------
 
 ``` bash
-tvm plugins install -e git+https://github.com/edunext/drydock#egg=drydock
+pip install tutor-contrib-drydock
 tutor plugins enable drydock
 tutor config save
 ```
