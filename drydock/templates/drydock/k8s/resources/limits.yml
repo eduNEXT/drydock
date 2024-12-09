@@ -1,0 +1,70 @@
+---
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: compute-resources
+spec:
+  hard:
+    requests.cpu: "8"
+    requests.memory: 16Gi
+    limits.cpu: "20"
+    limits.memory: 32Gi
+---
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: object-counts
+spec:
+  hard:
+    pods: "30"
+---
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: cpu-resource-constraint
+spec:
+  limits:
+  - default: # this section defines default limits
+      cpu: 1000m
+    defaultRequest: # this section defines default requests
+      cpu: 100m
+    max: # max and min define the limit range
+      cpu: "2"
+    type: Container
+---
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: memory-resource-constraint
+spec:
+  limits:
+  - default: # this section defines default limits
+      memory: 512Mi
+    defaultRequest: # this section defines default requests
+      memory: 256Mi
+    max: # max and min define the limit range
+      memory: 4Gi
+    type: Container
+---
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: allow-intranamespace-traffic
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/instance: openedx-{{ ID }}
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          app.kubernetes.io/instance: openedx-{{ ID }}
+  egress:
+  - to:
+    - podSelector:
+        matchLabels:
+          app.kubernetes.io/instance: openedx-{{ ID }}
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: shipyard-harmony
