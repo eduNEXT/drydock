@@ -16,3 +16,6 @@
 - plugins/drydock/k8s/debug/services.yml
 - plugins/drydock/k8s/debug/ingress.yml
 {%- endif %}
+{% if DRYDOCK_RESOURCE_MANAGEMENT -%}
+- plugins/drydock/k8s/resources/limits.yml
+{%- endif %}
