@@ -132,7 +132,7 @@ config = {
         "CMS_SSO_USER": "cms",
         "AUTO_TLS": True,
         "MIGRATE_FROM": 0,
-        "INGRESS": False,
+        "INGRESS": True,
         "INGRESS_EXTRA_HOSTS": [],
         "INGRESS_LMS_EXTRA_HOSTS": [],
         "NEWRELIC_LICENSE_KEY": "",

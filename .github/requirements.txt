@@ -1,3 +1,5 @@
-tutor[full]<18
+tutor~=19.0
+tutor-mfe~=19.0
+tutor-minio~=19.0
 setuptools
-git+https://github.com/hastexo/tutor-contrib-s3@v1.4.0
+git+https://github.com/edunext/tutor-contrib-s3@sumac
