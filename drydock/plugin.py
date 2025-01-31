@@ -173,11 +173,14 @@ config = {
 }
 
 tutor_hooks.Filters.CONFIG_DEFAULTS.add_items([("OPENEDX_DEBUG_COOKIE", "ednx_enable_debug")])
-tutor_hooks.Filters.CONFIG_OVERRIDES.add_items([
+tutor_hooks.Filters.CONFIG_OVERRIDES.add_items(
+    [
         # This values are not prefixed with DRYDOCK_
+        ("FORUM_MONGODB_DATABASE", "cs_comments_service"),
         ("MONGODB_ROOT_USERNAME", ""),
         ("MONGODB_ROOT_PASSWORD", ""),
-])
+    ]
+)
 
 
 ################# You don't really have to bother about what's below this line,
@@ -197,7 +200,10 @@ tutor_hooks.Filters.ENV_TEMPLATE_TARGETS.add_items(
 # Load all patches from the "patches" folder
 for path in glob(str(importlib_resources.files("drydock") / "patches" / "*")):
     with open(path, encoding="utf-8") as patch_file:
-        tutor_hooks.Filters.ENV_PATCHES.add_item((os.path.basename(path), patch_file.read()))
+        tutor_hooks.Filters.ENV_PATCHES.add_item(
+            (os.path.basename(path), patch_file.read()),
+            tutor_hooks.priorities.LOW, # Apply our changes last to correctly override defaults.
+        )
 
 # Load all configuration entries
 tutor_hooks.Filters.CONFIG_DEFAULTS.add_items(

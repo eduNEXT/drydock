@@ -27,3 +27,5 @@ XBLOCK_SETTINGS["ScormXBlock"] = {
 
 LOGGING["loggers"].pop("tracking")
 LOGGING["loggers"][""]["handlers"] = ["console"]
+
+FORUM_MONGODB_DATABASE = "{{ FORUM_MONGODB_DATABASE }}"
