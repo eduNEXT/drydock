@@ -1,6 +1,24 @@
 # CHANGELOG
 
 
+## v19.0.1 (2025-01-31)
+
+### Bug Fixes
+
+- Configure custom forum DBs credentials ([#153](https://github.com/eduNEXT/drydock/pull/153),
+  [`68b06f5`](https://github.com/eduNEXT/drydock/commit/68b06f5030abfc5647ee06a40f603cb26acfec93))
+
+The tutor-forum plugin hardcodes the value of the name of the forum database in the Django settings,
+  dropping the previous `FORUM_MONGODB_DATABASE` setting
+  (https://github.com/overhangio/tutor-forum/blob/5d3d2dd7d1ea3c9a311ac5619eb5931a111ba363/tutorforum/plugin.py#L29).
+
+We reintroduce the `FORUM_MONGODB_DATABASE` setting and ensure the mongodb user has permissions over
+  the Forum Database.
+
+In order to be able to override the hardcoded value we lower the priority level of the Drydock
+  patches, guaranteeing that they are going to be applied after all the installed plugins.
+
+
 ## v19.0.0 (2024-12-18)
 
 ### Features
@@ -27,11 +45,6 @@ Empty commit to trigger a major version bump
   to a replica set primary but to a secondary one. If the replica set name is not specified, the
   mongosh command will fail since it is not possible to write to a secondary
 
-### Chores
-
-- **release**: Preparing 18.2.8
-  ([`709d970`](https://github.com/eduNEXT/drydock/commit/709d970217142b3edccc6a2f84a24d51c551d636))
-
 
 ## v18.2.7 (2024-10-15)
 
@@ -44,11 +57,6 @@ Empty commit to trigger a major version bump
 The location of the uwsgi.ini file was changed in tutor==18.1.3 so we have to update the command run
   by the container. Additionally we remove an unused variable that was lingering.
 
-### Chores
-
-- **release**: Preparing 18.2.7
-  ([`29e31dd`](https://github.com/eduNEXT/drydock/commit/29e31dd5c9caac7d783c0c1d1378db5ceb096f71))
-
 
 ## v18.2.6 (2024-09-24)
 
@@ -58,11 +66,6 @@ The location of the uwsgi.ini file was changed in tutor==18.1.3 so we have to up
   ([#141](https://github.com/eduNEXT/drydock/pull/141),
   [`55a5153`](https://github.com/eduNEXT/drydock/commit/55a515326aed82c23f9feb2e9c129f8511502d24))
 
-### Chores
-
-- **release**: Preparing 18.2.6
-  ([`2078d11`](https://github.com/eduNEXT/drydock/commit/2078d115a53ab17fb13db6fe2b743087a778aa22))
-
 
 ## v18.2.5 (2024-09-19)
 
@@ -70,11 +73,6 @@ The location of the uwsgi.ini file was changed in tutor==18.1.3 so we have to up
 
 - Use correct host for the CMS probes ([#138](https://github.com/eduNEXT/drydock/pull/138),
   [`d011d71`](https://github.com/eduNEXT/drydock/commit/d011d71e630f565aa431c2834eff2f11f1af4b07))
-
-### Chores
-
-- **release**: Preparing 18.2.5
-  ([`8c1417c`](https://github.com/eduNEXT/drydock/commit/8c1417cfdebddebd5edf8ce4fb9beaa48c2d5493))
 
 
 ## v18.2.4 (2024-09-11)
@@ -114,11 +112,6 @@ The location of the uwsgi.ini file was changed in tutor==18.1.3 so we have to up
 
 * chore: restore prestopHook
 
-### Chores
-
-- **release**: Preparing 18.2.4
-  ([`88f3330`](https://github.com/eduNEXT/drydock/commit/88f3330d3ca8e329f730256e0c8c469a537c2815))
-
 
 ## v18.2.3 (2024-08-13)
 
@@ -126,11 +119,6 @@ The location of the uwsgi.ini file was changed in tutor==18.1.3 so we have to up
 
 - Drop celery support ([#129](https://github.com/eduNEXT/drydock/pull/129),
   [`86f2639`](https://github.com/eduNEXT/drydock/commit/86f26393d3ef54428a0011f1b24ac6c41853ce09))
-
-### Chores
-
-- **release**: Preparing 18.2.3
-  ([`7f6001b`](https://github.com/eduNEXT/drydock/commit/7f6001b74ee6ff7f1b4a7098ae8d4324051ad6be))
 
 
 ## v18.2.2 (2024-08-12)
@@ -146,11 +134,6 @@ chore: remove startup probe and increase timeout of readiness probe
 
 chore: restore startup probe
 
-### Chores
-
-- **release**: Preparing 18.2.2
-  ([`6235a74`](https://github.com/eduNEXT/drydock/commit/6235a74da31640e2f32a777f9a8086e429ed5d73))
-
 
 ## v18.2.1 (2024-08-06)
 
@@ -159,18 +142,8 @@ chore: restore startup probe
 - Drop sentry support ([#128](https://github.com/eduNEXT/drydock/pull/128),
   [`89392b5`](https://github.com/eduNEXT/drydock/commit/89392b5109e63164ae2a8bac8723f2061a0e8680))
 
-### Chores
-
-- **release**: Preparing 18.2.1
-  ([`773a814`](https://github.com/eduNEXT/drydock/commit/773a81434b300f700d6f8ae8ccaccc099861c1cd))
-
 
 ## v18.2.0 (2024-07-15)
-
-### Chores
-
-- **release**: Preparing 18.2.0
-  ([`3a734e2`](https://github.com/eduNEXT/drydock/commit/3a734e2207887aaf48ff0655092ae21b10fe2dfe))
 
 ### Features
 
@@ -189,11 +162,6 @@ chore: restore startup probe
 
 * fix: when using SCORM, S3_HOST must be used for alternative S3-compatible services
 
-### Chores
-
-- **release**: Preparing 18.1.1
-  ([`6af587e`](https://github.com/eduNEXT/drydock/commit/6af587e45103e19f00026a7922840a32e680e173))
-
 
 ## v18.1.0 (2024-07-02)
 
@@ -208,11 +176,6 @@ The HPA sync-wave patch includes annotations to indicate argocd in which order s
   `argocd.argoproj.io/hook-delete-policy: HookSucceeded` annotations are used for ephemeral
   resources (like jobs) and should not be used for the HPA resources.
 
-### Chores
-
-- **release**: Preparing 18.1.0
-  ([`f87b84d`](https://github.com/eduNEXT/drydock/commit/f87b84d4884793e42bf33591d8f3ce7e4c09f4cc))
-
 ### Features
 
 - Add support for static cache config ([#106](https://github.com/eduNEXT/drydock/pull/106),
@@ -224,11 +187,6 @@ build: correct port and path for mfe tests
 
 
 ## v18.0.0 (2024-07-02)
-
-### Chores
-
-- **release**: Preparing 18.0.0
-  ([`30a4cc0`](https://github.com/eduNEXT/drydock/commit/30a4cc00848bb745a91fb70f1d5a9da09d76aa8a))
 
 ### Features
 
@@ -253,11 +211,6 @@ BREAKING CHANGE: version 18
 The S3Boto3Storage backend no longer accepts the argument bucket. Use bucket_name or the setting
   AWS_STORAGE_BUCKET_NAME instead: https://github.com/jschneier/django-storages/pull/636
 
-### Chores
-
-- **release**: Preparing 17.3.5
-  ([`6ed209b`](https://github.com/eduNEXT/drydock/commit/6ed209b00822a7ccef48082b146c96c8e217e022))
-
 
 ## v17.3.4 (2024-05-27)
 
@@ -272,18 +225,8 @@ The S3Boto3Storage backend no longer accepts the argument bucket. Use bucket_nam
 
 * fix: extract and set kubernetes version from kubectl
 
-### Chores
-
-- **release**: Preparing 17.3.4
-  ([`7bd3266`](https://github.com/eduNEXT/drydock/commit/7bd3266b00c9be65e007dd5746d98ac4960dfd04))
-
 
 ## v17.3.3 (2024-05-22)
-
-### Chores
-
-- **release**: Preparing 17.3.3
-  ([`c01f238`](https://github.com/eduNEXT/drydock/commit/c01f238bbff75d9aa4c73319a7bdf7a441817d65))
 
 
 ## v17.3.2 (2024-04-26)
@@ -297,11 +240,6 @@ The S3Boto3Storage backend no longer accepts the argument bucket. Use bucket_nam
 
 * chore: refactor scorm template
 
-### Chores
-
-- **release**: Preparing 17.3.2
-  ([`dfbbef4`](https://github.com/eduNEXT/drydock/commit/dfbbef464113874ab8dc4a072b3b22c2c96be5c9))
-
 
 ## v17.3.1 (2024-04-26)
 
@@ -312,11 +250,6 @@ The S3Boto3Storage backend no longer accepts the argument bucket. Use bucket_nam
 
 docs: add documentation for ingress lm extra hosts
 
-### Chores
-
-- **release**: Preparing 17.3.1
-  ([`eb47084`](https://github.com/eduNEXT/drydock/commit/eb47084434d2905544ea44f5938138f4ca31da86))
-
 
 ## v17.3.0 (2024-04-18)
 
@@ -326,11 +259,6 @@ docs: add documentation for ingress lm extra hosts
   ([#74](https://github.com/eduNEXT/drydock/pull/74),
   [`cb8bcb2`](https://github.com/eduNEXT/drydock/commit/cb8bcb24667eff45e853104248ff253c0dcc046b))
 
-### Chores
-
-- **release**: Preparing 17.3.0
-  ([`8e1f74e`](https://github.com/eduNEXT/drydock/commit/8e1f74ef2ff3de53de5212bc0c7bc057d995e0bd))
-
 ### Features
 
 - Add auto generated jobs ([#87](https://github.com/eduNEXT/drydock/pull/87),
@@ -338,11 +266,6 @@ docs: add documentation for ingress lm extra hosts
 
 
 ## v17.2.0 (2024-02-27)
-
-### Chores
-
-- **release**: Preparing 17.2.0
-  ([`0d3cee4`](https://github.com/eduNEXT/drydock/commit/0d3cee4baa3334a3f4314e7d5c5d6ee56804dcfc))
 
 ### Features
 
@@ -358,18 +281,8 @@ docs: add documentation for ingress lm extra hosts
   ([#69](https://github.com/eduNEXT/drydock/pull/69),
   [`d965aa7`](https://github.com/eduNEXT/drydock/commit/d965aa7ad459b19b4b99bc450132d3b87c761fcd))
 
-### Chores
-
-- **release**: Preparing 17.1.1
-  ([`f4c58ae`](https://github.com/eduNEXT/drydock/commit/f4c58ae59825bb8af109183d9d3751546057451b))
-
 
 ## v17.1.0 (2024-01-30)
-
-### Chores
-
-- **release**: Preparing 17.1.0
-  ([`03fa727`](https://github.com/eduNEXT/drydock/commit/03fa72792ac602fdce1154629c0665252e0bc932))
 
 ### Features
 
@@ -401,11 +314,6 @@ docs: add documentation for ingress lm extra hosts
 
 ## v17.0.0 (2024-01-19)
 
-### Chores
-
-- **release**: Preparing 17.0.0
-  ([`5e41bf9`](https://github.com/eduNEXT/drydock/commit/5e41bf9441b922f0db30a8b728e5c17d95a07ef3))
-
 ### Features
 
 - Add support to quince ([#61](https://github.com/eduNEXT/drydock/pull/61),
@@ -425,11 +333,6 @@ BREAKING CHANGE: Support to tutor v17
 - Remove dash from endif ([#65](https://github.com/eduNEXT/drydock/pull/65),
   [`3794a2f`](https://github.com/eduNEXT/drydock/commit/3794a2fd278a77e276af2f2dafdec6870a3b7078))
 
-### Chores
-
-- **release**: Preparing 16.2.2
-  ([`cab4205`](https://github.com/eduNEXT/drydock/commit/cab42057f9ef53ceba205fe28c3097e959125c59))
-
 
 ## v16.2.1 (2024-01-18)
 
@@ -440,18 +343,8 @@ BREAKING CHANGE: Support to tutor v17
 
 (cherry picked from commit ed8b57a0600913ea77de02bd995f6adc134f1446)
 
-### Chores
-
-- **release**: Preparing 16.2.1
-  ([`b3032de`](https://github.com/eduNEXT/drydock/commit/b3032deee65b229327c7da90548a084b5836fbb6))
-
 
 ## v16.2.0 (2024-01-17)
-
-### Chores
-
-- **release**: Preparing 16.2.0
-  ([`d18281f`](https://github.com/eduNEXT/drydock/commit/d18281f5d872c96b1509d004dce973770b94d555))
 
 ### Features
 
@@ -461,11 +354,6 @@ BREAKING CHANGE: Support to tutor v17
 
 
 ## v16.1.0 (2024-01-10)
-
-### Chores
-
-- **release**: Preparing 16.1.0
-  ([`4ef0da5`](https://github.com/eduNEXT/drydock/commit/4ef0da5a1b3197ab92427eba4c6db51a7a7bcc37))
 
 ### Features
 
@@ -485,18 +373,8 @@ Include an initialization job similar to the MySQL one that creates a mongodb us
   ([#59](https://github.com/eduNEXT/drydock/pull/59),
   [`b150a41`](https://github.com/eduNEXT/drydock/commit/b150a4136cf07e9865bcd5b740100fb9740531dc))
 
-### Chores
-
-- **release**: Preparing 16.0.1
-  ([`840e2a7`](https://github.com/eduNEXT/drydock/commit/840e2a769687717aed6c547d24befa5bffed222f))
-
 
 ## v16.0.0 (2023-12-19)
-
-### Chores
-
-- **release**: Preparing 16.0.0
-  ([`af7e3a6`](https://github.com/eduNEXT/drydock/commit/af7e3a6619fb80144ffd59235f1939267d306e73))
 
 ### Features
 
@@ -521,18 +399,8 @@ BREAKING CHANGE: Drops support to python 3.7
 - Remove pat from release workflow ([#55](https://github.com/eduNEXT/drydock/pull/55),
   [`acb59ad`](https://github.com/eduNEXT/drydock/commit/acb59ade11414a1b708f9293121ef19aafeb613c))
 
-### Chores
-
-- **release**: Preparing 15.5.1
-  ([`98c3bc9`](https://github.com/eduNEXT/drydock/commit/98c3bc9f149a9fb8ed4867af60dfaf636923675d))
-
 
 ## v15.5.0 (2023-11-29)
-
-### Chores
-
-- **release**: Preparing 15.5.0
-  ([`5f6b52c`](https://github.com/eduNEXT/drydock/commit/5f6b52cb7612e21729057a7a6b35fdf87f6b9256))
 
 ### Features
 
@@ -554,11 +422,6 @@ BREAKING CHANGE: Drops support to python 3.7
 
 
 ## v15.4.0 (2023-11-23)
-
-### Chores
-
-- **release**: Preparing 15.4.0
-  ([`98f2cb3`](https://github.com/eduNEXT/drydock/commit/98f2cb318df6deb8b400be1234f64836521393b4))
 
 ### Features
 
@@ -588,11 +451,6 @@ BREAKING CHANGE: Drops support to python 3.7
 
 ## v15.3.0 (2023-11-16)
 
-### Chores
-
-- **release**: Preparing 15.3.0
-  ([`5320b7f`](https://github.com/eduNEXT/drydock/commit/5320b7f66fce98bbbdfa9e2aac8c9980a0ba7e51))
-
 ### Features
 
 - Use azcopy for databases backups ([#51](https://github.com/eduNEXT/drydock/pull/51),
@@ -621,11 +479,6 @@ BREAKING CHANGE: Drops support to python 3.7
 
 ## v15.2.0 (2023-11-07)
 
-### Chores
-
-- **release**: Preparing 15.2.0
-  ([`816cfb0`](https://github.com/eduNEXT/drydock/commit/816cfb089eda520cedc2c2b20a9109bad2dd3666))
-
 ### Features
 
 - Split ingress per host, add patch to add lms extra hosts
@@ -642,11 +495,6 @@ BREAKING CHANGE: Drops support to python 3.7
 
 - Using Github PAT to bypass main branch protection
   ([`ad40e6a`](https://github.com/eduNEXT/drydock/commit/ad40e6a256bed62551e8f7436f43ae7841264776))
-
-### Chores
-
-- **release**: Preparing 15.1.0
-  ([`2ee44b0`](https://github.com/eduNEXT/drydock/commit/2ee44b0b2656179b5e78030f6b822780dd768304))
 
 ### Features
 
@@ -672,11 +520,6 @@ BREAKING CHANGE: Drops support to python 3.7
 - Set the correct path to use pvc volume ([#45](https://github.com/eduNEXT/drydock/pull/45),
   [`6f9189c`](https://github.com/eduNEXT/drydock/commit/6f9189c64699f9bbedbcc03d2ee2152ed58bdb2e))
 
-### Chores
-
-- **release**: Preparing 0.7.3
-  ([`4f59f73`](https://github.com/eduNEXT/drydock/commit/4f59f736f15944c05dad7776f1015a220a65f391))
-
 
 ## v0.7.2 (2023-07-14)
 
@@ -686,11 +529,6 @@ BREAKING CHANGE: Drops support to python 3.7
   ([#44](https://github.com/eduNEXT/drydock/pull/44),
   [`8360e3f`](https://github.com/eduNEXT/drydock/commit/8360e3f3a042e85431975ff61d003433cb8b5f24))
 
-### Chores
-
-- **release**: Preparing 0.7.2
-  ([`8b8284f`](https://github.com/eduNEXT/drydock/commit/8b8284f17b1d80ce6619f5eabd81e3816b405e6d))
-
 
 ## v0.7.1 (2023-07-10)
 
@@ -699,18 +537,8 @@ BREAKING CHANGE: Drops support to python 3.7
 - Drydock fails in older versions to tutor palm ([#43](https://github.com/eduNEXT/drydock/pull/43),
   [`c3c5e0a`](https://github.com/eduNEXT/drydock/commit/c3c5e0a30f3d5f672a170f567568c59e4d16f0d3))
 
-### Chores
-
-- **release**: Preparing 0.7.1
-  ([`9a771ed`](https://github.com/eduNEXT/drydock/commit/9a771ed087321f2bf34cadc143dad596d74be686))
-
 
 ## v0.7.0 (2023-07-07)
-
-### Chores
-
-- **release**: Preparing 0.7.0
-  ([`7750b51`](https://github.com/eduNEXT/drydock/commit/7750b5115c6bf2e111a47397e4a21fefd2558272))
 
 ### Features
 
@@ -725,18 +553,8 @@ BREAKING CHANGE: Drops support to python 3.7
 - Mysqldump faild due mysql version ([#41](https://github.com/eduNEXT/drydock/pull/41),
   [`62d0839`](https://github.com/eduNEXT/drydock/commit/62d083959e1abd8b49f8dd44c4af58c44c3f1a9c))
 
-### Chores
-
-- **release**: Preparing 0.6.1
-  ([`e850ab4`](https://github.com/eduNEXT/drydock/commit/e850ab4bffc9c8eebd9a649799501dfdb75d9cc9))
-
 
 ## v0.6.0 (2023-04-05)
-
-### Chores
-
-- **release**: Preparing 0.6.0
-  ([`6575f39`](https://github.com/eduNEXT/drydock/commit/6575f39c7c948879cba3db443680a766b3433171))
 
 ### Features
 
@@ -756,11 +574,6 @@ Co-authored-by: Jhony Avella <jhony.avella@edunext.co>
   ([#38](https://github.com/eduNEXT/drydock/pull/38),
   [`423bac3`](https://github.com/eduNEXT/drydock/commit/423bac33216385d02566fbef90c8918e0cba8f50))
 
-### Chores
-
-- **release**: Preparing 0.5.1
-  ([`4fc77ae`](https://github.com/eduNEXT/drydock/commit/4fc77aef05899322c905bbcfb31afb9f67604f36))
-
 
 ## v0.5.0 (2023-02-28)
 
@@ -775,11 +588,6 @@ Co-authored-by: Jhony Avella <jhony.avella@edunext.co>
 * fix: define DJANGO_SETTINGS_MODULE for the cms debug pods
 
 * fix: use the DRYDOCK_CMS_SSO_USER variable on the init jobs
-
-### Chores
-
-- **release**: Preparing 0.5.0
-  ([`a5abacd`](https://github.com/eduNEXT/drydock/commit/a5abacdf60aca67527af1cd46b338137d9308285))
 
 ### Features
 
