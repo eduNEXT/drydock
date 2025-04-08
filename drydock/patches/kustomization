@@ -10,7 +10,6 @@ patches:
 - path: plugins/drydock/k8s/lifecycle/cms.yml
 {% endif -%}
 {% if DRYDOCK_IMAGE_PULL_CONFIG -%}
-- path: plugins/drydock/k8s/secrets/image-pull-secret.yml
 - target:
     kind: Deployment
   path: plugins/drydock/k8s/patches/add-image-pull-secret.yml
