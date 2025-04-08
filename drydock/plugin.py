@@ -238,8 +238,14 @@ tutor_hooks.Filters.ENV_TEMPLATE_VARIABLES.add_items(
     ]
 )
 
+def get_dockerconfigjson_b64():
+    context = click.get_current_context().obj
+    tutor_conf = tutor_config.load(context.root)
+    image_pull_config = tutor_conf.get("DRYDOCK_IMAGE_PULL_CONFIG", [])
+    return build_dockerconfigjson(image_pull_config)
+
 tutor_hooks.Filters.ENV_TEMPLATE_VARIABLES.add_items([
-    ("build_dockerconfigjson", build_dockerconfigjson),
+    ("drydock_image_pull_secret_b64", get_dockerconfigjson_b64),
 ])
 
 # # init script
