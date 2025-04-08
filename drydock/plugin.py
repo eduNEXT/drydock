@@ -78,14 +78,9 @@ def build_dockerconfigjson(image_pull_config: list) -> str:
     auths = {}
     for entry in image_pull_config:
         for registry, fields in entry.items():
-            registry_data = {}
-            for field in fields:
-                for k, v in field.items():
-                    registry_data[k] = v
-            auths[registry] = registry_data
+            auths[registry] = fields
     dockerconfig = {"auths": auths}
-    encoded = base64.b64encode(json.dumps(dockerconfig).encode("utf-8")).decode("utf-8")
-    return encoded
+    return base64.b64encode(json.dumps(dockerconfig).encode("utf-8")).decode("utf-8")
 
 CORE_SYNC_WAVES_ORDER: SYNC_WAVES_ORDER_ATTRS_TYPE = {
     "drydock-upgrade-lms-job": 50,
