@@ -9,6 +9,11 @@ patches:
 - path: plugins/drydock/k8s/lifecycle/lms.yml
 - path: plugins/drydock/k8s/lifecycle/cms.yml
 {% endif -%}
+{% if DRYDOCK_IMAGE_PULL_CONFIG -%}
+- target:
+    kind: Secret
+  path: plugins/drydock/k8s/patches/image-pull-secret.yml
+{% endif -%}
 - target:
     kind: Job
     labelSelector: app.kubernetes.io/component=job
