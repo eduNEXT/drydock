@@ -12,6 +12,8 @@ from tutor import hooks as tutor_hooks
 from tutor import env as tutor_env
 from tutor import serialize, types
 from tutor import config as tutor_config
+from tutor.commands.k8s import k8s
+from tutor.commands.jobs import do_callback
 
 from .__about__ import __version__
 
@@ -234,3 +236,40 @@ with open(
     encoding="utf-8",
 ) as fi:
     tutor_hooks.Filters.CLI_DO_INIT_TASKS.add_item(("mongodb", fi.read()), priority=tutor_hooks.priorities.HIGH)
+
+@click.command(name="delete-dbs", help="Drop all databases")
+def delete_dbs_command():
+    """
+    Utility command to delete the main databases/users created on init.
+
+    We have to manually use `do_callback` instead of relying on the more
+    standard `CLI_DO_COMMANDS` filter because we want to skip the initial
+    hardcoded checks (deployments for caddy and meillisearch up).
+    """
+
+    MONGO_DROP_COMMAND = """
+    mongosh \
+        {% if MONGODB_ROOT_USERNAME and MONGODB_ROOT_PASSWORD %} \
+        mongodb://{{ MONGODB_ROOT_USERNAME }}:{{ MONGODB_ROOT_PASSWORD }}@{{ MONGODB_HOST }}:{{ MONGODB_PORT }}/{{ MONGODB_DATABASE }}?authSource={{ MONGODB_AUTH_SOURCE }} --eval 'db.dropDatabase()'
+        {% else %} \
+        mongodb://{{ MONGODB_HOST }}:{{ MONGODB_PORT }}/{{ MONGODB_DATABASE }}?authSource={{ MONGODB_AUTH_SOURCE }} --eval 'db.dropDatabase()'
+        {% if 'forum' in PLUGINS %}
+        mongodb://{{ MONGODB_HOST }}:{{ MONGODB_PORT }}/{{ FORUM_MONGODB_DATABASE }}?authSource={{ MONGODB_AUTH_SOURCE }} --eval 'db.dropDatabase()'
+        {% endif %}
+        {% endif %}
+    """
+    MYSQL_DROP_COMMAND = """
+    mysql -u {{ MYSQL_ROOT_USERNAME }} --password="{{ MYSQL_ROOT_PASSWORD }}" --host "{{ MYSQL_HOST }}" --port {{ MYSQL_PORT }} -e "DROP DATABASE IF EXISTS {{ OPENEDX_MYSQL_DATABASE }};"
+    mysql -u {{ MYSQL_ROOT_USERNAME }} --password="{{ MYSQL_ROOT_PASSWORD }}" --host "{{ MYSQL_HOST }}" --port {{ MYSQL_PORT }} -e "DROP USER IF EXISTS '{{ OPENEDX_MYSQL_USERNAME }}';"
+    {% if 'notes' in PLUGINS %}
+    mysql -u {{ MYSQL_ROOT_USERNAME }} --password="{{ MYSQL_ROOT_PASSWORD }}" --host "{{ MYSQL_HOST }}" --port {{ MYSQL_PORT }} -e 'DROP DATABASE IF EXISTS {{ NOTES_MYSQL_DATABASE }};'
+    mysql -u {{ MYSQL_ROOT_USERNAME }} --password="{{ MYSQL_ROOT_PASSWORD }}" --host "{{ MYSQL_HOST }}" --port {{ MYSQL_PORT }} -e "DROP USER IF EXISTS '{{ NOTES_MYSQL_USERNAME }}';"
+    {% endif %}
+    """
+    do_callback(
+        service_commands=[
+            ("mongodb", MONGO_DROP_COMMAND),
+            ("mysql", MYSQL_DROP_COMMAND),
+        ]
+    )
+k8s.add_command(delete_dbs_command)
