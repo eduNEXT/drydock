@@ -3,8 +3,6 @@ import functools
 import os
 import click
 import importlib_resources
-import base64
-import json
 
 import typing as t
 
@@ -72,21 +70,6 @@ def get_init_tasks():
             template["spec"]["ttlSecondsAfterFinished"] = 3600
 
             yield serialize.dumps(template)
-
-# This function transforms the image pull config into a dockerconfigjson string
-def build_dockerconfigjson(image_pull_config: list) -> str:
-    auths = {}
-    for entry in image_pull_config:
-        for registry, fields in entry.items():
-            registry_data = {}
-            for field in fields:
-                for k, v in field.items():
-                    registry_data[k] = v
-            auths[registry] = registry_data
-    dockerconfig = {"auths": auths}
-    encoded = base64.b64encode(json.dumps(dockerconfig).encode("utf-8")).decode("utf-8")
-    return encoded
-
 
 CORE_SYNC_WAVES_ORDER: SYNC_WAVES_ORDER_ATTRS_TYPE = {
     "drydock-upgrade-lms-job": 50,
@@ -177,7 +160,7 @@ config = {
             "superset-celery-beat",
         ],
         "NGINX_STATIC_CACHE_CONFIG": {},
-        "IMAGE_PULL_CONFIG": [],
+        "REGISTRY_CREDENTIALS": "",
     },
     # Add here settings that don't have a reasonable default for all users. For
     # instance: passwords, secret keys, etc.
@@ -244,10 +227,6 @@ tutor_hooks.Filters.ENV_TEMPLATE_VARIABLES.add_items(
         ('get_sync_waves_for_resource', get_sync_waves_for_resource),
     ]
 )
-
-tutor_hooks.Filters.ENV_TEMPLATE_VARIABLES.add_items([
-    ("build_dockerconfigjson", build_dockerconfigjson),
-])
 
 # # init script
 with open(

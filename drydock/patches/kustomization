@@ -9,10 +9,10 @@ patches:
 - path: plugins/drydock/k8s/lifecycle/lms.yml
 - path: plugins/drydock/k8s/lifecycle/cms.yml
 {% endif -%}
-{% if DRYDOCK_IMAGE_PULL_CONFIG -%}
+{% if DRYDOCK_REGISTRY_CREDENTIALS -%}
 - target:
-    kind: Secret
-  path: plugins/drydock/k8s/patches/image-pull-secret.yml
+    kind: Deployment
+  path: plugins/drydock/k8s/patches/add-image-pull-secret.yml
 {% endif -%}
 - target:
     kind: Job
