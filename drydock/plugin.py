@@ -71,6 +71,7 @@ def get_init_tasks():
 
             yield serialize.dumps(template)
 
+
 CORE_SYNC_WAVES_ORDER: SYNC_WAVES_ORDER_ATTRS_TYPE = {
     "drydock-upgrade-lms-job": 50,
     "drydock-upgrade-cms-job": 51,
