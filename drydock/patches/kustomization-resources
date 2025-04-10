@@ -16,6 +16,6 @@
 - plugins/drydock/k8s/debug/services.yml
 - plugins/drydock/k8s/debug/ingress.yml
 {%- endif %}
-{% if DRYDOCK_IMAGE_PULL_CONFIG -%}
+{% if DRYDOCK_REGISTRY_CREDENTIALS -%}
 - plugins/drydock/k8s/secrets/image-pull-secret.yml
 {% endif -%}
