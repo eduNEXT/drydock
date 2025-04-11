@@ -161,6 +161,7 @@ config = {
             "superset-celery-beat",
         ],
         "NGINX_STATIC_CACHE_CONFIG": {},
+        "REGISTRY_CREDENTIALS": "",
     },
     # Add here settings that don't have a reasonable default for all users. For
     # instance: passwords, secret keys, etc.
