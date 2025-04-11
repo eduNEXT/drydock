@@ -67,7 +67,7 @@ The following configuration options are available:
 - `DRYDOCK_ENABLE_MULTITENANCY`: Whether to enable multitennacy. Defaults to `true`.
 - `DRYDOCK_ENABLE_SCORM`: Whether to enable scorm. Defaults to `true`.
 - `DRYDOCK_POD_LIFECYCLE`: Whether to enable pod lifecycle. Defaults to `true`.
-- `DRYDOCK_REGISTRY_CREDENTIALS`: A string with the credentials to access the private registry. The format is `'{"auths":{"https://your.custom.registry/v1/":{"auth":"Abcsks45wnf"}}}'`. Defaults to `""`.
+- `DRYDOCK_REGISTRY_CREDENTIALS`: A string with the credentials to access the private registry. The format should follow the [kubernetes config.json interpretation](https://kubernetes.io/docs/concepts/containers/images/#config-json). Defaults to `""`.
 - `NGINX_STATIC_CACHE_CONFIG`: A list of dictionaries with settings for different services to cache their assets in NGINX.
   The following is an example of the expected values:
   ```yaml
