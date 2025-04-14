@@ -1,6 +1,36 @@
 # CHANGELOG
 
 
+## v19.1.0 (2025-04-14)
+
+### Features
+
+- Create patch for registry credentials ([#154](https://github.com/eduNEXT/drydock/pull/154),
+  [`e6d8948`](https://github.com/eduNEXT/drydock/commit/e6d89483df9365c4e710c2e489df27b4110b3bc5))
+
+* feat: create patch for registry credentials
+
+* feat: include json transform
+
+* feat: change secret render
+
+* fix: correct files
+
+* docs: update readmd
+
+* fix: include extra workloads
+
+* fix: change patch for cronjob and remove kind
+
+* docs: update readme.md
+
+Co-authored-by: Moisés González <moises.gonzalez@edunext.co>
+
+* fix: remove deamonset and statefulsets
+
+---------
+
+
 ## v19.0.1 (2025-01-31)
 
 ### Bug Fixes
@@ -195,7 +225,7 @@ build: correct port and path for mfe tests
 
 BREAKING CHANGE: version 18
 
-### BREAKING CHANGES
+### Breaking Changes
 
 - Version 18
 
@@ -321,7 +351,7 @@ docs: add documentation for ingress lm extra hosts
 
 BREAKING CHANGE: Support to tutor v17
 
-### BREAKING CHANGES
+### Breaking Changes
 
 - Support to tutor v17
 
@@ -383,7 +413,7 @@ Include an initialization job similar to the MySQL one that creates a mongodb us
 
 BREAKING CHANGE: Drops support to python 3.7
 
-### BREAKING CHANGES
+### Breaking Changes
 
 - Drops support to python 3.7
 
