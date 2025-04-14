@@ -9,6 +9,17 @@ patches:
 - path: plugins/drydock/k8s/lifecycle/lms.yml
 - path: plugins/drydock/k8s/lifecycle/cms.yml
 {% endif -%}
+{% if DRYDOCK_REGISTRY_CREDENTIALS -%}
+- target:
+    kind: Deployment
+  path: plugins/drydock/k8s/patches/add-image-pull-secret.yml
+- target:
+    kind: Job
+  path: plugins/drydock/k8s/patches/add-image-pull-secret.yml
+- target:
+    kind: CronJob
+  path: plugins/drydock/k8s/patches/add-image-pull-secret-cronjob.yml
+{% endif -%}
 - target:
     kind: Job
     labelSelector: app.kubernetes.io/component=job
