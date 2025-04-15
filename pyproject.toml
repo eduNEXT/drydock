@@ -3,7 +3,7 @@ requires = ["setuptools>=42", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "drydock"
+name = "tutor-contrib-drydock"
 dynamic = ["version"]
 description = "A Tutor plugin to manage our opinionated Open edX operations"
 readme = "README.md"
