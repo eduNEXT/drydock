@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v19.2.0 (2025-04-15)
+
+### Features
+
+- Add drop-db command ([#156](https://github.com/eduNEXT/drydock/pull/156),
+  [`bf09725`](https://github.com/eduNEXT/drydock/commit/bf097259ec8811f1bb86251df215a7826997aa3c))
+
+
 ## v19.1.0 (2025-04-14)
 
 ### Features
