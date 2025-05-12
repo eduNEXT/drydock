@@ -182,6 +182,31 @@ manually if you wanted to use a tool like ArgoCD.
 
 7. Push the changes and sync again in ArgoCD.
 
+Release process
+---------------
+
+### Creating a new release
+
+Drydock uses the following workflow for creating and publishing new releases. This process ensures that changes are reviewed and released in a controlled manner, maintaining the integrity of deployment environments and compatible versions.
+
+The process is as follows:
+
+1. **Create Pull Request for changes and merge:**
+    Develop the changes in a new branch, create a Pull Request against the target branch (for example, `main` or the corresponding release branch), and merge it once approved.
+
+2. **Version bump locally:**
+    Once the target branch is updated locally with the latest changes (for example, after running `git pull`), execute the following command to generate a new branch with the version bump:
+
+   ```bash
+        make bump
+   ```
+
+    This command creates a new `release-x.y.z` branch in the repository with the corresponding version increment and updates to the version files.
+
+3. **Merge the release branch:**
+    Create a Pull Request from the `release-x.y.z` branch to the target branch. Once approved and merged, manually trigger the `release` workflow in GitHub for that branch, which handles the release publication.
+
+
 Rationale
 ---------
 
