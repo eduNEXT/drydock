@@ -3,7 +3,7 @@
 install: ## install the dependencies
 	@echo "Installing dependencies."
 	@echo "Installing semantic-release."
-	pip install python-semantic-release
+	pip install -e .[dev]
 
 local-release:
 	@echo "Releasing a new version."
@@ -11,7 +11,7 @@ local-release:
 	@echo "You can push the changes and release manually."
 	semantic-release version --changelog --commit --no-push
 
-bump:
+bump: ## Bump the version and create a changelog - local
 	@echo "Bumping version locally with changelog."
 	$(MAKE) local-release
 	NEW_VERSION=$$(python -c "import drydock.__about__ as a; print(a.__version__)") && \
