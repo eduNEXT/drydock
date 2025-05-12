@@ -195,16 +195,16 @@ The process is as follows:
     Develop the changes in a new branch, create a Pull Request against the target branch (for example, `main` or the corresponding release branch), and merge it once approved.
 
 2. **Version bump locally:**
-    Once the target branch is updated locally with the latest changes (for example, after running `git pull`), execute the following command to generate a new branch with the version bump:
+    Once the target branch is updated locally with the latest changes (for example `main`, after running `git pull`), execute the following command to generate a the version bump:
 
    ```bash
-        make bump
+        make local-release
    ```
 
-    This command creates a new `release-x.y.z` branch in the repository with the corresponding version increment and updates to the version files.
+    This command creates the changes locally with the corresponding version increment and updates the version files. After this, you should push these changes to a new branch.
 
 3. **Merge the release branch:**
-    Create a Pull Request from the `release-x.y.z` branch to the target branch. Once approved and merged, manually trigger the `release` workflow in GitHub for that branch, which handles the release publication.
+    Create a Pull Request from the release branch to the target branch. Once approved and merged, manually trigger the `release` workflow in GitHub for that branch, which handles the release publication.
 
 
 Rationale
