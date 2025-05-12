@@ -15,7 +15,7 @@ jobs:
       with:
         fetch-depth: 0
 
-    - name: Python Semantic Release
+    - name: Set up Python
       uses: actions/setup-python@v5
       with:
         python-version: 3.12
@@ -24,15 +24,16 @@ jobs:
       run: |
         pip install -e .[dev]
 
-    - name: Run Semantic Release
-      run: make release
+    - name: Run release
+      run: make release-only
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Build package
       run: |
         python -m build --sdist --wheel --outdir dist/ .
-    - name: Publish package
+
+    - name: Publish package to PyPI
       uses: pypa/gh-action-pypi-publish@v1.12.4
       with:
         user: __token__
