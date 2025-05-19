@@ -101,36 +101,3 @@ spec:
     secretName: lms-host-tls
     {%- endif %}
   {%- endif %}
----
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: ingress-lms-preview
-  namespace: {{ K8S_NAMESPACE }}
-  annotations:
-  {%- if DRYDOCK_AUTO_TLS and not DRYDOCK_CUSTOM_CERTS %}
-    cert-manager.io/issuer: letsencrypt
-  {%- endif %}
-spec:
-  ingressClassName: nginx
-  rules:
-  - host: {{ PREVIEW_LMS_HOST }}
-    http:
-      paths:
-      - pathType: Prefix
-        path: "/"
-        backend:
-          service:
-            name: {% if DRYDOCK_BYPASS_CADDY -%}lms{% else -%}caddy{% endif %}
-            port:
-              number: {% if DRYDOCK_BYPASS_CADDY -%}8000{% else -%}80{% endif %}
-  {%- if DRYDOCK_AUTO_TLS or DRYDOCK_CUSTOM_CERTS %}
-  tls:
-  - hosts:
-    - {{ PREVIEW_LMS_HOST }}
-    {%- if DRYDOCK_CUSTOM_CERTS %}
-    secretName: {{ DRYDOCK_CUSTOM_CERTS["secret_name"]|default("custom-tls-certs") }}
-    {%- else %}
-    secretName: lms-preview-host-tls
-    {%- endif %}
-  {%- endif %}
