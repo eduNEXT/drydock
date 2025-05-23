@@ -8,6 +8,8 @@
 - plugins/drydock/k8s/ingress/lms.yml
 - plugins/drydock/k8s/ingress/cms.yml
 - plugins/drydock/k8s/ingress/mfe.yml
+- plugins/drydock/k8s/ingress/meilisearch.yml
+- plugins/drydock/k8s/ingress/notes.yml
 - plugins/drydock/k8s/ingress/extra-hosts.yml
 - plugins/drydock/k8s/ingress/static-cache.yml
 {%- endif %}
