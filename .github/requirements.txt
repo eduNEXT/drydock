@@ -1,5 +1,7 @@
-tutor~=19.0
-tutor-mfe~=19.0
-tutor-minio~=19.0
+tutor~=20.0
+tutor-mfe~=20.0
+tutor-forum~=20.0
+tutor-minio~=20.0
+tutor-notes~=20.0
+tutor-contrib-s3 @ git+https://github.com/edunext/tutor-contrib-s3@da2a122949b5df012d7fe6ee2a09462b3a2efb44
 setuptools
-git+https://github.com/edunext/tutor-contrib-s3@sumac
