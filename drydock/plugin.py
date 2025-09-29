@@ -152,6 +152,7 @@ config = {
         "PDB_MINAVAILABLE_PERCENTAGE_MFE": 0,
         "PDB_MINAVAILABLE_PERCENTAGE_FORUM": 0,
         "PDB_MINAVAILABLE_PERCENTAGE_CADDY": 0,
+        "CA_BUNDLE_NAME": "cluster-bundle",
         "POST_INIT_DEPLOYMENTS": [
             "lms",
             "cms",

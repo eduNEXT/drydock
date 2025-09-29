@@ -31,3 +31,13 @@ patches:
     kind: Deployment
     name: '{% for name in DRYDOCK_POST_INIT_DEPLOYMENTS %}{{ name }}{% if not loop.last %}|{% endif %}{% endfor %}'
   path: plugins/drydock/k8s/patches/post-init-deployments-sync-wave.yml
+
+- path: plugins/drydock/k8s/patches/tls-volume-append.yml
+  target: 
+    kind: "(Deployment|Job)"
+    name: aspects|superset-job.*|aspects-job.*|ralph
+
+- path: plugins/drydock/k8s/patches/tls-volume-add.yml
+  target:
+    kind: "(Deployment|Job)"
+    name: clickhouse-job.*
