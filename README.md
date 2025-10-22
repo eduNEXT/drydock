@@ -56,6 +56,7 @@ Configuration
 The following configuration options are available:
 
 - `DRYDOCK_INIT_JOBS`: Whether run the initialization jobs or not. Defaults to `false`.
+- `DRYDOCK_INIT_JOBS_EXCLUDED`: A list of init jobs to exclude, eg.: `["mysql-job"]`. Defaults to `[]`.
 - `DRYDOCK_CMS_SSO_USER`: The username of the CMS SSO user. Defaults to `cms`.
 - `DRYDOCK_AUTO_TLS`: Whether to use cert-manager to automatically generate TLS certificates. Defaults to `true`.
 - `DRYDOCK_INGRESS`: Whether to deploy an ingress for the LMS and CMS. Defaults to `true`.
