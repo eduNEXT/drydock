@@ -1,5 +1,5 @@
 echo "Initialising MongoDB..."
-mongosh --host {% if MONGODB_REPLICA_SET %}{{ MONGODB_REPLICA_SET }}/{% endif %}{{ MONGODB_HOST }} --port {{ MONGODB_PORT }} {% if MONGODB_ROOT_USERNAME and MONGODB_ROOT_PASSWORD %}-u {{ MONGODB_ROOT_USERNAME }} -p {{ MONGODB_ROOT_PASSWORD }}{% endif %} admin <<EOF
+mongosh --host {% if MONGODB_REPLICA_SET %}{{ MONGODB_REPLICA_SET }}/{% endif %}{{ MONGODB_HOST }} --port {{ MONGODB_PORT }} {% if MONGODB_USE_SSL %}--tls true {% endif %}{% if MONGODB_ROOT_USERNAME and MONGODB_ROOT_PASSWORD %}-u {{ MONGODB_ROOT_USERNAME }} -p {{ MONGODB_ROOT_PASSWORD }}{% endif %} admin <<EOF
   {% if MONGODB_USERNAME %}
   if (db.getUser("{{ MONGODB_USERNAME }}") == null) {
     db.createUser({

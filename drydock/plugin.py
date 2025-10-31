@@ -250,6 +250,7 @@ def delete_dbs_command():
 
     MONGO_DROP_COMMAND = """
     mongosh \
+        {% if MONGODB_USE_SSL %} --tls true \{% endif %}
         {% if MONGODB_ROOT_USERNAME and MONGODB_ROOT_PASSWORD %} \
         mongodb://{{ MONGODB_ROOT_USERNAME }}:{{ MONGODB_ROOT_PASSWORD }}@{{ MONGODB_HOST }}:{{ MONGODB_PORT }}/{{ MONGODB_DATABASE }}?authSource={{ MONGODB_AUTH_SOURCE }} --eval 'db.dropDatabase()'
         {% else %} \
