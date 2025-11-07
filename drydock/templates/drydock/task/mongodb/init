@@ -1,6 +1,3 @@
-{% if 'mongodb-job' in DRYDOCK_INIT_JOBS_EXCLUDED %}
-echo "Skipping MongoDB initialization..."
-{% else %}
 echo "Initialising MongoDB..."
 mongosh --host {% if MONGODB_REPLICA_SET %}{{ MONGODB_REPLICA_SET }}/{% endif %}{{ MONGODB_HOST }} --port {{ MONGODB_PORT }} {% if MONGODB_ROOT_USERNAME and MONGODB_ROOT_PASSWORD %}-u {{ MONGODB_ROOT_USERNAME }} -p {{ MONGODB_ROOT_PASSWORD }}{% endif %} admin <<EOF
   {% if MONGODB_USERNAME %}
@@ -26,5 +23,3 @@ mongosh --host {% if MONGODB_REPLICA_SET %}{{ MONGODB_REPLICA_SET }}/{% endif %}
   {{ patch("drydock-mongodb-init-job") }}
   exit
 EOF
-{% endif %}
-
