@@ -36,10 +36,11 @@ def get_init_tasks():
     init_tasks = list(tutor_hooks.Filters.CLI_DO_INIT_TASKS.iterate())
     context = click.get_current_context().obj
     tutor_conf = tutor_config.load(context.root)
+    excluded_init_jobs = set(tutor_conf.get('DRYDOCK_INIT_JOBS_EXCLUDED', ()))
 
     for i, (service, command) in enumerate(init_tasks):
         for template in _load_jobs(tutor_conf):
-            if template['metadata']['name'] != service + '-job':
+            if template['metadata']['name'] != service + '-job' or template['metadata']['name'] in excluded_init_jobs:
                 continue
 
             render_command = tutor_env.render_str(tutor_conf, command)
@@ -131,6 +132,7 @@ config = {
     "defaults": {
         "VERSION": __version__,
         "INIT_JOBS": False,
+        "INIT_JOBS_EXCLUDED": [],
         "CMS_SSO_USER": "cms",
         "AUTO_TLS": True,
         "MIGRATE_FROM": 0,
