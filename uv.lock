@@ -782,7 +782,7 @@ wheels = [
 
 [[package]]
 name = "tutor"
-version = "20.0.3"
+version = "21.0.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "appdirs" },
@@ -797,11 +797,11 @@ dependencies = [
     { name = "pyyaml" },
     { name = "typing-extensions" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/f9/8f/423a562a1873b376a8322753f3e762f173276557a8bc1465401f43a2d552/tutor-20.0.3.tar.gz", hash = "sha256:5699f8a3c4159389558bb823512d4d1b732e804b8769fcecf52bdcece3a5e184", size = 112434, upload-time = "2025-12-03T12:00:27.556Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/b8/1f/c6bbb9e94d00364f1ef063dd6f7e44e350e0d8549eb2e3ca199c651345cf/tutor-21.0.0.tar.gz", hash = "sha256:54582374afa781cc649818ac6dcc46e60518b46b2078d045dafd19e47b518896", size = 112839, upload-time = "2026-01-16T10:24:58.312Z" }
 
 [[package]]
 name = "tutor-contrib-drydock"
-version = "20.2.0"
+version = "21.0.0"
 source = { editable = "." }
 dependencies = [
     { name = "tutor" },
@@ -822,7 +822,7 @@ test = [
 ]
 
 [package.metadata]
-requires-dist = [{ name = "tutor", specifier = "~=20.0" }]
+requires-dist = [{ name = "tutor", specifier = "~=21.0" }]
 
 [package.metadata.requires-dev]
 dev = [
@@ -831,56 +831,56 @@ dev = [
     { name = "ty", specifier = ">=0.0.1a29" },
 ]
 test = [
-    { name = "tutor-contrib-s3", git = "https://github.com/hastexo/tutor-contrib-s3" },
-    { name = "tutor-forum", specifier = "~=20.0" },
-    { name = "tutor-mfe", specifier = "~=20.0" },
-    { name = "tutor-minio", specifier = "~=20.0" },
-    { name = "tutor-notes", specifier = "~=20.0" },
+    { name = "tutor-contrib-s3", git = "https://github.com/cleura/tutor-contrib-s3?tag=v2.5.0" },
+    { name = "tutor-forum", specifier = "~=21.0" },
+    { name = "tutor-mfe", specifier = "~=21.0" },
+    { name = "tutor-minio", specifier = "~=21.0" },
+    { name = "tutor-notes", specifier = "~=21.0" },
 ]
 
 [[package]]
 name = "tutor-contrib-s3"
-version = "2.3.2.dev3+g49f936d29"
-source = { git = "https://github.com/hastexo/tutor-contrib-s3#49f936d294435847e4a1e004185b09b291862cea" }
+version = "2.5.0"
+source = { git = "https://github.com/cleura/tutor-contrib-s3?tag=v2.5.0#6138badaaadea4099f0176dca311523e55d018bd" }
 dependencies = [
     { name = "tutor" },
 ]
 
 [[package]]
 name = "tutor-forum"
-version = "20.0.0"
+version = "21.0.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "tutor" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/a6/1e/d687007cd4ceea6bc1fb9dc17ca23161f2285ca397b18ae959c145067190/tutor_forum-20.0.0.tar.gz", hash = "sha256:f00e5e5005985974edb97d4c7dc865c544f4cc6dc75d59db0a6198ca9be292b8", size = 16621, upload-time = "2025-06-27T11:58:42.795Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/98/7c/9098960807812deafe6f9b95a06f3790a7a6e47f4a1f1215da69dc2bfe57/tutor_forum-21.0.0.tar.gz", hash = "sha256:00aa7c31b1d1563ae99ef567c34900f0b9fb859a6d2dd6a33d6e03d0fbefe758", size = 16746, upload-time = "2026-01-16T13:36:08.109Z" }
 
 [[package]]
 name = "tutor-mfe"
-version = "20.1.0"
+version = "21.0.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "tutor" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/a8/f7/d86098d96b72fc113235cc724c53f1db4c3ce0eb7a824b0edb56cac64369/tutor_mfe-20.1.0.tar.gz", hash = "sha256:50ec3c2265ca4af23fbd4cac1bd17026cf2aeaa7af182b39342234f2d9e19d76", size = 44541, upload-time = "2025-09-23T06:43:48.615Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/29/51/591e2608026176c10a4b01fdd6e637324d1158e35f3b54aabe3214cb9d33/tutor_mfe-21.0.0.tar.gz", hash = "sha256:2a266d9554cbeeb2ac01391071308c14cd5a78b39f9407f088e28373a3870b17", size = 44352, upload-time = "2026-01-16T11:55:17.916Z" }
 
 [[package]]
 name = "tutor-minio"
-version = "20.0.0"
+version = "21.0.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "tutor" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/6c/dd/920154efdbeacdc150cc5e1e861f82e96be56c7498796ef2c65b8f2bc74c/tutor_minio-20.0.0.tar.gz", hash = "sha256:1e4a1c479c6a285ba6ec160ef30ea0479469af1095310dc37abc4f547712fa43", size = 18546, upload-time = "2025-06-27T12:16:36.243Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/99/44/e9ba846ecb82fad051aac19d886a6de1823d61f47b2147aeb3ce8f7942ad/tutor_minio-21.0.0.tar.gz", hash = "sha256:ef2f68c9efbf58b06b1e0e0c27b8ceba5638a1e44ee09c06cf4823291a9133c0", size = 18692, upload-time = "2026-01-16T13:47:52.994Z" }
 
 [[package]]
 name = "tutor-notes"
-version = "20.0.0"
+version = "21.0.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "tutor" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/92/54/f61f47f00de21edacb647f2014876c65eb1c2a25163426f391ece253162b/tutor_notes-20.0.0.tar.gz", hash = "sha256:4b8ca65a7b79accbc8f2bada7631a6fdb6eddca2a5be9d994aa871697cfe395e", size = 19023, upload-time = "2025-06-27T12:08:31.792Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/1a/c6/8762e7cba916c8e8172d354e4b3474675e6b265fc62f5fa9ab8b13ac6ae5/tutor_notes-21.0.0.tar.gz", hash = "sha256:7db288c4a2d54db8564a947be6bac251feea193078851ccd405c945695e2ad0a", size = 18886, upload-time = "2026-01-16T13:24:04.004Z" }
 
 [[package]]
 name = "ty"

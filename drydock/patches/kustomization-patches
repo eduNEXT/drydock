@@ -1,4 +1,3 @@
-patches:
 {% if DRYDOCK_NEWRELIC_LICENSE_KEY %}
 - target:
     kind: Deployment
