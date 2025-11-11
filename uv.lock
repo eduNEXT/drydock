@@ -2,6 +2,16 @@ version = 1
 revision = 3
 requires-python = ">=3.10"
 
+[manifest]
+overrides = [
+    { name = "tutor", git = "https://github.com/overhangio/tutor?rev=ulmo" },
+    { name = "tutor-contrib-s3", git = "https://github.com/edunext/tutor-contrib-s3" },
+    { name = "tutor-forum", git = "https://github.com/overhangio/tutor-forum?rev=ulmo" },
+    { name = "tutor-mfe", git = "https://github.com/overhangio/tutor-mfe?rev=ulmo" },
+    { name = "tutor-minio", git = "https://github.com/overhangio/tutor-minio?rev=ulmo" },
+    { name = "tutor-notes", git = "https://github.com/overhangio/tutor-notes?rev=ulmo" },
+]
+
 [[package]]
 name = "appdirs"
 version = "1.4.4"
@@ -782,8 +792,8 @@ wheels = [
 
 [[package]]
 name = "tutor"
-version = "20.0.3"
-source = { registry = "https://pypi.org/simple" }
+version = "21.0.0"
+source = { git = "https://github.com/overhangio/tutor?rev=ulmo#43da7ac311b5d4b8245ab292a25491c7974814db" }
 dependencies = [
     { name = "appdirs" },
     { name = "click" },
@@ -797,7 +807,6 @@ dependencies = [
     { name = "pyyaml" },
     { name = "typing-extensions" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/f9/8f/423a562a1873b376a8322753f3e762f173276557a8bc1465401f43a2d552/tutor-20.0.3.tar.gz", hash = "sha256:5699f8a3c4159389558bb823512d4d1b732e804b8769fcecf52bdcece3a5e184", size = 112434, upload-time = "2025-12-03T12:00:27.556Z" }
 
 [[package]]
 name = "tutor-contrib-drydock"
@@ -822,7 +831,7 @@ test = [
 ]
 
 [package.metadata]
-requires-dist = [{ name = "tutor", specifier = "~=20.0" }]
+requires-dist = [{ name = "tutor", specifier = "~=21.0" }]
 
 [package.metadata.requires-dev]
 dev = [
@@ -831,7 +840,7 @@ dev = [
     { name = "ty", specifier = ">=0.0.1a29" },
 ]
 test = [
-    { name = "tutor-contrib-s3", git = "https://github.com/hastexo/tutor-contrib-s3" },
+    { name = "tutor-contrib-s3", git = "https://github.com/edunext/tutor-contrib-s3" },
     { name = "tutor-forum", specifier = "~=20.0" },
     { name = "tutor-mfe", specifier = "~=20.0" },
     { name = "tutor-minio", specifier = "~=20.0" },
@@ -840,47 +849,43 @@ test = [
 
 [[package]]
 name = "tutor-contrib-s3"
-version = "2.3.2.dev3+g49f936d29"
-source = { git = "https://github.com/hastexo/tutor-contrib-s3#49f936d294435847e4a1e004185b09b291862cea" }
+version = "0.1.dev86+g49f936d29"
+source = { git = "https://github.com/edunext/tutor-contrib-s3#49f936d294435847e4a1e004185b09b291862cea" }
 dependencies = [
     { name = "tutor" },
 ]
 
 [[package]]
 name = "tutor-forum"
-version = "20.0.0"
-source = { registry = "https://pypi.org/simple" }
+version = "21.0.0"
+source = { git = "https://github.com/overhangio/tutor-forum?rev=ulmo#acb4cf5e1974e27447e345d655034756b1749f1e" }
 dependencies = [
     { name = "tutor" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/a6/1e/d687007cd4ceea6bc1fb9dc17ca23161f2285ca397b18ae959c145067190/tutor_forum-20.0.0.tar.gz", hash = "sha256:f00e5e5005985974edb97d4c7dc865c544f4cc6dc75d59db0a6198ca9be292b8", size = 16621, upload-time = "2025-06-27T11:58:42.795Z" }
 
 [[package]]
 name = "tutor-mfe"
-version = "20.1.0"
-source = { registry = "https://pypi.org/simple" }
+version = "21.0.0"
+source = { git = "https://github.com/overhangio/tutor-mfe?rev=ulmo#7747723aef2d9fcb0e0af5a43da592b5bc232cb8" }
 dependencies = [
     { name = "tutor" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/a8/f7/d86098d96b72fc113235cc724c53f1db4c3ce0eb7a824b0edb56cac64369/tutor_mfe-20.1.0.tar.gz", hash = "sha256:50ec3c2265ca4af23fbd4cac1bd17026cf2aeaa7af182b39342234f2d9e19d76", size = 44541, upload-time = "2025-09-23T06:43:48.615Z" }
 
 [[package]]
 name = "tutor-minio"
-version = "20.0.0"
-source = { registry = "https://pypi.org/simple" }
+version = "21.0.0"
+source = { git = "https://github.com/overhangio/tutor-minio?rev=ulmo#118b08c0f72b63aac5f28c4dac53c9e2b33f2e45" }
 dependencies = [
     { name = "tutor" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/6c/dd/920154efdbeacdc150cc5e1e861f82e96be56c7498796ef2c65b8f2bc74c/tutor_minio-20.0.0.tar.gz", hash = "sha256:1e4a1c479c6a285ba6ec160ef30ea0479469af1095310dc37abc4f547712fa43", size = 18546, upload-time = "2025-06-27T12:16:36.243Z" }
 
 [[package]]
 name = "tutor-notes"
-version = "20.0.0"
-source = { registry = "https://pypi.org/simple" }
+version = "21.0.0"
+source = { git = "https://github.com/overhangio/tutor-notes?rev=ulmo#18240008c8e7616b8f348c89404086ecedf11525" }
 dependencies = [
     { name = "tutor" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/92/54/f61f47f00de21edacb647f2014876c65eb1c2a25163426f391ece253162b/tutor_notes-20.0.0.tar.gz", hash = "sha256:4b8ca65a7b79accbc8f2bada7631a6fdb6eddca2a5be9d994aa871697cfe395e", size = 19023, upload-time = "2025-06-27T12:08:31.792Z" }
 
 [[package]]
 name = "ty"
