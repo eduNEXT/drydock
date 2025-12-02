@@ -40,6 +40,7 @@ spec:
             name: {% if DRYDOCK_BYPASS_CADDY -%}mfe{% else -%}caddy{% endif %}
             port:
               number: {% if DRYDOCK_BYPASS_CADDY -%}8002{% else -%}80{% endif %}
+{%- if MFE_HOST is defined %}
 {% for app_name, app in iter_mfes() %}
 {%- if app_name != "authoring" %}
       - pathType: Prefix
@@ -51,6 +52,7 @@ spec:
               number: {% if DRYDOCK_BYPASS_CADDY -%}8002{% else -%}80{% endif %}
 {%- endif %}
 {%- endfor %}
+{%- endif %}
       - pathType: Prefix
         path: "/"
         backend:
@@ -70,6 +72,7 @@ spec:
             name: {% if DRYDOCK_BYPASS_CADDY -%}mfe{% else -%}caddy{% endif %}
             port:
               number: {% if DRYDOCK_BYPASS_CADDY -%}8002{% else -%}80{% endif %}
+{%- if MFE_HOST is defined %}
 {% for app_name, app in iter_mfes() %}
       - pathType: Prefix
         path: "/{{app_name}}"
@@ -79,6 +82,7 @@ spec:
             port:
               number: {% if DRYDOCK_BYPASS_CADDY -%}8002{% else -%}80{% endif %}
 {%- endfor %}
+{%- endif %}
       - pathType: Prefix
         path: "/"
         backend:

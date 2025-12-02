@@ -6,10 +6,8 @@ them.
 
 from __future__ import annotations
 
-import typing as t
-
 from tutor.core.hooks import Filter
 
-SYNC_WAVES_ORDER_ATTRS_TYPE = t.Dict[str, int]
+SYNC_WAVES_ORDER_ATTRS_TYPE = dict[str, int]
 
-SYNC_WAVES_ORDER: Filter[dict[str, SYNC_WAVES_ORDER_ATTRS_TYPE], []] = Filter()
+SYNC_WAVES_ORDER: Filter[SYNC_WAVES_ORDER_ATTRS_TYPE, tuple] = Filter()
