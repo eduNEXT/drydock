@@ -1,6 +1,52 @@
 # CHANGELOG
 
+<!--
+All enhancements and changes will be documented in this file.  It adheres to
+the structure of http://keepachangelog.com/ ,
 
+This project adheres to Semantic Versioning (http://semver.org/).
+-->
+
+## Unreleased
+
+See the fragment files in the [changelog.d/ directory](./changelog.d).
+
+<!-- scriv-insert-here -->
+
+<a id='changelog-19.3.0'></a>
+## 19.3.0 — 2026-04-24
+
+> [!NOTE]
+>
+> This is a backport of the following commits:
+> - 3e516df0fcb302ec57b1a1c10d37892c6da274f4
+> - eaa3fb5aa2860d80f070f0d8a8c70f3389078182
+> - c07a145267b0ac5257acbf34c16e064946888026
+> - 91910454772de3830a12d47a04b852a410cfd0dd
+
+### Added
+
+- The new `DRYDOCK_INGRESS_CLASS` allows to configure the ingress class used by
+  the Ingress and Issuers objects.
+
+### Changed
+
+- The prefix `ingress-` was removed from the ingress objects names. The suffix
+  `-tls` was also removed from additional ingresses defined via
+  `DRYDOCK_INGRESS_EXTRA_HOSTS`.
+
+### Removed
+
+- All support for debug pods via Ingress NGINX canary annotations has been
+  removed. Users of this feature must re-implement it.
+
+- Several features that rely on specific ingress-nginx functionality have been
+  removed:
+  - The NGINX static cache ingress resources and related plugin settings.
+  - The bypass Caddy configuration used to route traffic directly from the
+    ingress-controller avoiding extra latency.
+
+<a id='changelog-19.2.0'></a>
 ## v19.2.0 (2025-04-15)
 
 ### Features

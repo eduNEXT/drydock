@@ -1,1 +1,3 @@
-__version__ = "19.2.0"
+from importlib import metadata
+
+__version__ = metadata.version("tutor-contrib-drydock")
