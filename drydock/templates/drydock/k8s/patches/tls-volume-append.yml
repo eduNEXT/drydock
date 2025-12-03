@@ -1,0 +1,17 @@
+- op: add
+  path: /spec/template/spec/volumes/-
+  value:
+    name: ca-certificates
+    configMap:
+      name: cluster-bundle
+      defaultMode: 420 # Octal 0644
+      optional: false
+      items:
+        - key: ca-certificates.crt
+          path: ca-certificates.crt
+- op: add
+  path: /spec/template/spec/containers/0/volumeMounts/-
+  value:
+    name: ca-certificates
+    readOnly: true
+    mountPath: /etc/ssl/certs
