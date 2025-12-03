@@ -245,21 +245,61 @@ def delete_dbs_command():
 
     MONGO_DROP_COMMAND = """
     mongosh \
-        {% if MONGODB_ROOT_USERNAME and MONGODB_ROOT_PASSWORD %} \
-        mongodb://{{ MONGODB_ROOT_USERNAME }}:{{ MONGODB_ROOT_PASSWORD }}@{{ MONGODB_HOST }}:{{ MONGODB_PORT }}/{{ MONGODB_DATABASE }}?authSource={{ MONGODB_AUTH_SOURCE }} --eval 'db.dropDatabase()'
-        {% else %} \
-        mongodb://{{ MONGODB_HOST }}:{{ MONGODB_PORT }}/{{ MONGODB_DATABASE }}?authSource={{ MONGODB_AUTH_SOURCE }} --eval 'db.dropDatabase()'
-        {% if 'forum' in PLUGINS %}
-        mongodb://{{ MONGODB_HOST }}:{{ MONGODB_PORT }}/{{ FORUM_MONGODB_DATABASE }}?authSource={{ MONGODB_AUTH_SOURCE }} --eval 'db.dropDatabase()'
-        {% endif %}
-        {% endif %}
+        --host {% if MONGODB_REPLICA_SET %}{{ MONGODB_REPLICA_SET }}/{% endif %}{{ MONGODB_HOST }} \
+        --port {{ MONGODB_PORT }} \
+        {% if MONGODB_ROOT_USERNAME %} \
+        --username {{ MONGODB_ROOT_USERNAME }} \
+        {% endif  %} \
+        {% if MONGODB_ROOT_PASSWORD %} \
+        --password {{ MONGODB_ROOT_PASSWORD }} \
+        {% endif  %} \
+        --authenticationDatabase {{ MONGODB_AUTH_SOURCE }} \
+        {% if MONGODB_USE_SSL %} --tls true {% endif %} \
+        {{ MONGODB_DATABASE }} \
+        --eval 'db.dropDatabase()'
+
+    {% if 'forum' in PLUGINS %}
+    mongosh \
+        --host {% if MONGODB_REPLICA_SET %}{{ MONGODB_REPLICA_SET }}/{% endif %}{{ MONGODB_HOST }} \
+        --port {{ MONGODB_PORT }} \
+        {% if MONGODB_ROOT_USERNAME %} \
+        --username {{ MONGODB_ROOT_USERNAME }} \
+        {% endif %} \
+        {% if MONGODB_ROOT_PASSWORD %} \
+        --password {{ MONGODB_ROOT_PASSWORD }} \
+        {% endif %} \
+        --authenticationDatabase {{ MONGODB_AUTH_SOURCE }} \
+        {% if MONGODB_USE_SSL %} --tls true {% endif %} \
+        {{ FORUM_MONGODB_DATABASE }} \
+        --eval 'db.dropDatabase()'
+    {% endif  %}
     """
     MYSQL_DROP_COMMAND = """
-    mysql -u {{ MYSQL_ROOT_USERNAME }} --password="{{ MYSQL_ROOT_PASSWORD }}" --host "{{ MYSQL_HOST }}" --port {{ MYSQL_PORT }} -e "DROP DATABASE IF EXISTS {{ OPENEDX_MYSQL_DATABASE }};"
-    mysql -u {{ MYSQL_ROOT_USERNAME }} --password="{{ MYSQL_ROOT_PASSWORD }}" --host "{{ MYSQL_HOST }}" --port {{ MYSQL_PORT }} -e "DROP USER IF EXISTS '{{ OPENEDX_MYSQL_USERNAME }}';"
+    mysql \
+        --user {{ MYSQL_ROOT_USERNAME }} \
+        --password="{{ MYSQL_ROOT_PASSWORD }}" \
+        --host "{{ MYSQL_HOST }}" \
+        --port {{ MYSQL_PORT }} \
+        --execute "DROP DATABASE IF EXISTS {{ OPENEDX_MYSQL_DATABASE }};"
+    mysql \
+        --user {{ MYSQL_ROOT_USERNAME }} \
+        --password="{{ MYSQL_ROOT_PASSWORD }}" \
+        --host "{{ MYSQL_HOST }}" \
+        --port {{ MYSQL_PORT }} \
+        --execute "DROP USER IF EXISTS '{{ OPENEDX_MYSQL_USERNAME }}';" \
     {% if 'notes' in PLUGINS %}
-    mysql -u {{ MYSQL_ROOT_USERNAME }} --password="{{ MYSQL_ROOT_PASSWORD }}" --host "{{ MYSQL_HOST }}" --port {{ MYSQL_PORT }} -e 'DROP DATABASE IF EXISTS {{ NOTES_MYSQL_DATABASE }};'
-    mysql -u {{ MYSQL_ROOT_USERNAME }} --password="{{ MYSQL_ROOT_PASSWORD }}" --host "{{ MYSQL_HOST }}" --port {{ MYSQL_PORT }} -e "DROP USER IF EXISTS '{{ NOTES_MYSQL_USERNAME }}';"
+    mysql \
+        --user {{ MYSQL_ROOT_USERNAME }} \
+        --password="{{ MYSQL_ROOT_PASSWORD }}" \
+        --host "{{ MYSQL_HOST }}" \
+        --port {{ MYSQL_PORT }} \
+        --execute 'DROP DATABASE IF EXISTS {{ NOTES_MYSQL_DATABASE }};' \
+    mysql \
+        --user {{ MYSQL_ROOT_USERNAME }} \
+        --password="{{ MYSQL_ROOT_PASSWORD }}" \
+        --host "{{ MYSQL_HOST }}" \
+        --port {{ MYSQL_PORT }} \
+        --execute 'DROP USER IF EXISTS {{ NOTES_MYSQL_USERNAME }};' \
     {% endif %}
     """
     do_callback(

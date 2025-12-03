@@ -1,6 +1,6 @@
 [project]
 name = "tutor-contrib-drydock"
-version = "20.1.0"
+version = "20.1.1"
 description = "A Tutor plugin to manage our opinionated Open edX operations"
 readme = "README.md"
 requires-python = ">=3.10"
