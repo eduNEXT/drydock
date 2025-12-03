@@ -1,6 +1,32 @@
 # CHANGELOG
 
+<!--
+All enhancements and changes will be documented in this file.  It adheres to
+the structure of http://keepachangelog.com/ ,
 
+This project adheres to Semantic Versioning (http://semver.org/).
+-->
+
+## Unreleased
+
+See the fragment files in the [changelog.d/ directory](./changelog.d).
+
+<!-- scriv-insert-here -->
+
+<a id='changelog-20.1.0'></a>
+## v20.1.0 (2025-11-10)
+
+### Features
+- Add the ability to exclude init jobs
+
+<a id='changelog-20.0.0'></a>
+## v20.0.0 (2025-07-02)
+
+### Features
+
+- Add support for the Teak release
+
+<a id='changelog-19.2.0'></a>
 ## v19.2.0 (2025-04-15)
 
 ### Features
