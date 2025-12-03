@@ -23,7 +23,6 @@ dependencies = [
     "tutor~=20.0"
 ]
 
-
 [project.urls]
 Homepage = "https://github.com/edunext/drydock"
 Code = "https://github.com/edunext/drydock"
@@ -59,6 +58,9 @@ entry_title_template = "file: changelog.d/scriv/entry_title.md.j2"
 module-root = "."
 module-name = "drydock"
 
+[tool.uv.sources]
+tutor-contrib-s3 = { git = "https://github.com/hastexo/tutor-contrib-s3" }
+
 [build-system]
 requires = ["uv_build>=0.9.5,<0.10.0"]
 build-backend = "uv_build"
@@ -68,5 +70,12 @@ dev = [
     "ruff>=0.14.6",
     "scriv>=1.7.0",
     "ty>=0.0.1a29",
+]
+test = [
+    "tutor-contrib-s3",
+    "tutor-forum~=20.0",
+    "tutor-mfe~=20.0",
+    "tutor-minio~=20.0",
+    "tutor-notes~=20.0",
 ]
 

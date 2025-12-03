@@ -33,7 +33,7 @@ spec:
   - host: {{ CMS_HOST }}
     http:
       paths:
-{%- if MFE_HOST is defined %}
+{%- if MFE_DOCKER_IMAGE is defined %}
 {%- for app_name, app in iter_mfes() %}
 {%- if app_name == "authoring" %}
       - pathType: Prefix
