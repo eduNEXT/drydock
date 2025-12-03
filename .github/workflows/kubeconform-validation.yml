@@ -3,7 +3,11 @@ name: Kubeconform Validation
 on:
   pull_request:
   push:
-    branches: main
+    branches:
+      - main
+
+env:
+  UV_VERSION: 0.9.13
 
 jobs:
   load-environments:
@@ -12,53 +16,61 @@ jobs:
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v6
       - id: set-matrix
-        run: echo "::set-output name=matrix::$(ls .github/environments/ | jq -R -s -c 'split("\n")[:-1]')"
+        run: echo "matrix=$(ls .github/environments/ | jq -R -s -c 'split("\n")[:-1]')" >> $GITHUB_OUTPUT
+
   validation:
     needs: load-environments
     strategy:
       matrix:
         environment: ${{fromJson(needs.load-environments.outputs.matrix)}}
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
-      - name: setup python
-        uses: actions/setup-python@v5
+        uses: actions/checkout@v6
+
+      - name: setup uv
+        uses: astral-sh/setup-uv@v7
         with:
-          python-version: 3.12
-      - name: Setup Tutor environment
-        run: |
-          echo "TUTOR_ROOT=$GITHUB_WORKSPACE/.github/environments/${{ matrix.environment }}" >> $GITHUB_ENV
-          echo "TUTOR_PLUGINS_ROOT=$TUTOR_ROOT/plugins" >> $GITHUB_ENV
-      - name: Install python reqs
-        run: |
-          pip install -r .github/requirements.txt
-          pip install -e .
-      - name: Tutor config save
-        run: tutor config save
+          python-version: "3.10"
+          enable-cache: true
+          version: ${{ env.UV_VERSION }}
+
       - name: Install Kubernetes tools
         uses: alexellis/arkade-get@master
         with:
           kubectl: latest
-          kustomize: latest
-          kubeconform: v0.6.6
+          kubeconform: v0.7.0
+
+      - name: Setup Tutor environment
+        run: |
+          echo "TUTOR_ROOT=$GITHUB_WORKSPACE/.github/environments/${{ matrix.environment }}" >> $GITHUB_ENV
+          echo "TUTOR_PLUGINS_ROOT=$TUTOR_ROOT/plugins" >> $GITHUB_ENV
+
+      - name: Tutor config save
+        run: |
+          uv run \
+          --group test \
+          --isolated \
+          tutor config save
+
       - name: Print versions
         run: |
           echo "Kubectl version installed:"
           kubectl version --client
-          echo "Kustomize version installed:"
-          kustomize version
           echo "Kubeconform version installed:"
           kubeconform -v
+
       - name: Extract Kubernetes client version
         id: extract_version
         run: |
           KUBECTL_VERSION=$(kubectl version --client --output=json | jq -r '.clientVersion.gitVersion' | sed 's/^v//')
           echo "Extracted KUBECTL_VERSION=${KUBECTL_VERSION}"
           echo "k8s_version=${KUBECTL_VERSION}" >> $GITHUB_OUTPUT
+
       - name: Check k8s manifests
         run: |
           K8S_VERSION=${{ steps.extract_version.outputs.k8s_version }}
-          kustomize build $TUTOR_ROOT/env | kubeconform -strict -ignore-missing-schemas -kubernetes-version ${K8S_VERSION}
+          kubectl kustomize $TUTOR_ROOT/env | kubeconform -strict -ignore-missing-schemas -kubernetes-version ${K8S_VERSION}
