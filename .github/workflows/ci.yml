@@ -72,7 +72,6 @@ jobs:
           gh release create "v${VERSION}" \
             --title  ${VERSION} \
             --target "${{ github.sha }}" \
-            --prerelease \
             --notes-file release-body \
             dist/*
 
