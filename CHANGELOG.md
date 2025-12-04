@@ -13,6 +13,16 @@ See the fragment files in the [changelog.d/ directory](./changelog.d).
 
 <!-- scriv-insert-here -->
 
+<a id='changelog-20.1.1'></a>
+## 20.1.1 — 2025-12-04
+
+### Fixed
+
+- Adjust the drop-db command to properly handle replica set configuration if
+  available. Remove the Notes user if the Notes plugin is enabled.
+- Avoid erroring when calling `iter_mfes` if the MFE plugin is not enabled.
+  Useful for testing with the minimal dependencies.
+
 <a id='changelog-20.1.0'></a>
 ## v20.1.0 (2025-11-10)
 
