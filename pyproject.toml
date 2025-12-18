@@ -1,6 +1,6 @@
 [project]
 name = "tutor-contrib-drydock"
-version = "20.1.1"
+version = "21.0.0"
 description = "A Tutor plugin to manage our opinionated Open edX operations"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -20,7 +20,7 @@ classifiers = [
     "Programming Language :: Python :: 3.13",
 ]
 dependencies = [
-    "tutor~=20.0"
+    "tutor~=21.0"
 ]
 
 [project.urls]
@@ -60,6 +60,17 @@ module-name = "drydock"
 
 [tool.uv.sources]
 tutor-contrib-s3 = { git = "https://github.com/hastexo/tutor-contrib-s3" }
+
+# TODO: Delete before merging
+[tool.uv]
+override-dependencies = [
+    "tutor @ git+https://github.com/overhangio/tutor@ulmo",
+    "tutor-mfe @ git+https://github.com/overhangio/tutor-mfe@ulmo",
+    "tutor-forum @ git+https://github.com/overhangio/tutor-forum@ulmo",
+    "tutor-minio @ git+https://github.com/overhangio/tutor-minio@ulmo",
+    "tutor-notes @ git+https://github.com/overhangio/tutor-notes@ulmo",
+    "tutor-contrib-s3 @ git+https://github.com/edunext/tutor-contrib-s3@ulmo",
+]
 
 [build-system]
 requires = ["uv_build>=0.9.5,<0.10.0"]
