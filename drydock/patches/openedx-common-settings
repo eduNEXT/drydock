@@ -22,6 +22,7 @@ def scorm_xblock_storage(xblock):
     )
 XBLOCK_SETTINGS["ScormXBlock"] = {
     "STORAGE_FUNC": scorm_xblock_storage,
+    "PROXY_ASSETS_LMS": False,
 }
 {% endif %}
 
