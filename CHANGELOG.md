@@ -13,6 +13,15 @@ See the fragment files in the [changelog.d/ directory](./changelog.d).
 
 <!-- scriv-insert-here -->
 
+<a id='changelog-20.2.0'></a>
+## 20.2.0 — 2026-01-27
+
+### Fixed
+
+- Ensure that the `utf8mb4` charset is used when connecting to MySQL.
+- Do not proxy SCORM assets directly through the LMS. This restores the previous
+  behaviour for versions prior to v19.0.3 of openedx-scorm-xblock.
+
 <a id='changelog-20.1.1'></a>
 ## 20.1.1 — 2025-12-04
 
