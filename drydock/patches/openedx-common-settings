@@ -30,3 +30,5 @@ LOGGING["loggers"].pop("tracking")
 LOGGING["loggers"][""]["handlers"] = ["console"]
 
 FORUM_MONGODB_DATABASE = "{{ FORUM_MONGODB_DATABASE }}"
+
+DATABASES["default"]["OPTIONS"]["charset"] = "utf8mb4"
