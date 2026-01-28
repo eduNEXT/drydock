@@ -1,6 +1,6 @@
 [project]
 name = "tutor-contrib-drydock"
-version = "20.2.0"
+version = "21.0.0"
 description = "A Tutor plugin to manage our opinionated Open edX operations"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -20,7 +20,7 @@ classifiers = [
     "Programming Language :: Python :: 3.13",
 ]
 dependencies = [
-    "tutor~=20.0"
+    "tutor~=21.0"
 ]
 
 [project.urls]
@@ -59,7 +59,7 @@ module-root = "."
 module-name = "drydock"
 
 [tool.uv.sources]
-tutor-contrib-s3 = { git = "https://github.com/hastexo/tutor-contrib-s3" }
+tutor-contrib-s3 = { git = "https://github.com/cleura/tutor-contrib-s3",  tag = "v2.5.0" }
 
 [build-system]
 requires = ["uv_build>=0.9.5,<0.10.0"]
@@ -73,9 +73,9 @@ dev = [
 ]
 test = [
     "tutor-contrib-s3",
-    "tutor-forum~=20.0",
-    "tutor-mfe~=20.0",
-    "tutor-minio~=20.0",
-    "tutor-notes~=20.0",
+    "tutor-forum~=21.0",
+    "tutor-mfe~=21.0",
+    "tutor-minio~=21.0",
+    "tutor-notes~=21.0",
 ]
 

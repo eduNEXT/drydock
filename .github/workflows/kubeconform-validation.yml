@@ -8,6 +8,8 @@ on:
 
 env:
   UV_VERSION: 0.9.13
+  KUBECTL_VERSION: v1.33.0
+  KUBECONFORM_VERSION: v0.7.0
 
 jobs:
   load-environments:
@@ -38,11 +40,18 @@ jobs:
           enable-cache: true
           version: ${{ env.UV_VERSION }}
 
-      - name: Install Kubernetes tools
-        uses: alexellis/arkade-get@master
-        with:
-          kubectl: latest
-          kubeconform: v0.7.0
+      - name: Install kubectl
+        run: |
+          curl -LO "https://dl.k8s.io/release/${{ env.KUBECTL_VERSION }}/bin/linux/amd64/kubectl"
+          chmod +x kubectl
+          sudo mv kubectl /usr/local/bin/
+
+      - name: Install kubeconform
+        run: |
+          curl -LO "https://github.com/yannh/kubeconform/releases/download/${{ env.KUBECONFORM_VERSION }}/kubeconform-linux-amd64.tar.gz"
+          tar xzf kubeconform-linux-amd64.tar.gz
+          chmod +x kubeconform
+          sudo mv kubeconform /usr/local/bin/
 
       - name: Setup Tutor environment
         run: |
