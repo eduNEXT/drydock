@@ -30,7 +30,6 @@ tutor_hooks.Filters.CONFIG_DEFAULTS.add_items(
         ("DRYDOCK_INGRESS_LMS_EXTRA_HOSTS", []),
         ("DRYDOCK_NEWRELIC_LICENSE_KEY", ""),
         ("DRYDOCK_CUSTOM_CERTS", {}),
-        ("DRYDOCK_DEBUG", False),
         ("DRYDOCK_LETSENCRYPT_EMAIL", "{{ CONTACT_EMAIL }}"),
         ("DRYDOCK_ENABLE_MULTITENANCY", True),
         ("DRYDOCK_ENABLE_SCORM", True),
@@ -126,9 +125,6 @@ def get_init_tasks():
 CORE_SYNC_WAVES_ORDER: SYNC_WAVES_ORDER_ATTRS_TYPE = {
     "drydock-upgrade-lms-job": 50,
     "drydock-upgrade-cms-job": 51,
-    "lms-debug": 50,
-    "cms-debug": 50,
-    "ingress-debug": 200,
     "deployments:post-init-apps": 100,
     "horizontalpodautoscalers:all": 150,
 }
