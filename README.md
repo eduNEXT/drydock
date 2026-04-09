@@ -76,7 +76,6 @@ The following configuration options are available:
     {{service_name}}:
         host: {{service_host}} # e.g: {{LMS_HOST}}
         path: /static/ # you can specify a different path
-        port: {{service_port}} # only needed if you have DRYDOCK_BYPASS_CADDY enabled
   ```
 - `DRYDOCK_PDB_MINAVAILABLE_PERCENTAGE_MFE`: The minimum available percentage for the MFE's PodDisruptionBudget. To disable the PodDisruptionBudget, set `0`. Defaults to `0`.
 - `DRYDOCK_PDB_MINAVAILABLE_PERCENTAGE_FORUM`: The minimum available percentage for the FORUM's PodDisruptionBudget. To disable the PodDisruptionBudget, set `0`. Defaults to `0`.

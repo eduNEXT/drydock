@@ -19,9 +19,9 @@ spec:
         path: "/"
         backend:
           service:
-            name: {% if DRYDOCK_BYPASS_CADDY -%}mfe{% else -%}caddy{% endif %}
+            name: caddy
             port:
-              number: {% if DRYDOCK_BYPASS_CADDY -%}8002{% else -%}80{% endif %}
+              number: 80
   {%- if DRYDOCK_AUTO_TLS or DRYDOCK_CUSTOM_CERTS %}
   tls:
   - hosts:

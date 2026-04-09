@@ -27,7 +27,7 @@ spec:
           path: {{ config["path"]}}
           backend:
             service:
-              name: {% if DRYDOCK_BYPASS_CADDY -%}{{ service }}{% else -%}caddy{% endif %}
+              name: caddy
               port:
-                number: {% if DRYDOCK_BYPASS_CADDY -%}{{ config["port"] }}{% else -%}80{% endif %}
+                number: 80
 {%- endfor %}
