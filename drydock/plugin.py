@@ -46,7 +46,6 @@ tutor_hooks.Filters.CONFIG_DEFAULTS.add_items(
             "DRYDOCK_POST_INIT_DEPLOYMENTS",
             ["lms", "cms", "forum", "lms-worker", "cms-worker", "superset", "superset-worker", "superset-celery-beat"],
         ),
-        ("DRYDOCK_NGINX_STATIC_CACHE_CONFIG", {}),
         ("DRYDOCK_REGISTRY_CREDENTIALS", ""),
     ]
 )
