@@ -28,7 +28,7 @@ metadata:
       }
   {%- endif %}
 spec:
-  ingressClassName: nginx
+  ingressClassName: {{ DRYDOCK_INGRESS_CLASS }}
   rules:
   - host: {{ CMS_HOST }}
     http:

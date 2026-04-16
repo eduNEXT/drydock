@@ -26,6 +26,7 @@ tutor_hooks.Filters.CONFIG_DEFAULTS.add_items(
         ("DRYDOCK_AUTO_TLS", True),
         ("DRYDOCK_MIGRATE_FROM", 0),
         ("DRYDOCK_INGRESS", True),
+        ("DRYDOCK_INGRESS_CLASS", "nginx"),
         ("DRYDOCK_INGRESS_EXTRA_HOSTS", []),
         ("DRYDOCK_INGRESS_LMS_EXTRA_HOSTS", []),
         ("DRYDOCK_NEWRELIC_LICENSE_KEY", ""),
