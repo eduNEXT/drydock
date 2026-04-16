@@ -159,12 +159,12 @@ def iter_sync_waves_order() -> t.Iterable[SYNC_WAVES_ORDER_ATTRS_TYPE]:
     yield from get_sync_waves_order().items()
 
 
-def get_sync_waves_for_resource(resource_name: str) -> SYNC_WAVES_ORDER_ATTRS_TYPE:
+def get_sync_waves_for_resource(resource_name: str) -> int:
     """
     Args:
         resource_name: the name of the resource
     Returns:
-        dict
+        int
     """
     return get_sync_waves_order().get(resource_name, 0)
 
