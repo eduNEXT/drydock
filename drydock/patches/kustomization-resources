@@ -11,12 +11,6 @@
 - plugins/drydock/k8s/ingress/meilisearch.yml
 - plugins/drydock/k8s/ingress/notes.yml
 - plugins/drydock/k8s/ingress/extra-hosts.yml
-- plugins/drydock/k8s/ingress/static-cache.yml
-{%- endif %}
-{% if DRYDOCK_DEBUG -%}
-- plugins/drydock/k8s/debug/deployments.yml
-- plugins/drydock/k8s/debug/services.yml
-- plugins/drydock/k8s/debug/ingress.yml
 {%- endif %}
 {% if DRYDOCK_REGISTRY_CREDENTIALS -%}
 - plugins/drydock/k8s/secrets/image-pull-secret.yml

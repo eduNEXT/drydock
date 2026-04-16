@@ -9,7 +9,7 @@ metadata:
     cert-manager.io/issuer: letsencrypt
   {%- endif %}
 spec:
-  ingressClassName: nginx
+  ingressClassName: {{ DRYDOCK_INGRESS_CLASS }}
   rules:
   - host: {{ NOTES_HOST }}
     http:
@@ -18,9 +18,9 @@ spec:
         path: "/"
         backend:
           service:
-            name: {% if DRYDOCK_BYPASS_CADDY -%}notes{% else -%}caddy{% endif %}
+            name: caddy
             port:
-              number: {% if DRYDOCK_BYPASS_CADDY -%}7700{% else -%}80{% endif %}
+              number: 80
   {%- if DRYDOCK_AUTO_TLS or DRYDOCK_CUSTOM_CERTS %}
   tls:
   - hosts:

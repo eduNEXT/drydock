@@ -19,7 +19,7 @@ spec:
     solvers:
     - http01:
         ingress:
-          class: nginx
+          class: {{ DRYDOCK_INGRESS_CLASS }}
 {% endif -%}
 
 {% if DRYDOCK_CUSTOM_CERTS -%}

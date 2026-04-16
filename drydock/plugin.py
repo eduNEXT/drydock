@@ -17,6 +17,47 @@ from drydock.hooks import SYNC_WAVES_ORDER, SYNC_WAVES_ORDER_ATTRS_TYPE
 
 INIT_JOBS_SYNC_WAVE = 1
 
+tutor_hooks.Filters.CONFIG_DEFAULTS.add_items(
+    [
+        ("DRYDOCK_VERSION", __version__),
+        ("DRYDOCK_INIT_JOBS", False),
+        ("DRYDOCK_INIT_JOBS_EXCLUDED", []),
+        ("DRYDOCK_CMS_SSO_USER", "cms"),
+        ("DRYDOCK_AUTO_TLS", True),
+        ("DRYDOCK_MIGRATE_FROM", 0),
+        ("DRYDOCK_INGRESS", True),
+        ("DRYDOCK_INGRESS_CLASS", "nginx"),
+        ("DRYDOCK_INGRESS_EXTRA_HOSTS", []),
+        ("DRYDOCK_INGRESS_LMS_EXTRA_HOSTS", []),
+        ("DRYDOCK_NEWRELIC_LICENSE_KEY", ""),
+        ("DRYDOCK_CUSTOM_CERTS", {}),
+        ("DRYDOCK_LETSENCRYPT_EMAIL", "{{ CONTACT_EMAIL }}"),
+        ("DRYDOCK_ENABLE_MULTITENANCY", True),
+        ("DRYDOCK_ENABLE_SCORM", True),
+        ("DRYDOCK_POD_LIFECYCLE", True),
+        ("DRYDOCK_PDB_MINAVAILABLE_PERCENTAGE_LMS", 0),
+        ("DRYDOCK_PDB_MINAVAILABLE_PERCENTAGE_LMS_WORKER", 0),
+        ("DRYDOCK_PDB_MINAVAILABLE_PERCENTAGE_CMS", 0),
+        ("DRYDOCK_PDB_MINAVAILABLE_PERCENTAGE_CMS_WORKER", 0),
+        ("DRYDOCK_PDB_MINAVAILABLE_PERCENTAGE_MFE", 0),
+        ("DRYDOCK_PDB_MINAVAILABLE_PERCENTAGE_FORUM", 0),
+        ("DRYDOCK_PDB_MINAVAILABLE_PERCENTAGE_CADDY", 0),
+        (
+            "DRYDOCK_POST_INIT_DEPLOYMENTS",
+            ["lms", "cms", "forum", "lms-worker", "cms-worker", "superset", "superset-worker", "superset-celery-beat"],
+        ),
+        ("DRYDOCK_REGISTRY_CREDENTIALS", ""),
+    ]
+)
+
+tutor_hooks.Filters.CONFIG_OVERRIDES.add_items(
+    [
+        ("FORUM_MONGODB_DATABASE", "cs_comments_service"),
+        ("MONGODB_ROOT_USERNAME", ""),
+        ("MONGODB_ROOT_PASSWORD", ""),
+    ]
+)
+
 
 # This function is taken from
 # https://github.com/overhangio/tutor/blob/v16.1.8/tutor/commands/k8s.py#L182
@@ -83,9 +124,6 @@ def get_init_tasks():
 CORE_SYNC_WAVES_ORDER: SYNC_WAVES_ORDER_ATTRS_TYPE = {
     "drydock-upgrade-lms-job": 50,
     "drydock-upgrade-cms-job": 51,
-    "lms-debug": 50,
-    "cms-debug": 50,
-    "ingress-debug": 200,
     "deployments:post-init-apps": 100,
     "horizontalpodautoscalers:all": 150,
 }
@@ -121,75 +159,14 @@ def iter_sync_waves_order() -> t.Iterable[SYNC_WAVES_ORDER_ATTRS_TYPE]:
     yield from get_sync_waves_order().items()
 
 
-def get_sync_waves_for_resource(resource_name: str) -> SYNC_WAVES_ORDER_ATTRS_TYPE:
+def get_sync_waves_for_resource(resource_name: str) -> int:
     """
     Args:
         resource_name: the name of the resource
     Returns:
-        dict
+        int
     """
     return get_sync_waves_order().get(resource_name, 0)
-
-
-################# Configuration
-config = {
-    # Add here your new settings
-    "defaults": {
-        "VERSION": __version__,
-        "INIT_JOBS": False,
-        "INIT_JOBS_EXCLUDED": [],
-        "CMS_SSO_USER": "cms",
-        "AUTO_TLS": True,
-        "MIGRATE_FROM": 0,
-        "INGRESS": True,
-        "INGRESS_EXTRA_HOSTS": [],
-        "INGRESS_LMS_EXTRA_HOSTS": [],
-        "NEWRELIC_LICENSE_KEY": "",
-        "CUSTOM_CERTS": {},
-        "DEBUG": False,
-        "LETSENCRYPT_EMAIL": "{{ CONTACT_EMAIL }}",
-        "ENABLE_MULTITENANCY": True,
-        "ENABLE_SCORM": True,
-        "POD_LIFECYCLE": True,
-        "BYPASS_CADDY": False,
-        "PDB_MINAVAILABLE_PERCENTAGE_LMS": 0,
-        "PDB_MINAVAILABLE_PERCENTAGE_LMS_WORKER": 0,
-        "PDB_MINAVAILABLE_PERCENTAGE_CMS": 0,
-        "PDB_MINAVAILABLE_PERCENTAGE_CMS_WORKER": 0,
-        "PDB_MINAVAILABLE_PERCENTAGE_MFE": 0,
-        "PDB_MINAVAILABLE_PERCENTAGE_FORUM": 0,
-        "PDB_MINAVAILABLE_PERCENTAGE_CADDY": 0,
-        "POST_INIT_DEPLOYMENTS": [
-            "lms",
-            "cms",
-            "forum",
-            "lms-worker",
-            "cms-worker",
-            "superset",
-            "superset-worker",
-            "superset-celery-beat",
-        ],
-        "NGINX_STATIC_CACHE_CONFIG": {},
-        "REGISTRY_CREDENTIALS": "",
-    },
-    # Add here settings that don't have a reasonable default for all users. For
-    # instance: passwords, secret keys, etc.
-    "unique": {
-        # "SECRET_KEY": "\{\{ 24|random_string \}\}",
-    },
-    # Danger zone! Add here values to override settings from Tutor core or other plugins.
-    "overrides": {},
-}
-
-tutor_hooks.Filters.CONFIG_DEFAULTS.add_items([("OPENEDX_DEBUG_COOKIE", "ednx_enable_debug")])
-tutor_hooks.Filters.CONFIG_OVERRIDES.add_items(
-    [
-        # This values are not prefixed with DRYDOCK_
-        ("FORUM_MONGODB_DATABASE", "cs_comments_service"),
-        ("MONGODB_ROOT_USERNAME", ""),
-        ("MONGODB_ROOT_PASSWORD", ""),
-    ]
-)
 
 
 ################# You don't really have to bother about what's below this line,
@@ -212,10 +189,6 @@ for path in glob(str(importlib.resources.files("drydock") / "patches" / "*")):
             tutor_hooks.priorities.LOW,  # Apply our changes last to correctly override defaults.
         )
 
-# Load all configuration entries
-tutor_hooks.Filters.CONFIG_DEFAULTS.add_items([(f"DRYDOCK_{key}", value) for key, value in config["defaults"].items()])
-tutor_hooks.Filters.CONFIG_UNIQUE.add_items([(f"DRYDOCK_{key}", value) for key, value in config["unique"].items()])
-tutor_hooks.Filters.CONFIG_OVERRIDES.add_items(list(config["overrides"].items()))
 
 tutor_hooks.Filters.ENV_TEMPLATE_VARIABLES.add_items(
     [

@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - teak
   pull_request:
   workflow_dispatch:
 
