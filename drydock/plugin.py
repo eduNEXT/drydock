@@ -35,7 +35,6 @@ tutor_hooks.Filters.CONFIG_DEFAULTS.add_items(
         ("DRYDOCK_ENABLE_MULTITENANCY", True),
         ("DRYDOCK_ENABLE_SCORM", True),
         ("DRYDOCK_POD_LIFECYCLE", True),
-        ("DRYDOCK_BYPASS_CADDY", False),
         ("DRYDOCK_PDB_MINAVAILABLE_PERCENTAGE_LMS", 0),
         ("DRYDOCK_PDB_MINAVAILABLE_PERCENTAGE_LMS_WORKER", 0),
         ("DRYDOCK_PDB_MINAVAILABLE_PERCENTAGE_CMS", 0),
@@ -47,7 +46,6 @@ tutor_hooks.Filters.CONFIG_DEFAULTS.add_items(
             "DRYDOCK_POST_INIT_DEPLOYMENTS",
             ["lms", "cms", "forum", "lms-worker", "cms-worker", "superset", "superset-worker", "superset-celery-beat"],
         ),
-        ("DRYDOCK_NGINX_STATIC_CACHE_CONFIG", {}),
         ("DRYDOCK_REGISTRY_CREDENTIALS", ""),
     ]
 )
