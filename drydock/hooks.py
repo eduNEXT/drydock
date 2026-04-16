@@ -10,4 +10,4 @@ from tutor.core.hooks import Filter
 
 SYNC_WAVES_ORDER_ATTRS_TYPE = dict[str, int]
 
-SYNC_WAVES_ORDER: Filter[SYNC_WAVES_ORDER_ATTRS_TYPE, tuple] = Filter()
+SYNC_WAVES_ORDER = Filter[SYNC_WAVES_ORDER_ATTRS_TYPE, ...]()
