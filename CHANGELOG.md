@@ -13,6 +13,25 @@ See the fragment files in the [changelog.d/ directory](./changelog.d).
 
 <!-- scriv-insert-here -->
 
+<a id='changelog-21.1.0'></a>
+## 21.1.0 — 2026-04-17
+
+### Added
+
+- The new `DRYDOCK_INGRESS_CLASS` allows to configure the ingress class used by
+  the Ingress and Issuers objects.
+
+### Removed
+
+- All support for debug pods via Ingress NGINX canary annotations has been
+  removed. Users of this feature must re-implement it.
+
+- Several features that rely on specific ingress-nginx functionality have been
+  removed:
+  - The NGINX static cache ingress resources and related plugin settings.
+  - The bypass Caddy configuration used to route traffic directly from the
+    ingress-controller avoiding extra latency.
+
 <a id='changelog-21.0.0'></a>
 ## 21.0.0 — 2026-01-28
 
