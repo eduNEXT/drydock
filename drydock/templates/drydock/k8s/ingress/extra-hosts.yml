@@ -3,7 +3,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: ingress-{{ host|replace(".", "-") }}-tls
+  name: {{ host|replace(".", "-") }}
   namespace: {{ K8S_NAMESPACE }}
   {%- if DRYDOCK_AUTO_TLS and not DRYDOCK_CUSTOM_CERTS%}
   annotations:

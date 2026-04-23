@@ -2,7 +2,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: ingress-lms
+  name: lms
   namespace: {{ K8S_NAMESPACE }}
   annotations:
   {%- if DRYDOCK_AUTO_TLS and not DRYDOCK_CUSTOM_CERTS %}
