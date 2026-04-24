@@ -13,6 +13,15 @@ See the fragment files in the [changelog.d/ directory](./changelog.d).
 
 <!-- scriv-insert-here -->
 
+<a id='changelog-21.2.0'></a>
+## 21.2.0 — 2026-04-24
+
+### Changed
+
+- The prefix `ingress-` was removed from the ingress objects names. The suffix
+  `-tls` was also removed from additional ingresses defined via
+  `DRYDOCK_INGRESS_EXTRA_HOSTS`.
+
 <a id='changelog-21.1.0'></a>
 ## 21.1.0 — 2026-04-17
 
