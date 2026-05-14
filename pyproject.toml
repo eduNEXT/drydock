@@ -1,6 +1,6 @@
 [project]
 name = "tutor-contrib-drydock"
-version = "21.2.2"
+version = "22.0.0"
 description = "A Tutor plugin to manage our opinionated Open edX operations"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -17,9 +17,10 @@ classifiers = [
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
 ]
 dependencies = [
-    "tutor~=21.0"
+    "tutor~=22.0"
 ]
 
 [project.urls]
@@ -57,9 +58,6 @@ entry_title_template = "file: changelog.d/scriv/entry_title.md.j2"
 module-root = "."
 module-name = "drydock"
 
-[tool.uv.sources]
-tutor-contrib-s3 = { git = "https://github.com/cleura/tutor-contrib-s3",  tag = "v2.5.0" }
-
 [build-system]
 requires = ["uv_build>=0.11.0,<0.13.0"]
 build-backend = "uv_build"
@@ -70,11 +68,13 @@ dev = [
     "scriv>=1.7.0",
     "ty>=0.0.1a29",
 ]
+
+# Move to the S3 plugin the upstream repository once they release the verawood version.
 test = [
-    "tutor-contrib-s3",
-    "tutor-forum~=21.0",
-    "tutor-mfe~=21.0",
-    "tutor-minio~=21.0",
-    "tutor-notes~=21.0",
+    "tutor-contrib-s3 @ git+https://github.com/eduNEXT/tutor-contrib-s3@verawood",
+    "tutor-mfe~=22.0",
+    "tutor-minio~=22.0",
+    "tutor-notes~=22.0",
+    "tutor-forum~=22.0",
 ]
 
