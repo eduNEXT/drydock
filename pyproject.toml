@@ -1,6 +1,6 @@
 [project]
 name = "tutor-contrib-drydock"
-version = "21.2.0"
+version = "22.0.0"
 description = "A Tutor plugin to manage our opinionated Open edX operations"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -18,9 +18,10 @@ classifiers = [
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
 ]
 dependencies = [
-    "tutor~=21.0"
+    "tutor @ git+https://github.com/overhangio/tutor@59264ca9f9c6a8e67622ae72080684ffc6ec7e2a"
 ]
 
 [project.urls]
@@ -73,9 +74,9 @@ dev = [
 ]
 test = [
     "tutor-contrib-s3",
-    "tutor-forum~=21.0",
-    "tutor-mfe~=21.0",
-    "tutor-minio~=21.0",
-    "tutor-notes~=21.0",
+    "tutor-mfe @ git+https://github.com/overhangio/tutor-mfe@d0804c2590431780d3a0ed6d24701c20eef5a86d",
+    "tutor-minio @ git+https://github.com/overhangio/tutor-minio@b05d1f37875789ec6abe9641a05fda1139fd45ed",
+    "tutor-notes @ git+https://github.com/overhangio/tutor-notes@2cfe80f82dde6e794782d0484a7b1bf6af9296f2",
+    "tutor-forum @ git+https://github.com/overhangio/tutor-forum@3ecb05cc6aa525554995d37be1077c53d7833ac4",
 ]
 
