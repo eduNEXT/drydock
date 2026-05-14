@@ -22,6 +22,15 @@ See the fragment files in the [changelog.d/ directory](./changelog.d).
   `-tls` was also removed from additional ingresses defined via
   `DRYDOCK_INGRESS_EXTRA_HOSTS`.
 
+> [!WARNING]
+>
+> This rename will cause errors with the Ingress NGINX validation webhook
+> due to two different ingress objects registering the same routes.
+>
+> The old ingress objects must be deleted before applying the new
+> changes. Either perform a manual delete or set `DRYDOCK_INGRESS` to false
+> to delete all ingress objects in the next apply.
+
 <a id='changelog-21.1.0'></a>
 ## 21.1.0 — 2026-04-17
 
