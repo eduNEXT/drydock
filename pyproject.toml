@@ -60,7 +60,7 @@ module-root = "."
 module-name = "drydock"
 
 [tool.uv.sources]
-tutor-contrib-s3 = { git = "https://github.com/cleura/tutor-contrib-s3",  tag = "v2.5.0" }
+tutor-contrib-s3 = { git = "https://github.com/eduNEXT/tutor-contrib-s3",  tag = "5dc1c06d96b337109f7ca96eda41529a7f22e0e0" }
 
 [build-system]
 requires = ["uv_build>=0.9.5,<0.10.0"]
@@ -73,7 +73,7 @@ dev = [
     "ty>=0.0.1a29",
 ]
 test = [
-    "tutor-contrib-s3",
+    "tutor-contrib-s3 @ git+https://github.com/eduNEXT/tutor-contrib-s3@5dc1c06d96b337109f7ca96eda41529a7f22e0e0",
     "tutor-mfe @ git+https://github.com/overhangio/tutor-mfe@d0804c2590431780d3a0ed6d24701c20eef5a86d",
     "tutor-minio @ git+https://github.com/overhangio/tutor-minio@b05d1f37875789ec6abe9641a05fda1139fd45ed",
     "tutor-notes @ git+https://github.com/overhangio/tutor-notes@2cfe80f82dde6e794782d0484a7b1bf6af9296f2",

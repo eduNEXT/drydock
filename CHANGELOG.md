@@ -13,6 +13,13 @@ See the fragment files in the [changelog.d/ directory](./changelog.d).
 
 <!-- scriv-insert-here -->
 
+<a id='changelog-22.0.0'></a>
+## 22.0.0 — 2026-05-19
+
+### Added
+
+- Support for the verawood release
+
 <a id='changelog-21.2.0'></a>
 ## 21.2.0 — 2026-04-24
 
