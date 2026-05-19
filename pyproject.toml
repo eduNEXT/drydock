@@ -21,7 +21,7 @@ classifiers = [
     "Programming Language :: Python :: 3.14",
 ]
 dependencies = [
-    "tutor @ git+https://github.com/overhangio/tutor@59264ca9f9c6a8e67622ae72080684ffc6ec7e2a"
+    "tutor~=22.0"
 ]
 
 [project.urls]
@@ -59,8 +59,15 @@ entry_title_template = "file: changelog.d/scriv/entry_title.md.j2"
 module-root = "."
 module-name = "drydock"
 
+# TODO: remove before merging
 [tool.uv.sources]
-tutor-contrib-s3 = { git = "https://github.com/eduNEXT/tutor-contrib-s3",  tag = "5dc1c06d96b337109f7ca96eda41529a7f22e0e0" }
+tutor = {git = "https://github.com/overhangio/tutor", rev = "59264ca9f9c6a8e67622ae72080684ffc6ec7e2a"}  # Verawood
+tutor-contrib-s3 = {git = "https://github.com/eduNEXT/tutor-contrib-s3", rev = "5dc1c06d96b337109f7ca96eda41529a7f22e0e0"} # Verawood
+tutor-mfe = {git = "https://github.com/overhangio/tutor-mfe", rev = "d0804c2590431780d3a0ed6d24701c20eef5a86d"} # Verawood
+tutor-minio = {git = "https://github.com/overhangio/tutor-minio", rev = "b05d1f37875789ec6abe9641a05fda1139fd45ed"}  # Verawood
+tutor-notes = {git = "https://github.com/overhangio/tutor-notes", rev = "2cfe80f82dde6e794782d0484a7b1bf6af9296f2"} # Verawood
+tutor-forum = {git = "https://github.com/overhangio/tutor-forum", rev = "3ecb05cc6aa525554995d37be1077c53d7833ac4"} # Verawood
+
 
 [build-system]
 requires = ["uv_build>=0.9.5,<0.10.0"]
@@ -73,10 +80,10 @@ dev = [
     "ty>=0.0.1a29",
 ]
 test = [
-    "tutor-contrib-s3 @ git+https://github.com/eduNEXT/tutor-contrib-s3@5dc1c06d96b337109f7ca96eda41529a7f22e0e0",
-    "tutor-mfe @ git+https://github.com/overhangio/tutor-mfe@d0804c2590431780d3a0ed6d24701c20eef5a86d",
-    "tutor-minio @ git+https://github.com/overhangio/tutor-minio@b05d1f37875789ec6abe9641a05fda1139fd45ed",
-    "tutor-notes @ git+https://github.com/overhangio/tutor-notes@2cfe80f82dde6e794782d0484a7b1bf6af9296f2",
-    "tutor-forum @ git+https://github.com/overhangio/tutor-forum@3ecb05cc6aa525554995d37be1077c53d7833ac4",
+    "tutor-contrib-s3~=22.0",
+    "tutor-mfe~=22.0",
+    "tutor-minio~=22.0",
+    "tutor-notes~=22.0",
+    "tutor-forum~=22.0",
 ]
 

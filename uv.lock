@@ -817,7 +817,7 @@ dev = [
     { name = "ty", specifier = ">=0.0.1a29" },
 ]
 test = [
-    { name = "tutor-contrib-s3", git = "https://github.com/eduNEXT/tutor-contrib-s3?tag=5dc1c06d96b337109f7ca96eda41529a7f22e0e0" },
+    { name = "tutor-contrib-s3", git = "https://github.com/eduNEXT/tutor-contrib-s3?rev=5dc1c06d96b337109f7ca96eda41529a7f22e0e0" },
     { name = "tutor-forum", git = "https://github.com/overhangio/tutor-forum?rev=3ecb05cc6aa525554995d37be1077c53d7833ac4" },
     { name = "tutor-mfe", git = "https://github.com/overhangio/tutor-mfe?rev=d0804c2590431780d3a0ed6d24701c20eef5a86d" },
     { name = "tutor-minio", git = "https://github.com/overhangio/tutor-minio?rev=b05d1f37875789ec6abe9641a05fda1139fd45ed" },
@@ -827,7 +827,7 @@ test = [
 [[package]]
 name = "tutor-contrib-s3"
 version = "0.1.dev92+g5dc1c06d9"
-source = { git = "https://github.com/eduNEXT/tutor-contrib-s3?tag=5dc1c06d96b337109f7ca96eda41529a7f22e0e0#5dc1c06d96b337109f7ca96eda41529a7f22e0e0" }
+source = { git = "https://github.com/eduNEXT/tutor-contrib-s3?rev=5dc1c06d96b337109f7ca96eda41529a7f22e0e0#5dc1c06d96b337109f7ca96eda41529a7f22e0e0" }
 dependencies = [
     { name = "tutor" },
 ]
