@@ -5,9 +5,6 @@
     }
     rewrite @favicon_matcher /theming/asset/images/favicon.ico
 
-    {{ patch("caddyfile-mfe-by-path") }}
-
-
     # Limit profile image upload size
     handle_path /api/profile_images/*/*/upload {
         request_body {
