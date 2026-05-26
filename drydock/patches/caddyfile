@@ -5,16 +5,22 @@
     }
     rewrite @favicon_matcher /theming/asset/images/favicon.ico
 
-    {{ patch("caddyfile-mfe-by-path") }}
-
     # Limit profile image upload size
-    request_body /api/profile_images/*/*/upload {
-        max_size 1MB
+    handle_path /api/profile_images/*/*/upload {
+        request_body {
+            max_size 1MB
+        }
     }
-    request_body {
-        max_size 4MB
-    }
+
     import proxy "lms:8000"
+
+    {{ patch("caddyfile-lms")|indent(4) }}
+
+    handle_path /* {
+        request_body {
+            max_size 4MB
+        }
+    }
 
     {% if DRYDOCK_ENABLE_SCORM and MINIO_HOST is defined %}
     @scorm_matcher {
