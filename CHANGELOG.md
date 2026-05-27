@@ -13,6 +13,16 @@ See the fragment files in the [changelog.d/ directory](./changelog.d).
 
 <!-- scriv-insert-here -->
 
+<a id='changelog-21.2.1'></a>
+## 21.2.1 — 2026-05-28
+
+### Fixed
+
+- Properly mirror the LMS caddy block in the default catch-all block used by `DRYDOCK_ENABLE_MULTITENANCY`.
+
+- Avoid retriggering the CONFIG_LOADED action multiple times when redering the
+  jobs templates.
+
 <a id='changelog-21.2.0'></a>
 ## 21.2.0 — 2026-04-24
 

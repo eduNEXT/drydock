@@ -5,7 +5,6 @@ import typing as t
 from glob import glob
 
 import click
-from tutor import config as tutor_config
 from tutor import env as tutor_env
 from tutor import hooks as tutor_hooks
 from tutor import serialize, types
@@ -16,6 +15,8 @@ from drydock.__about__ import __version__
 from drydock.hooks import SYNC_WAVES_ORDER, SYNC_WAVES_ORDER_ATTRS_TYPE
 
 INIT_JOBS_SYNC_WAVE = 1
+
+TUTOR_CONFIG: types.Config = {}
 
 tutor_hooks.Filters.CONFIG_DEFAULTS.add_items(
     [
@@ -59,6 +60,12 @@ tutor_hooks.Filters.CONFIG_OVERRIDES.add_items(
 )
 
 
+@tutor_hooks.Actions.CONFIG_LOADED.add()
+def _capture_config(config: types.Config) -> None:
+    global TUTOR_CONFIG
+    TUTOR_CONFIG = config
+
+
 # This function is taken from
 # https://github.com/overhangio/tutor/blob/v16.1.8/tutor/commands/k8s.py#L182
 def _load_jobs(tutor_conf: types.Config) -> t.Iterable[t.Any]:
@@ -73,21 +80,21 @@ def _load_jobs(tutor_conf: types.Config) -> t.Iterable[t.Any]:
 # and https://github.com/overhangio/tutor/blob/v16.1.8/tutor/commands/k8s.py#L82
 def get_init_tasks():
     """Return the list of init tasks to run."""
+    if not TUTOR_CONFIG:
+        return []
     init_tasks = list(tutor_hooks.Filters.CLI_DO_INIT_TASKS.iterate())
-    context = click.get_current_context().obj
-    tutor_conf = tutor_config.load(context.root)
-    jobs = tutor_conf.get("DRYDOCK_INIT_JOBS_EXCLUDED", [])
+    jobs = TUTOR_CONFIG.get("DRYDOCK_INIT_JOBS_EXCLUDED", [])
     if not isinstance(jobs, list):
         click.secho("'DRYDOCK_INIT_JOBS_EXCLUDED' must be a list. Ignoring.", fg="yellow")
         jobs = []
     excluded_init_jobs = set(jobs)
 
     for i, (service, command) in enumerate(init_tasks):
-        for template in _load_jobs(tutor_conf):
+        for template in _load_jobs(TUTOR_CONFIG):
             if template["metadata"]["name"] != service + "-job" or template["metadata"]["name"] in excluded_init_jobs:
                 continue
 
-            render_command = tutor_env.render_str(tutor_conf, command)
+            render_command = tutor_env.render_str(TUTOR_CONFIG, command)
 
             template["metadata"]["name"] = "drydock-" + template["metadata"]["name"] + "-" + str(i)
             template["metadata"]["labels"].update(
