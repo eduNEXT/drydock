@@ -13,6 +13,15 @@ See the fragment files in the [changelog.d/ directory](./changelog.d).
 
 <!-- scriv-insert-here -->
 
+<a id='changelog-21.2.2'></a>
+## 21.2.2 — 2026-06-02
+
+### Fixed
+
+- Removed repeated definition of the `@scorm_matcher` rule that would cause
+  crashes in caddy when using `DRYDOCK_ENABLE_SCORM` and
+  `DRYDOCK_ENABLE_MULTITENANCY`.
+
 <a id='changelog-21.2.1'></a>
 ## 21.2.1 — 2026-05-28
 

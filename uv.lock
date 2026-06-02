@@ -833,7 +833,7 @@ sdist = { url = "https://files.pythonhosted.org/packages/26/d8/3d93bc551ba2e5035
 
 [[package]]
 name = "tutor-contrib-drydock"
-version = "21.2.1"
+version = "21.2.2"
 source = { editable = "." }
 dependencies = [
     { name = "tutor" },
