@@ -1,4 +1,4 @@
-name: Kubeconform Validation
+name: Validate configuration files
 
 on:
   pull_request:
@@ -64,6 +64,13 @@ jobs:
           --group test \
           --isolated \
           tutor config save
+
+      - name: Validate generated Caddyfile
+        run: |
+          docker run --rm \
+          -v "$TUTOR_ROOT/env/apps/caddy/Caddyfile:/etc/caddy/Caddyfile:ro" \
+          caddy:2 \
+          caddy validate --config /etc/caddy/Caddyfile --adapter caddyfile
 
       - name: Print versions
         run: |
