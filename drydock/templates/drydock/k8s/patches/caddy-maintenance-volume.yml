@@ -1,0 +1,22 @@
+{% if DRYDOCK_MAINTENANCE_ENABLED -%}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: caddy
+spec:
+  template:
+    metadata:
+      annotations:
+        drydock.io/maintenance-checksum: "{{ maintenance_assets_checksum(DRYDOCK_MAINTENANCE_PAGE_DIR) }}"
+    spec:
+      volumes:
+        - name: drydock-maintenance
+          configMap:
+            name: drydock-maintenance-page-{{ maintenance_assets_checksum(DRYDOCK_MAINTENANCE_PAGE_DIR) }}
+      containers:
+        - name: caddy
+          volumeMounts:
+            - name: drydock-maintenance
+              mountPath: /var/www/drydock-maintenance
+              readOnly: true
+{% endif -%}

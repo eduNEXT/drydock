@@ -1,3 +1,4 @@
+{% include "drydock/caddy/_maintenance.caddy" %}
 {% if DRYDOCK_ENABLE_SCORM and MINIO_HOST is defined %}
 @scorm_matcher {
     path /scorm-proxy/*
