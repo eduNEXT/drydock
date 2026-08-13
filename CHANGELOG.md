@@ -13,6 +13,13 @@ See the fragment files in the [changelog.d/ directory](./changelog.d).
 
 <!-- scriv-insert-here -->
 
+<a id='changelog-22.1.0'></a>
+## 22.1.0 — 2026-08-13
+
+### Changed
+
+- The default ingress class is now `traefik`.
+
 <a id='changelog-22.0.0'></a>
 ## 22.0.0 — 2026-05-19
 
