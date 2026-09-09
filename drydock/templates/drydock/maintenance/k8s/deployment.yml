@@ -1,0 +1,51 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: maintenance-caddy
+  labels:
+    app.kubernetes.io/name: maintenance-caddy
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: maintenance-caddy
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: maintenance-caddy
+    spec:
+      containers:
+        - name: caddy
+          image: {{ DOCKER_IMAGE_CADDY }}
+          env:
+            - name: default_site_port
+              value: ":80"
+          volumeMounts:
+            - mountPath: /etc/caddy/
+              name: config
+            - mountPath: /srv/maintenance/
+              name: html
+          ports:
+            - containerPort: 80
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 80
+            initialDelaySeconds: 2
+            periodSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 80
+            initialDelaySeconds: 5
+            periodSeconds: 10
+      volumes:
+        - name: config
+          configMap:
+            name: maintenance-caddy-config
+        - name: html
+          configMap:
+            name: maintenance-caddy-config
+            items:
+              - key: maintenance.html
+                path: maintenance.html
