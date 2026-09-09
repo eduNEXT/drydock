@@ -77,8 +77,18 @@ The following configuration options are available:
 - `DRYDOCK_PDB_MINAVAILABLE_PERCENTAGE_CMS`: The minimum available percentage for the CMS's PodDisruptionBudget. To disable the PodDisruptionBudget, set `0`. Defaults to `0`.
 - `DRYDOCK_PDB_MINAVAILABLE_PERCENTAGE_CMS_WORKER`: The minimum available percentage for the worker's PodDisruptionBudget. To disable the PodDisruptionBudget, set `0`. Defaults to `0`.
 - `DRYDOCK_MIGRATE_FROM`: it allows defining the version of the OpenedX platform we are migrating from. It accepts the integer value mapping the origin release, for instance, `13`(maple) or `14`(nutmeg). When this variable is set, a group of `release-specific upgrade jobs` are added to the Kubernetes manifests. These jobs are applied to the cluster in a suitable order (thanks to the GitOps implementation with ArgoCD + sync waves) to guarantee the correct behavior of the platform in the new version. This brings the `tutor k8s upgrade <https://github.com/overhangio/tutor/blob/v15.3.7/tutor/commands/k8s.py#L484>`_ command to the GitOps pattern. The release-specific upgrade jobs are supported from release `13`(maple). Defaults to `0` (which disables release-specific upgrade jobs)
+- `DRYDOCK_MAINTENANCE_ENABLED`: Whether to deploy a dedicated maintenance Caddy and redirect all Drydock-managed Ingress backends to it. Defaults to `false`.
+- `DRYDOCK_MAINTENANCE_HTTP_STATUS`: HTTP status code returned with the maintenance HTML page. Defaults to `503`.
 
 > **_NOTE:_** You also need to set `DRYDOCK_INIT_JOBS` to `true` to enable the release-specific upgrade jobs in the case of a platform migration.
+
+Maintenance mode
+----------------
+
+When `DRYDOCK_MAINTENANCE_ENABLED` is `true` and `DRYDOCK_INGRESS` is enabled, Drydock deploys a `maintenance-caddy` service and uses Kustomize replacements to point LMS, Studio, MFE, Notes, Meilisearch, and `DRYDOCK_INGRESS_EXTRA_HOSTS` Ingress backends to it. The maintenance Caddy serves a default HTML page to external clients.
+
+Custom maintenance routing can be added through the `drydock-maintenance-caddyfile` Tutor patch. The `drydock-maintenance-caddyfile-global` patch is available for global Caddy options such as `trusted_proxies`. Drydock does not provide an IP restriction or bypass by default. Clients can implement it through these patches, keeping redirects, headers, and other maintenance-only rules isolated from the main Open edX Caddyfile.
+
 
 Job generation
 --------------
