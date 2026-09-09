@@ -6,3 +6,17 @@
     labels:
         app.kubernetes.io/name: openedx
 {% endif -%}
+{%- if DRYDOCK_MAINTENANCE_ENABLED %}
+- name: maintenance-caddy-config
+  files:
+  - plugins/drydock/maintenance/apps/caddy/Caddyfile
+  - plugins/drydock/maintenance/static/maintenance.html
+  options:
+    labels:
+      app.kubernetes.io/name: maintenance-caddy
+- name: maintenance-ingress-backend
+  literals:
+  - service=maintenance-caddy
+  options:
+    disableNameSuffixHash: true
+{%- endif %}

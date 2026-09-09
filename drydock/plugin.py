@@ -48,6 +48,8 @@ tutor_hooks.Filters.CONFIG_DEFAULTS.add_items(
             ["lms", "cms", "forum", "lms-worker", "cms-worker", "superset", "superset-worker", "superset-celery-beat"],
         ),
         ("DRYDOCK_REGISTRY_CREDENTIALS", ""),
+        ("DRYDOCK_MAINTENANCE_ENABLED", False),
+        ("DRYDOCK_MAINTENANCE_HTTP_STATUS", 503),
     ]
 )
 
@@ -176,6 +178,29 @@ def get_sync_waves_for_resource(resource_name: str) -> int:
     return get_sync_waves_order().get(resource_name, 0)
 
 
+def maintenance_ingress_names() -> list[str]:
+    """Return Drydock Ingress names whose backends should point to maintenance-caddy."""
+    if not TUTOR_CONFIG.get("DRYDOCK_INGRESS", True):
+        return []
+
+    names = ["lms", "cms"]
+
+    if TUTOR_CONFIG.get("MFE_HOST") is not None:
+        names.append("mfe")
+    if TUTOR_CONFIG.get("RUN_MEILISEARCH", True):
+        names.append("meilisearch")
+    plugins = TUTOR_CONFIG.get("PLUGINS", [])
+    if isinstance(plugins, list) and "notes" in plugins:
+        names.append("notes")
+
+    extra_hosts = TUTOR_CONFIG.get("DRYDOCK_INGRESS_EXTRA_HOSTS", [])
+    if isinstance(extra_hosts, list):
+        for host in extra_hosts:
+            names.append(str(host).replace(".", "-"))
+
+    return names
+
+
 ################# You don't really have to bother about what's below this line,
 ################# except maybe for educational purposes :)
 
@@ -186,6 +211,9 @@ tutor_hooks.Filters.ENV_TEMPLATE_TARGETS.add_items(
         ("drydock/build", "plugins"),
         ("drydock/apps", "plugins"),
         ("drydock/k8s", "plugins"),
+        ("drydock/maintenance/k8s", "plugins"),
+        ("drydock/maintenance/apps", "plugins"),
+        ("drydock/maintenance/static", "plugins"),
     ],
 )
 # Load all patches from the "patches" folder
@@ -202,6 +230,7 @@ tutor_hooks.Filters.ENV_TEMPLATE_VARIABLES.add_items(
         ("get_init_tasks", get_init_tasks),
         ("iter_sync_waves_order", iter_sync_waves_order),
         ("get_sync_waves_for_resource", get_sync_waves_for_resource),
+        ("maintenance_ingress_names", maintenance_ingress_names),
     ]
 )
 
