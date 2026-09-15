@@ -71,12 +71,12 @@ jobs:
           caddy:2 \
           caddy validate --config /etc/caddy/Caddyfile --adapter caddyfile
 
-      - name: Validate generated maintenance Caddyfile
+      - name: Validate generated edge-proxy Caddyfile
         run: |
-          MAINTENANCE_CADDYFILE="$TUTOR_ROOT/env/plugins/drydock/maintenance/apps/caddy/Caddyfile"
-          if [ -f "$MAINTENANCE_CADDYFILE" ]; then
+          EDGE_PROXY_CADDYFILE="$TUTOR_ROOT/env/plugins/drydock/maintenance/apps/caddy/Caddyfile"
+          if [ -f "$EDGE_PROXY_CADDYFILE" ]; then
             docker run --rm \
-            -v "$MAINTENANCE_CADDYFILE:/etc/caddy/Caddyfile:ro" \
+            -v "$EDGE_PROXY_CADDYFILE:/etc/caddy/Caddyfile:ro" \
             caddy:2 \
             caddy validate --config /etc/caddy/Caddyfile --adapter caddyfile
           fi

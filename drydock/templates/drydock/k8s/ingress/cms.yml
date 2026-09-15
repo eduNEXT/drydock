@@ -21,14 +21,14 @@ spec:
         path: "/course-authoring"
         backend:
           service:
-            name: caddy
+            name: {{ "edge-proxy" if DRYDOCK_EDGE_PROXY_ENABLED else "caddy" }}
             port:
               number: 80
       - pathType: Prefix
         path: "/{{app_name}}"
         backend:
           service:
-            name: caddy
+            name: {{ "edge-proxy" if DRYDOCK_EDGE_PROXY_ENABLED else "caddy" }}
             port:
               number: 80
 {%- endif %}
@@ -38,10 +38,10 @@ spec:
         path: "/"
         backend:
           service:
-            name: caddy
+            name: {{ "edge-proxy" if DRYDOCK_EDGE_PROXY_ENABLED else "caddy" }}
             port:
               number: 80
-  {%- if DRYDOCK_AUTO_TLS or DRYDOCK_CUSTOM_CERTS %}
+{%- if DRYDOCK_AUTO_TLS or DRYDOCK_CUSTOM_CERTS %}
   tls:
   - hosts:
     - {{ CMS_HOST }}
@@ -50,4 +50,4 @@ spec:
     {%- else %}
     secretName: cms-host-tls
     {%- endif %}
-  {%- endif %}
+{%- endif %}

@@ -1,0 +1,24 @@
+# Example patch to allow specific paths to bypass edge-proxy and go directly to caddy
+# Enable this patch by adding it to your tutor config:
+# DRYDOCK_PATCHES:
+#   - drydock-edge-proxy-caddyfile
+#
+# This allows requests matching @bypass to be proxied to the main caddy service
+# instead of showing the maintenance page.
+#
+# Usage examples:
+# - Allow /health endpoint to pass through
+# - Allow specific API paths during maintenance
+# - IP-based bypass (combine with DRYDOCK_EDGE_PROXY_ALLOWED_IPS)
+
+@bypass {
+    # Example: Allow health checks to pass through
+    path /health
+    # Example: Allow specific paths during maintenance
+    # path /api/v1/status
+    # path /heartbeat
+}
+
+handle @bypass {
+    reverse_proxy caddy:80
+}
