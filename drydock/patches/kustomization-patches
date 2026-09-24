@@ -13,6 +13,9 @@
     kind: Deployment
   path: plugins/drydock/k8s/patches/add-image-pull-secret.yml
 - target:
+    kind: DaemonSet
+  path: plugins/drydock/k8s/patches/add-image-pull-secret.yml
+- target:
     kind: Job
   path: plugins/drydock/k8s/patches/add-image-pull-secret.yml
 - target:
