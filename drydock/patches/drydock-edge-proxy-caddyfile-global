@@ -1,0 +1,20 @@
+# Example global patch for edge-proxy Caddyfile
+# Enable this patch by adding it to your tutor config:
+# DRYDOCK_PATCHES:
+#   - drydock-edge-proxy-caddyfile-global
+#
+# This patch adds global Caddy configuration options for edge-proxy
+
+{
+    # Trusted proxies for correct client IP detection behind load balancers
+    trusted_proxies private_ranges
+    
+    # Example: Custom log format
+    # log {
+    #     output stdout
+    #     format json
+    # }
+    
+    # Example: Admin API endpoint (disabled by default for security)
+    # admin off
+}

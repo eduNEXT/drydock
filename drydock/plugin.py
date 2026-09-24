@@ -48,6 +48,9 @@ tutor_hooks.Filters.CONFIG_DEFAULTS.add_items(
             ["lms", "cms", "forum", "lms-worker", "cms-worker", "superset", "superset-worker", "superset-celery-beat"],
         ),
         ("DRYDOCK_REGISTRY_CREDENTIALS", ""),
+        ("DRYDOCK_EDGE_PROXY_ENABLED", False),
+        ("DRYDOCK_EDGE_PROXY_HTTP_STATUS", 503),
+        ("DRYDOCK_EDGE_PROXY_ALLOWED_IPS", []),
     ]
 )
 
@@ -186,6 +189,9 @@ tutor_hooks.Filters.ENV_TEMPLATE_TARGETS.add_items(
         ("drydock/build", "plugins"),
         ("drydock/apps", "plugins"),
         ("drydock/k8s", "plugins"),
+        ("drydock/edge-proxy/k8s", "plugins"),
+        ("drydock/edge-proxy/apps", "plugins"),
+        ("drydock/edge-proxy/static", "plugins"),
     ],
 )
 # Load all patches from the "patches" folder

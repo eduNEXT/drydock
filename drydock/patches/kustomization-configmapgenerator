@@ -6,3 +6,12 @@
     labels:
         app.kubernetes.io/name: openedx
 {% endif -%}
+{%- if DRYDOCK_EDGE_PROXY_ENABLED %}
+- name: edge-proxy-config
+  files:
+  - plugins/drydock/edge-proxy/apps/caddy/Caddyfile
+  - plugins/drydock/edge-proxy/static/maintenance.html
+  options:
+    labels:
+      app.kubernetes.io/name: edge-proxy
+{%- endif %}
