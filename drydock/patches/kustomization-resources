@@ -15,3 +15,6 @@
 {% if DRYDOCK_REGISTRY_CREDENTIALS -%}
 - plugins/drydock/k8s/secrets/image-pull-secret.yml
 {% endif -%}
+{% if DRYDOCK_MAINTENANCE_ENABLED -%}
+- plugins/drydock/k8s/maintenance/configmap.yml
+{% endif -%}

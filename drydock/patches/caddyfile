@@ -1,5 +1,6 @@
 {% if DRYDOCK_ENABLE_MULTITENANCY %}
 {$default_site_port:80} {
+{% include "drydock/caddy/_maintenance.caddy" %}
     @favicon_matcher {
         path_regexp ^/favicon.ico$
     }
