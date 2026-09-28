@@ -1,0 +1,34 @@
+{{ patch("drydock-edge-proxy-caddyfile-global") }}
+
+:80 {
+	handle /health {
+		respond "OK" 200
+	}
+
+	{{ patch("drydock-edge-proxy-caddyfile") | indent(4) }}
+
+	{% if DRYDOCK_EDGE_PROXY_ALLOWED_IPS %}
+	@allowed_ips {
+		{% for ip in DRYDOCK_EDGE_PROXY_ALLOWED_IPS %}
+		remote_ip {{ ip }}
+		{% endfor %}
+	}
+	handle @allowed_ips {
+		reverse_proxy caddy:80
+	}
+	{% endif %}
+
+	handle {
+		error {{ DRYDOCK_EDGE_PROXY_HTTP_STATUS }}
+	}
+
+	handle_errors {
+		@maintenance expression {http.error.status_code} == {{ DRYDOCK_EDGE_PROXY_HTTP_STATUS }}
+		handle @maintenance {
+			root * /srv/maintenance
+			rewrite * /maintenance.html
+			header Content-Type "text/html; charset=utf-8"
+			file_server
+		}
+	}
+}

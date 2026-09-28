@@ -18,10 +18,10 @@ spec:
         path: "/"
         backend:
           service:
-            name: caddy
+            name: {{ "edge-proxy" if DRYDOCK_EDGE_PROXY_ENABLED else "caddy" }}
             port:
               number: 80
-  {%- if DRYDOCK_AUTO_TLS or DRYDOCK_CUSTOM_CERTS %}
+{%- if DRYDOCK_AUTO_TLS or DRYDOCK_CUSTOM_CERTS %}
   tls:
   - hosts:
     - {{ NOTES_HOST }}
@@ -30,5 +30,5 @@ spec:
     {%- else %}
     secretName: notes-host-tls
     {%- endif %}
-  {%- endif %}
+{%- endif %}
 {%- endif %}

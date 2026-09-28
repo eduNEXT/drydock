@@ -56,7 +56,6 @@ jobs:
       - name: Setup Tutor environment
         run: |
           echo "TUTOR_ROOT=$GITHUB_WORKSPACE/.github/environments/${{ matrix.environment }}" >> $GITHUB_ENV
-          echo "TUTOR_PLUGINS_ROOT=$TUTOR_ROOT/plugins" >> $GITHUB_ENV
 
       - name: Tutor config save
         run: |
@@ -71,6 +70,16 @@ jobs:
           -v "$TUTOR_ROOT/env/apps/caddy/Caddyfile:/etc/caddy/Caddyfile:ro" \
           caddy:2 \
           caddy validate --config /etc/caddy/Caddyfile --adapter caddyfile
+
+      - name: Validate generated edge-proxy Caddyfile
+        run: |
+          EDGE_PROXY_CADDYFILE="$TUTOR_ROOT/env/plugins/drydock/maintenance/apps/caddy/Caddyfile"
+          if [ -f "$EDGE_PROXY_CADDYFILE" ]; then
+            docker run --rm \
+            -v "$EDGE_PROXY_CADDYFILE:/etc/caddy/Caddyfile:ro" \
+            caddy:2 \
+            caddy validate --config /etc/caddy/Caddyfile --adapter caddyfile
+          fi
 
       - name: Print versions
         run: |

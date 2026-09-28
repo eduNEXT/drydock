@@ -18,7 +18,7 @@ spec:
         path: "/learning"
         backend:
           service:
-            name: caddy
+            name: {{ "edge-proxy" if DRYDOCK_EDGE_PROXY_ENABLED else "caddy" }}
             port:
               number: 80
 {%- if MFE_DOCKER_IMAGE is defined %}
@@ -28,7 +28,7 @@ spec:
         path: "/{{app_name}}"
         backend:
           service:
-            name: caddy
+            name: {{ "edge-proxy" if DRYDOCK_EDGE_PROXY_ENABLED else "caddy" }}
             port:
               number: 80
 {%- endif %}
@@ -38,11 +38,11 @@ spec:
         path: "/"
         backend:
           service:
-            name: caddy
+            name: {{ "edge-proxy" if DRYDOCK_EDGE_PROXY_ENABLED else "caddy" }}
             port:
               number: 80
       {{ patch("drydock-lms-extra-paths")|indent(6) }}
-  {%- for host in DRYDOCK_INGRESS_LMS_EXTRA_HOSTS %}
+{%- for host in DRYDOCK_INGRESS_LMS_EXTRA_HOSTS %}
   - host: {{ host }}
     http:
       paths:
@@ -50,7 +50,7 @@ spec:
         path: "/learning"
         backend:
           service:
-            name: caddy
+            name: {{ "edge-proxy" if DRYDOCK_EDGE_PROXY_ENABLED else "caddy" }}
             port:
               number: 80
 {%- if MFE_DOCKER_IMAGE is defined %}
@@ -59,7 +59,7 @@ spec:
         path: "/{{app_name}}"
         backend:
           service:
-            name: caddy
+            name: {{ "edge-proxy" if DRYDOCK_EDGE_PROXY_ENABLED else "caddy" }}
             port:
               number: 80
 {%- endfor %}
@@ -68,12 +68,12 @@ spec:
         path: "/"
         backend:
           service:
-            name: caddy
+            name: {{ "edge-proxy" if DRYDOCK_EDGE_PROXY_ENABLED else "caddy" }}
             port:
               number: 80
       {{ patch("drydock-lms-extra-paths")|indent(6) }}
-  {%- endfor %}
-  {%- if DRYDOCK_AUTO_TLS or DRYDOCK_CUSTOM_CERTS %}
+{%- endfor %}
+{%- if DRYDOCK_AUTO_TLS or DRYDOCK_CUSTOM_CERTS %}
   tls:
   - hosts:
     - {{ LMS_HOST }}
@@ -85,4 +85,4 @@ spec:
     {%- else %}
     secretName: lms-host-tls
     {%- endif %}
-  {%- endif %}
+{%- endif %}
