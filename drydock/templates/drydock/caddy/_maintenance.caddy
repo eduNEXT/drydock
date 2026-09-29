@@ -1,0 +1,33 @@
+{% if DRYDOCK_MAINTENANCE_ENABLED %}
+# Drydock maintenance mode: serve a maintenance page to every external visitor
+# whose IP is not in the allowlist. Private ranges always bypass so in-cluster
+# traffic and kubelet health probes are never gated.
+# This must be a `route`, not a `handle`: handles in a site block are mutually
+# exclusive (first match wins), so an earlier non-terminal handle_path (eg. the
+# profile-image upload limit in the base LMS block) would let matching requests
+# fall through to reverse_proxy and bypass the gate.
+@drydock_blocked not client_ip private_ranges {{ DRYDOCK_MAINTENANCE_ALLOWED_IPS | join(" ") }}
+route @drydock_blocked {
+    root * /var/www/drydock-maintenance
+    # Serve referenced assets (css/img) as-is; fall back to the page otherwise.
+    @drydock_asset file
+    handle @drydock_asset {
+        header Cache-Control "no-store"
+        file_server
+    }
+    handle {
+        header {
+            Cache-Control "no-store"
+            Retry-After "3600"
+        }
+        # file_server would answer non-GET/HEAD requests (API calls, form
+        # submissions) with 405; keep the maintenance semantics instead.
+        @drydock_nonget not method GET HEAD
+        respond @drydock_nonget 503
+        rewrite * /index.html
+        file_server {
+            status 503
+        }
+    }
+}
+{% endif %}

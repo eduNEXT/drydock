@@ -33,3 +33,9 @@
     kind: Deployment
     name: '{% for name in DRYDOCK_POST_INIT_DEPLOYMENTS %}{{ name }}{% if not loop.last %}|{% endif %}{% endfor %}'
   path: plugins/drydock/k8s/patches/post-init-deployments-sync-wave.yml
+{% if DRYDOCK_MAINTENANCE_ENABLED -%}
+- target:
+    kind: Deployment
+    name: caddy
+  path: plugins/drydock/k8s/patches/caddy-maintenance-volume.yml
+{% endif -%}

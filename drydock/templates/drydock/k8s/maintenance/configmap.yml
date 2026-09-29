@@ -1,0 +1,26 @@
+{% if DRYDOCK_MAINTENANCE_ENABLED -%}
+{% set maintenance_files = get_maintenance_files(DRYDOCK_MAINTENANCE_PAGE_DIR) -%}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: drydock-maintenance-page-{{ maintenance_assets_checksum(DRYDOCK_MAINTENANCE_PAGE_DIR) }}
+  namespace: {{ K8S_NAMESPACE }}
+  labels:
+    app.kubernetes.io/name: openedx
+    app.kubernetes.io/component: drydock-maintenance
+{% set text_files = maintenance_files | rejectattr("binary") | list -%}
+{% set binary_files = maintenance_files | selectattr("binary") | list -%}
+{% if text_files %}
+data:
+{% for asset in text_files %}
+  {{ asset.name }}: |
+{{ asset.data | indent(4, first=True) }}
+{% endfor %}
+{%- endif %}
+{% if binary_files %}
+binaryData:
+{% for asset in binary_files %}
+  {{ asset.name }}: {{ asset.data }}
+{% endfor %}
+{%- endif %}
+{%- endif %}
