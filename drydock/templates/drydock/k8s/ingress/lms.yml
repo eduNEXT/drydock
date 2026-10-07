@@ -23,7 +23,7 @@ spec:
               number: 80
 {%- if MFE_DOCKER_IMAGE is defined %}
 {% for app_name, app in iter_mfes() %}
-{%- if app_name != "authoring" %}
+{%- if app_name not in ["authoring", "learning"] %}
       - pathType: Prefix
         path: "/{{app_name}}"
         backend:
@@ -55,6 +55,7 @@ spec:
               number: 80
 {%- if MFE_DOCKER_IMAGE is defined %}
 {% for app_name, app in iter_mfes() %}
+{%- if app_name not in ["authoring", "learning"] %}
       - pathType: Prefix
         path: "/{{app_name}}"
         backend:
@@ -62,6 +63,7 @@ spec:
             name: caddy
             port:
               number: 80
+{%- endif %}
 {%- endfor %}
 {%- endif %}
       - pathType: Prefix
