@@ -14,26 +14,6 @@ spec:
   - host: {{ CMS_HOST }}
     http:
       paths:
-{%- if MFE_DOCKER_IMAGE is defined %}
-{%- for app_name, app in iter_mfes() %}
-{%- if app_name == "authoring" %}
-      - pathType: Prefix
-        path: "/course-authoring"
-        backend:
-          service:
-            name: {{ "edge-proxy" if DRYDOCK_EDGE_PROXY_ENABLED else "caddy" }}
-            port:
-              number: 80
-      - pathType: Prefix
-        path: "/{{app_name}}"
-        backend:
-          service:
-            name: {{ "edge-proxy" if DRYDOCK_EDGE_PROXY_ENABLED else "caddy" }}
-            port:
-              number: 80
-{%- endif %}
-{%- endfor %}
-{%- endif %}
       - pathType: Prefix
         path: "/"
         backend:
