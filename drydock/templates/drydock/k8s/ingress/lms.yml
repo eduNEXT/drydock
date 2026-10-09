@@ -15,26 +15,6 @@ spec:
     http:
       paths:
       - pathType: Prefix
-        path: "/learning"
-        backend:
-          service:
-            name: caddy
-            port:
-              number: 80
-{%- if MFE_DOCKER_IMAGE is defined %}
-{% for app_name, app in iter_mfes() %}
-{%- if app_name != "authoring" %}
-      - pathType: Prefix
-        path: "/{{app_name}}"
-        backend:
-          service:
-            name: caddy
-            port:
-              number: 80
-{%- endif %}
-{%- endfor %}
-{%- endif %}
-      - pathType: Prefix
         path: "/"
         backend:
           service:
@@ -46,24 +26,6 @@ spec:
   - host: {{ host }}
     http:
       paths:
-      - pathType: Prefix
-        path: "/learning"
-        backend:
-          service:
-            name: caddy
-            port:
-              number: 80
-{%- if MFE_DOCKER_IMAGE is defined %}
-{% for app_name, app in iter_mfes() %}
-      - pathType: Prefix
-        path: "/{{app_name}}"
-        backend:
-          service:
-            name: caddy
-            port:
-              number: 80
-{%- endfor %}
-{%- endif %}
       - pathType: Prefix
         path: "/"
         backend:
