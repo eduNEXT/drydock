@@ -13,6 +13,15 @@ See the fragment files in the [changelog.d/ directory](./changelog.d).
 
 <!-- scriv-insert-here -->
 
+<a id='changelog-21.2.3'></a>
+## 21.2.3 — 2026-10-09
+
+### Fixed
+
+- Remove the per-MFE paths from the LMS and CMS ingresses. They were a leftover
+  from the removed Caddy bypass, all of them pointed to the same backend as the
+  `/` path, and they generated duplicated paths such as `/learning`.
+
 <a id='changelog-21.2.2'></a>
 ## 21.2.2 — 2026-06-02
 
