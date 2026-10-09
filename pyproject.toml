@@ -46,6 +46,24 @@ lint.select = [
   "UP",
 ]
 
+[tool.rumdl]
+# Global configuration options
+line-length = 100
+respect-gitignore = true
+
+[tool.rumdl.MD004]
+style = "dash"  # Unordered list style (asterisk, plus, dash, consistent)
+
+[tool.rumdl.MD007]
+indent = 4  # Unordered list indentation
+
+[tool.rumdl.MD013]
+line-length = 100  # Line length
+code-blocks = false  # Exclude code blocks from line length check
+tables = false  # Exclude tables from line length check
+headings = false
+reflow = true
+
 [tool.scriv]
 version = "literal: pyproject.toml: project.version"
 categories = "Added, Changed, Fixed, Removed"
@@ -65,6 +83,7 @@ build-backend = "uv_build"
 [dependency-groups]
 dev = [
     "ruff>=0.14.6",
+    "rumdl>=0.2.78",
     "scriv>=1.7.0",
     "ty>=0.0.1a29",
 ]

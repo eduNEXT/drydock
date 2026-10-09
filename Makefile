@@ -2,13 +2,15 @@
 .PHONY: help
 
 quality: ## Run linters
-	uv run ruff check
-	uv run ruff format --diff
-	uv run ty   check
+	uv run ruff  check
+	uv run ruff  format --diff
+	uv run ty    check
+	uv run rumdl check --diff README.md
 
 quality-fix: ## Run automatic linter fixes
-	uv run ruff format
-	uv run ruff check --fix
+	uv run ruff  format
+	uv run ruff  check --fix
+	uv run rumdl fmt README.md
 
 changelog-entry: ## Run scriv to create a changelog entry
 	uv run scriv create
