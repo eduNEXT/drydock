@@ -18,7 +18,7 @@ spec:
         path: "/learning"
         backend:
           service:
-            name: caddy
+            name: {{ "edge-proxy" if DRYDOCK_EDGE_PROXY_ENABLED else "caddy" }}
             port:
               number: 80
 {%- if MFE_DOCKER_IMAGE is defined %}
@@ -28,7 +28,7 @@ spec:
         path: "/{{app_name}}"
         backend:
           service:
-            name: caddy
+            name: {{ "edge-proxy" if DRYDOCK_EDGE_PROXY_ENABLED else "caddy" }}
             port:
               number: 80
 {%- endif %}
@@ -38,7 +38,7 @@ spec:
         path: "/"
         backend:
           service:
-            name: caddy
+            name: {{ "edge-proxy" if DRYDOCK_EDGE_PROXY_ENABLED else "caddy" }}
             port:
               number: 80
       {{ patch("drydock-lms-extra-paths")|indent(6) }}
@@ -50,7 +50,7 @@ spec:
         path: "/learning"
         backend:
           service:
-            name: caddy
+            name: {{ "edge-proxy" if DRYDOCK_EDGE_PROXY_ENABLED else "caddy" }}
             port:
               number: 80
 {%- if MFE_DOCKER_IMAGE is defined %}
@@ -59,7 +59,7 @@ spec:
         path: "/{{app_name}}"
         backend:
           service:
-            name: caddy
+            name: {{ "edge-proxy" if DRYDOCK_EDGE_PROXY_ENABLED else "caddy" }}
             port:
               number: 80
 {%- endfor %}
@@ -68,7 +68,7 @@ spec:
         path: "/"
         backend:
           service:
-            name: caddy
+            name: {{ "edge-proxy" if DRYDOCK_EDGE_PROXY_ENABLED else "caddy" }}
             port:
               number: 80
       {{ patch("drydock-lms-extra-paths")|indent(6) }}

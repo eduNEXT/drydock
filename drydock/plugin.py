@@ -32,6 +32,7 @@ tutor_hooks.Filters.CONFIG_DEFAULTS.add_items(
         ("DRYDOCK_INGRESS_LMS_EXTRA_HOSTS", []),
         ("DRYDOCK_NEWRELIC_LICENSE_KEY", ""),
         ("DRYDOCK_CUSTOM_CERTS", {}),
+        ("DRYDOCK_EDGE_PROXY_ENABLED", False),
         ("DRYDOCK_LETSENCRYPT_EMAIL", "{{ CONTACT_EMAIL }}"),
         ("DRYDOCK_ENABLE_MULTITENANCY", True),
         ("DRYDOCK_ENABLE_SCORM", True),
@@ -189,6 +190,7 @@ tutor_hooks.Filters.ENV_TEMPLATE_TARGETS.add_items(
         ("drydock/build", "plugins"),
         ("drydock/apps", "plugins"),
         ("drydock/k8s", "plugins"),
+        ("drydock/edge-proxy", "plugins"),
     ],
 )
 # Load all patches from the "patches" folder
