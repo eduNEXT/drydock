@@ -77,8 +77,62 @@ The following configuration options are available:
 - `DRYDOCK_PDB_MINAVAILABLE_PERCENTAGE_CMS`: The minimum available percentage for the CMS's PodDisruptionBudget. To disable the PodDisruptionBudget, set `0`. Defaults to `0`.
 - `DRYDOCK_PDB_MINAVAILABLE_PERCENTAGE_CMS_WORKER`: The minimum available percentage for the worker's PodDisruptionBudget. To disable the PodDisruptionBudget, set `0`. Defaults to `0`.
 - `DRYDOCK_MIGRATE_FROM`: it allows defining the version of the OpenedX platform we are migrating from. It accepts the integer value mapping the origin release, for instance, `13`(maple) or `14`(nutmeg). When this variable is set, a group of `release-specific upgrade jobs` are added to the Kubernetes manifests. These jobs are applied to the cluster in a suitable order (thanks to the GitOps implementation with ArgoCD + sync waves) to guarantee the correct behavior of the platform in the new version. This brings the `tutor k8s upgrade <https://github.com/overhangio/tutor/blob/v15.3.7/tutor/commands/k8s.py#L484>`_ command to the GitOps pattern. The release-specific upgrade jobs are supported from release `13`(maple). Defaults to `0` (which disables release-specific upgrade jobs)
+- `DRYDOCK_EDGE_PROXY_ENABLED`: Whether to deploy a dedicated edge proxy (Caddy) and redirect all Ingress backends to it. Defaults to `false`.
 
-> **_NOTE:_** You also need to set `DRYDOCK_INIT_JOBS` to `true` to enable the release-specific upgrade jobs in the case of a platform migration.
+> **_NOTE:_** You also need to set `DRYDOCK_INIT_JOBS` to `true` to enable the
+> release-specific upgrade jobs in the case of a platform migration.
+
+Edge Proxy
+----------
+
+When `DRYDOCK_EDGE_PROXY_ENABLED` is `true` and `DRYDOCK_INGRESS` is enabled,
+Drydock deploys an `edge-proxy` service (Caddy) and redirects **all** Ingress
+backends (LMS, Studio, MFE, Notes, Meilisearch, and extra hosts) to it.
+
+By default the edge proxy simply serves a static HTML page with a `503` status
+code. The patch `drydock-edge-proxy-caddyfile` can be used to construct a
+Caddyfile from scratch for the edge-proxy instead of the static HTML page with
+custom routing rules.
+
+An example on how to use the patch is as follows:
+
+```python
+from tutor import hooks
+
+CADDYFILE_CONTENT = """
+{
+    servers {
+        trusted_proxies static 10.0.0.0/8 private_ranges
+    }
+}
+:80 {
+    log {
+        output stdout
+        format json
+    }
+    @allowed client_ip 104.20.23.154
+    handle @allowed {
+        reverse_proxy caddy:80
+    }
+
+    @redirect_paths path /login /login/
+    handle @redirect_paths {
+        redir https://www.google.com permanent
+    }
+
+    handle {
+        respond "Under maintenance" 503
+    }
+}
+"""
+hooks.Filters.ENV_PATCHES.add_items([("drydock-edge-proxy-caddyfile", CADDYFILE_CONTENT)])
+```
+
+This configuration will show the maintenance page to everyone besides the user
+with ip `104.20.23.154` and will redirect to google when accesing `/login` and
+`/login/`. For ingress objects not handled by drydock and/or when
+`DRYDOCK_INGRESS=False` the ingress will need to be modified to forward to the
+edge-proxy service.
 
 Job generation
 --------------
