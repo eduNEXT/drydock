@@ -13,6 +13,28 @@ See the fragment files in the [changelog.d/ directory](./changelog.d).
 
 <!-- scriv-insert-here -->
 
+<a id='changelog-22.2.0'></a>
+## 22.2.0 — 2026-10-09
+
+### Added
+
+- DaemonSets can now use image secrets to pull private container images.
+
+- Individual init jobs can now be excluded from execution.
+
+- A customizable edge reverse proxy layer can be enabled by the
+  `DRYDOCK_EDGE_PROXY_ENABLED` setting. the proxy sits in front of the main Tutor's
+  Caddy instance and automatically updates Kubernetes Ingress routing when
+  enabled. It serves a built-in 503 maintenance page by default for scheduled
+  downtime and supports full Caddyfile overrides via the
+  `drydock-edge-proxy-caddyfile` Tutor patch for custom needs.
+
+### Fixed
+
+- Remove the per-MFE paths from the LMS and CMS ingresses. They were a leftover
+  from the removed Caddy bypass, all of them pointed to the same backend as the
+  `/` path, and they generated duplicated paths such as `/learning`.
+
 <a id='changelog-22.1.0'></a>
 ## 22.1.0 — 2026-08-13
 
