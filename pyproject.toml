@@ -20,7 +20,7 @@ classifiers = [
     "Programming Language :: Python :: 3.14",
 ]
 dependencies = [
-    "tutor~=22.0"
+    "tutor>=22.0,<24.0"
 ]
 
 [project.urls]
@@ -91,7 +91,7 @@ dev = [
 # Move to the S3 plugin the upstream repository once they release the verawood version.
 test = [
     "tutor-contrib-s3 @ git+https://github.com/eduNEXT/tutor-contrib-s3@verawood",
-    "tutor-mfe~=22.0",
+    "tutor-mfe>=22.0,<24.0",
     "tutor-minio~=22.0",
     "tutor-notes~=22.0",
     "tutor-forum~=22.0",
